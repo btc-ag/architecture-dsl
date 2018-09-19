@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" configuration-policy="require" enabled="true" immediate="true" name="com.btc.arch.visualstudio.parserfactory">
+   <implementation class="com.btc.arch.visualstudio.VSDependencyParserFactory"/>
+   <service>
+      <provide interface="com.btc.arch.base.dependency.IFileDependencyParserFactory"/>
+   </service>
+</scr:component>

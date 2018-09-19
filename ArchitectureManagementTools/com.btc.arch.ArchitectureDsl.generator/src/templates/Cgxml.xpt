@@ -1,0 +1,218 @@
+«IMPORT com::btc::arch::architectureDsl»
+
+«EXTENSION templates::Queries»
+«EXTENSION templates::Extensions»
+
+«DEFINE main FOR List[ReleaseUnit]-»
+	«EXPAND main FOREACH this-»
+«ENDDEFINE»
+
+«DEFINE main FOR ReleaseUnit»
+	«EXPAND package (this) FOREACH this.packages-»
+«ENDDEFINE»
+
+«DEFINE package (ReleaseUnit releaseUnit) FOR Package»
+	«EXPAND type (releaseUnit, this) FOREACH this.types-»
+«ENDDEFINE»
+
+«DEFINE type (ReleaseUnit releaseUnit, Package package) FOR String»
+	«EXPAND platformSet (releaseUnit, package, this) FOREACH package.platformsets-»
+«ENDDEFINE»
+
+«DEFINE platformSet (ReleaseUnit releaseUnit, Package package, String type) FOR PlatformSet-»
+	«EXPAND cgxml (releaseUnit, package, type) FOREACH this.platforms-»
+«ENDDEFINE»
+
+«DEFINE cgxml (ReleaseUnit releaseUnit, Package package, String type) FOR Platform-»
+«FILE releaseUnit.getCgxmlFilename(package, type, this)-»
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with ArchDslGenerator 0.5 -->
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://olga0822.e-konzern.de/cab-get.xsd">
+  «EXPAND packageInfo(package, type) FOR this-»
+  «EXPAND releaseUnitInfo FOR releaseUnit-»
+  «EXPAND synopsis(package, type) FOR releaseUnit-»
+  «EXPAND description(package) FOR releaseUnit-»
+  «EXPAND installDir(type) FOR releaseUnit-»
+  «EXPAND filesets(releaseUnit, package, type) FOR this-»
+  «EXPAND dependencies(type) FOR package-»
+</package>
+«ENDFILE»
+«ENDDEFINE»
+
+«REM»  START PACKAGE_INFO «ENDREM»
+«DEFINE packageInfo(Package package, String type) FOR Platform-»
+  <name>«package.name»</name>
+  <type>«type»</type>
+  «IF type != "src"-»
+  <platform system="«this.system»" architecture="«this.architecture»" frameworks="«EXPAND frameworks FOREACH this.frameworks SEPARATOR " "-»"/>
+  «ENDIF-»
+«ENDDEFINE»
+
+«DEFINE frameworks FOR Framework-»
+«this.name-» 		
+«ENDDEFINE»
+«REM»  END PACKAGE_INFO «ENDREM»
+
+«REM»  START RELEASE_UNIT_INFO  «ENDREM»
+«DEFINE releaseUnitInfo FOR ReleaseUnit-»
+  <version>«this.version»</version>
+  «IF this.supportEndDate != null-»
+  <support>«this.supportEndDate»</support>
+  «ELSE-»
+  <support>none</support>
+  «ENDIF-»
+  <url>«this.url»</url>
+  <maintainer name="«this.maintainer»" email="«this.mail»"/>
+«ENDDEFINE»
+«REM»  END RELEASE_UNIT_INFO «ENDREM»
+
+«REM»  START SYNOPSIS  «ENDREM»
+«DEFINE synopsis(Package package, String type) FOR ReleaseUnit-»
+  «IF package.synopsis != null-»
+  <synopsis>«package.synopsis»</synopsis>
+  «ELSE-»
+  <synopsis>«this.name» - «type»</synopsis> «REM»TODO: Remove this default«ENDREM»
+  «ENDIF-»
+«ENDDEFINE»
+«REM»  END SYNOPSIS «ENDREM»
+
+«REM»  START DESCRIPTION  «ENDREM»
+«DEFINE description(Package package) FOR ReleaseUnit-»
+  <description>
+    «this.description-»
+    «IF package.description != null-»
+    «package.description-»
+    «ENDIF-»
+  </description>
+«ENDDEFINE»
+«REM»  END DESCRIPTION «ENDREM»
+
+«REM»  START INSTALL_DIR  «ENDREM»
+«DEFINE installDir(String type) FOR ReleaseUnit-»
+  «IF type == "src"-»
+  <install-dir>«this.name.replaceAll("\\.", "/").replaceFirst("/NET", "\\.NET")»</install-dir>
+  «ENDIF-»
+«ENDDEFINE»
+«REM»  END INSTALL_DIR  «ENDREM»
+
+«REM»  START DEPENDENCIES  «ENDREM»
+«DEFINE dependencies (String type) FOR Package-»
+  «IF this.dependencies.size > 0 || (this.additionalBinDependencies!=null && this.additionalBinDependencies.size > 0) || (this.additionalDevDependencies!=null && this.additionalDevDependencies.size > 0) || (this.additionalSrcDependencies!=null && this.additionalSrcDependencies.size > 0) -»
+  <dependencies>
+  	«EXPAND dependencies (type) FOREACH this.dependencies-»
+  	«IF type == "src" && this.additionalSrcDependencies!=null-»
+  		«EXPAND dependencies (type) FOREACH this.additionalSrcDependencies-»
+  	«ELSEIF type == "dev" && this.additionalDevDependencies!=null-»
+  		«EXPAND dependencies (type) FOREACH this.additionalDevDependencies-»
+  	«ELSEIF type == "bin" && this.additionalBinDependencies!=null-»
+  		«EXPAND dependencies (type) FOREACH this.additionalBinDependencies-»
+  	«ENDIF-»
+  </dependencies>
+  «ELSE-»
+  <dependencies/>
+  «ENDIF-»
+«ENDDEFINE»
+
+«REM»TODO: Shorten version to two digits.«ENDREM»
+«REM»<requires name="«this.package»" «IF type==null-»type="${type}"«ELSE»type="«type»"«ENDIF» «IF type!="src"-»«IF platform==null && architecture==null-»platform="${platform}" «ELSE»«IF platform!=null»platform="«platform»"«ENDIF»«IF architecture!=null»architecture="«architecture»"«ENDIF»«ENDIF»«ENDIF»version="«this.version»" channel="«this.channel»"/>«ENDREM»
+«DEFINE dependencies (String type) FOR PackageDependency-»
+    <requires name="«this.package.name»" «EXPAND dependencyType(type) FOR this-» «EXPAND dependencyPlatform(type) FOR this-» version="«this.version»" channel="«this.channel»"/>
+«ENDDEFINE»
+
+«DEFINE dependencyType (String type) FOR PackageDependency-»
+«IF this.type!=null-»type="«this.type-»"«ELSEIF type==null-»type="${type}"«ELSE-»type="«type»"«ENDIF-»
+«ENDDEFINE»
+
+«DEFINE dependencyPlatform (String type) FOR PackageDependency-»
+«IF (this.type==null&&type!="src") || (this.type!=null&&this.type!="src")-»«IF platform==null-»platform="${platform}"«ELSE-»platform="«platform»"«ENDIF-»«ENDIF-»
+«ENDDEFINE»
+«REM»  END DEPENDENCIES  «ENDREM»
+
+«REM»  START FILESETS  «ENDREM»
+«REM» Should includeemptydirs be set or not? «ENDREM»
+«DEFINE filesets(ReleaseUnit releaseUnit, Package package, String type) FOR Platform-»
+	«IF type == "bin"-»«EXPAND filesetBin(this, releaseUnit, package, type) FOREACH package.filesets-»
+	«ELSEIF type == "dev"-»«EXPAND filesetDev(this, releaseUnit) FOREACH package.filesets-»
+ 	«ELSEIF type == "src"-»«EXPAND filesetSrc FOR this-»
+ 	«ENDIF-»
+«ENDDEFINE»
+
+«DEFINE filesetBin(Platform platform, ReleaseUnit releaseUnit, Package package, String type) FOR Fileset-»
+	«EXPAND filesetBinStandard(platform, releaseUnit, package, type) FOR this-»
+	«EXPAND filesetBinAdditional(platform, releaseUnit, package, type, this) FOREACH this.additionalBinDirectories-»
+«ENDDEFINE» 
+
+«REM»TODO: Try to merge filesetBinStandard and filesetBinAdditional«ENDREM»
+«DEFINE filesetBinStandard(Platform platform, ReleaseUnit releaseUnit, Package package, String type) FOR Fileset-»
+  <fileset dir="«EXPAND filesetDir(this.exceptionalDirectories) FOR platform-»" prefix="«EXPAND setPrefixValueOrDefault (this.exceptionalDirectories.getPrefix(platform.name)) FOR platform-»">«REM»TODO: Make prefix configurable«ENDREM»
+  «EXPAND filesetBinIncludesExcludes(platform, releaseUnit, package, type) FOR this-»
+  </fileset>
+«ENDDEFINE»
+
+«DEFINE filesetBinAdditional(Platform platform, ReleaseUnit releaseUnit, Package package, String type, Fileset fileset) FOR DirectoryReference-»
+  «IF this.containsPlatformEntry(platform.name)-»
+  <fileset dir="«this.directory»" prefix="«EXPAND setPrefixValueOrDefault(this.prefix) FOR platform-»">«REM»TODO: Make prefix configurable«ENDREM»
+  «EXPAND filesetBinIncludesExcludes(platform, releaseUnit, package, type) FOR fileset-»
+  </fileset>	
+  «ENDIF-»
+«ENDDEFINE»
+
+«REM»The Platfrom is only used to ensure that the DEFINE is also called if the prefix string is null.«ENDREM»
+«DEFINE setPrefixValueOrDefault (String prefix) FOR Platform-»
+«IF prefix!=null && prefix.length>0-»«prefix-»
+«ELSE-»${architecture}/Release/«ENDIF-»
+«ENDDEFINE»
+
+«DEFINE filesetBinIncludesExcludes(Platform platform, ReleaseUnit releaseUnit, Package package, String type) FOR Fileset-»
+  «IF this.includeDefaultFiles-»
+  	«EXPAND defaultFilesetBin (platform) FOR this-»
+  «ENDIF-»
+  «EXPAND includeExclude ("include") FOREACH this.includeFiles-»
+  «EXPAND includeExclude ("exclude") FOREACH this.excludeFiles-»
+  «IF this.excludeFilesFromOtherPckages-»	
+  	«EXPAND excludeFilesFromOtherPackages(package) FOREACH releaseUnit.packages-»
+  «ENDIF-»
+«ENDDEFINE»
+
+«DEFINE filesetDir (List[DirectoryReference] exceptionalDirectories) FOR Platform-»
+«IF exceptionalDirectories.containsPlatformEntry(this.name)-»«exceptionalDirectories.getDirectory(this.name)-»
+«ELSE-»dst/dst/Release«ENDIF-»
+«ENDDEFINE»
+
+«DEFINE excludeFilesFromOtherPackages(Package currentPackage) FOR Package-»
+	«IF !this.name.matches(currentPackage.name)-»
+		«EXPAND excludeFiles FOREACH this.filesets-»
+	«ENDIF-»
+«ENDDEFINE»
+
+«DEFINE excludeFiles FOR Fileset-»
+	«EXPAND includeExclude ("exclude") FOREACH this.includeFiles-»
+«ENDDEFINE»
+
+«DEFINE includeExclude (String includeExclude) FOR String-»
+    <«includeExclude-» name="«this-»"/>
+«ENDDEFINE»
+
+«DEFINE defaultFilesetBin (Platform platform) FOR Fileset-»
+    «EXPAND includeExclude ("include") FOR "${name}*.exe"-»
+    «EXPAND includeExclude ("include") FOR "${name}*.dll"-»
+    «EXPAND includeExclude ("include") FOR "${name}*.pdb"-»
+    «EXPAND includeExclude ("include") FOR "${name}*.xml"-»
+«ENDDEFINE»
+
+«DEFINE filesetDev(Platform platform, ReleaseUnit releaseUnit) FOR Fileset-»
+  <fileset prefix="include/«releaseUnit.name.replaceAll("\\.", "/")»/" includeemptydirs="true">
+    <include name="**/include/**/*.h"/>
+  </fileset>
+  <fileset dir="«EXPAND filesetDir(this.exceptionalDirectories) FOR platform-»" prefix="$lib/{architecture}/Release/">
+    <include name="${name}*.lib"/>
+    <include name="${name}*.xml"/>
+  </fileset>
+«ENDDEFINE»
+
+«DEFINE filesetSrc FOR Platform-»
+  <fileset includeemptydirs="true">
+    <include name="**"/>
+  </fileset>
+«ENDDEFINE»
+«REM»  END FILESETS  «ENDREM»

@@ -1,0 +1,9 @@
+Module BTC.CAB.Commons.Core (
+ 	Type = Framework
+ 	Language = C++
+ 	Group = BTC.CAB
+)
+Module NoDeps (
+ 	Type = Framework
+ 	Language = C++
+)

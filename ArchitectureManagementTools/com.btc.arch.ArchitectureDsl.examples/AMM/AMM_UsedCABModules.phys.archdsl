@@ -1,0 +1,381 @@
+//Domain ProductDevelopment (
+//	References = ProductDevelopment
+//)
+//
+//Domain EnergyProcessManagement (
+//	Subdomains = TimeSeriesManagement
+//	References = ProductDevelopment
+//)
+//
+Domain TimeSeriesManagement(
+)
+
+//ModuleGroup BTC.CAB (
+//	Domain = ProductDevelopment
+//)
+//
+//ModuleGroup BTC.CAB.Commons (
+//	Domain = ProductDevelopment
+//)
+//
+//ModuleGroup BTC.CAB.TimeSeries (
+//	Domain = TimeSeriesManagement
+//)
+//
+//	Module BTC.CAB.Commons (
+//	 	Type = Framework
+//	 	Language = C++
+//	)
+//	Module BTC.CAB.TimeSeries.API (
+//	 	Type = Interface
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.Commons
+//	)
+//	Module BTC.CAB.RTB.Domains.SmartMeter.APINET (
+//	 	Type = Interface
+//	 	Language = C#
+//	 	Uses =
+//	 	BTC.CAB.RTB.Common.NET
+//	 	BTC.CAB.Commons.Values.NET
+//	)
+//	Module BTC.CAB.Commons.Eventing.API (
+//	 	Type = Interface
+//	 	Language = C++
+//	)
+//	Module BTC.CAB.Commons.Eventing.API.NET (
+//	 	Type = Interface
+//	 	Language = C#
+//	 	Uses =
+//	 	BTC.CAB.Commons.Core.NET.Bridge
+//	 	BTC.CAB.Commons.Eventing.API
+//	 	BTC.CAB.Commons.Core.NET.WD
+//	)
+//	Module BTC.CAB.RTB.Common.NET (
+//	 	Type = Framework
+//	 	Language = C#
+//	 	Uses =
+//	 	BTC.CAB.Commons.Eventing.API.NET
+//	 	BTC.CAB.Commons.Core.NET.WD
+//	)
+//	Module BTC.CAB.Commons.Values (
+//	 	Type = Framework
+//	 	Language = C++
+//	)
+//	Module BTC.CAB.Commons.Core.NET.WD (
+//	 	Type = Framework
+//	 	Language = C#
+//	)
+//	Module BTC.CAB.Commons.Core.NET.Bridge (
+//	 	Type = Framework
+//	 	Language = C#
+//	 	Uses =
+//	 	BTC.CAB.Commons.Core.NET.WD
+//	)
+//	Module BTC.CAB.Commons.Values.NET (
+//	 	Type = Framework
+//	 	Language = C#
+//	 	Uses =
+//	 	BTC.CAB.Commons.Values
+//	 	BTC.CAB.Commons.Core.NET.Bridge
+//	 	BTC.CAB.Commons.Core.NET.WD
+//	)
+//	Module BTC.CAB.Utilities (
+//	 	Type = Framework
+//	 	Language = C++
+//	)
+//	Module BTC.CAB.Env (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.Internationalization
+//	 	BTC.CAB.Utilities
+//	)
+//	Module BTC.CAB.DataBase (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.Utilities
+//	 	BTC.CAB.Env
+//	)
+//	Module BTC.CAB.Internationalization (
+//	 	Type = Framework
+//	 	Language = C++
+//	)
+//	Module BTC.CAB.Commons.Log4NETAdapter (
+//	 	Type = Framework
+//	 	Language = C#
+//	 	Uses =
+//	 	BTC.CAB.Commons.Core.NET.WD
+//	)
+//	Module BTC.CAB.Commons.CoreExtras (
+//	 	Type = Framework
+//	 	Language = C++
+//	)
+//	Module BTC.CAB.Commons.Eventing.CallerAPI (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.Commons.Eventing.API
+//	)
+//	Module BTC.CAB.Commons.Eventing.Impl (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.Commons.Eventing.API
+//	 	BTC.CAB.Commons.Eventing.CallerAPI
+//	)
+//	Module BTC.CAB.RTB.Common.CPP (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.Commons.CoreExtras
+//	 	BTC.CAB.Commons.Eventing.API
+//	)
+//	Module BTC.CAB.RTB.API (
+//	 	Type = Interface
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.Commons.Values
+//	 	BTC.CAB.Commons.CoreExtras
+//	 	BTC.CAB.Commons.Eventing.API
+//	 	BTC.CAB.Commons.Eventing.CallerAPI
+//	 	BTC.CAB.RTB.Common.CPP
+//	)
+//	Module BTC.CAB.RTB.API.NET (
+//	 	Type = Interface
+//	 	Language = C#
+//	 	Uses =
+//	 	BTC.CAB.RTB.Common.NET
+//	 	BTC.CAB.Commons.Values.NET
+//	)
+//	Module BTC.CAB.RTB.NETWrapper (
+//	 	Type = Framework
+//	 	Language = C#
+//	 	Uses =
+//	 	BTC.CAB.Commons.CoreExtras
+//	 	BTC.CAB.Commons.Eventing.Impl
+//	 	BTC.CAB.RTB.Common.CPP
+//	 	BTC.CAB.RTB.API
+//	 	BTC.CAB.Commons.Core.NET.Bridge
+//	 	BTC.CAB.Commons.Values
+//	 	BTC.CAB.Commons.Eventing.API
+//	 	BTC.CAB.Commons.Eventing.CallerAPI
+//	 	BTC.CAB.Commons.Core.NET.WD
+//	 	BTC.CAB.Commons.Eventing.API.NET
+//	 	BTC.CAB.Commons.Values.NET
+//	 	BTC.CAB.RTB.API.NET
+//	 	BTC.CAB.RTB.Common.NET
+//	)
+//	Module BTC.CAB.RTB.Domains.SmartMeter.FromRTB.NET (
+//	 	Type = Framework
+//	 	Language = C#
+//	 	Uses =
+//	 	BTC.CAB.RTB.Domains.SmartMeter.APINET
+//	 	BTC.CAB.Commons.Values.NET
+//	 	BTC.CAB.RTB.API.NET
+//	 	BTC.CAB.RTB.Common.NET
+//	 	BTC.CAB.Commons.Core.NET.WD
+//	 	BTC.CAB.Commons.Eventing.API.NET
+//	)
+//	
+//	Module BTC.CAB.AsyncCommunication.API (
+//	 	Type = Interface
+//	 	Language = C++
+//	)
+//	Module BTC.CAB.AsyncCommunication.Socket (
+//	 	Type = Framework
+//	 	Language = C++
+//	)
+//	Module BTC.CAB.AsyncCommunication.TCP (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.AsyncCommunication.API
+//	 	BTC.CAB.AsyncCommunication.Socket
+//	)
+//	Module BTC.CAB.AsyncCommunication.UDP (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.AsyncCommunication.API
+//	 	BTC.CAB.AsyncCommunication.Socket
+//	)
+//	Module BTC.CAB.Commons.CoreYacl.NET (
+//	 	Type = Framework
+//	 	Language = C#
+//	 	Uses =
+//	 	BTC.CAB.Commons.Core.NET.Bridge
+//	 	BTC.CAB.Commons.Core.NET.WD
+//	)
+//	Module BTC.CAB.EMSServices.API (
+//	 	Type = Interface
+//	 	Language = C++
+//	)
+//	Module BTC.CAB.EMSServices.Channels.API (
+//	 	Type = Interface
+//	 	Language = C++
+//	)
+//	Module BTC.CAB.EMSServices.Channels.NamedPipes (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.EMSServices.Channels.API
+//	)
+//	Module BTC.CAB.EMSServices.Channels.TcpIp (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.EMSServices.Channels.API
+//	)
+//	Module BTC.CAB.EMSServices.Context (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.EMSServices.API
+//	)
+//	Module BTC.CAB.EMSServices.Streams (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.Commons
+//	)
+//	Module BTC.CAB.EMSServices.Interop (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.EMSServices.Channels.API
+//	 	BTC.CAB.EMSServices.Streams
+//	)
+//	Module BTC.CAB.EMSServices.Interop.Test (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.EMSServices.Interop
+//	 	BTC.CAB.EMSServices.Streams
+//	)
+//	Module BTC.CAB.EMSServices.ListenerService (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.EMSServices.API
+//	 	BTC.CAB.EMSServices.Channels.API
+//	)
+//	Module BTC.CAB.EMSServices.SpringServices (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.EMSServices.API
+//	 	BTC.CAB.EMSServices.Context
+//	)
+//	Module BTC.CAB.Encoding.SML.General (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.Commons.CoreExtras
+//	 	BTC.CAB.Commons.Values
+//	)
+//	Module BTC.CAB.RTB.Domains.SmartMeter.API (
+//	 	Type = Interface
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.RTB.Common.CPP
+//	)
+//	Module BTC.CAB.RTB.Domains.SmartMeter.EWEBox (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.Commons.Values
+//	 	BTC.CAB.RTB.Common.CPP
+//	 	BTC.CAB.Encoding.SML.General
+//	 	BTC.CAB.AsyncCommunication.API
+//	 	BTC.CAB.RTB.Domains.SmartMeter.API
+//	)
+//	Module BTC.CAB.RTB.Domains.SmartMeter.QNEMSpyDER (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.Commons.Values
+//	 	BTC.CAB.RTB.Common.CPP
+//	 	BTC.CAB.Encoding.SML.General
+//	 	BTC.CAB.AsyncCommunication.API
+//	 	BTC.CAB.RTB.Domains.SmartMeter.API
+//	)
+//	Module BTC.CAB.RTB.Domains.SmartMeter.ToRTB (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.Commons.Values
+//	 	BTC.CAB.Commons.Eventing.API
+//	 	BTC.CAB.RTB.Common.CPP
+//	 	BTC.CAB.RTB.API
+//	 	BTC.CAB.RTB.Domains.SmartMeter.API
+//	)
+//	Module BTC.CAB.RTB.Driver.Base (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.Commons.Values
+//	 	BTC.CAB.RTB.Common.CPP
+//	 	BTC.CAB.RTB.API
+//	)
+//	Module BTC.CAB.RTB.Driver.EWEBox (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.RTB.Common.CPP
+//	 	BTC.CAB.AsyncCommunication.API
+//	 	BTC.CAB.RTB.Domains.SmartMeter.ToRTB
+//	 	BTC.CAB.RTB.Domains.SmartMeter.EWEBox
+//	)
+//	Module BTC.CAB.RTB.Driver.Multiplexer (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.Commons.Values
+//	 	BTC.CAB.Commons.Eventing.API
+//	 	BTC.CAB.RTB.Common.CPP
+//	 	BTC.CAB.RTB.API
+//	 	BTC.CAB.RTB.Driver.Base
+//	)
+//	Module BTC.CAB.RTB.Driver.QNEMSpyDER (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.RTB.Common.CPP
+//	 	BTC.CAB.AsyncCommunication.API
+//	 	BTC.CAB.RTB.Domains.SmartMeter.ToRTB
+//	 	BTC.CAB.RTB.Domains.SmartMeter.QNEMSpyDER
+//	)
+//	Module BTC.CAB.TimeSeries.Interop (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.EMSServices.Interop
+//	 	BTC.CAB.TimeSeries.API
+//	 	BTC.CAB.EMSServices.Streams
+//	 	BTC.CAB.Commons
+//	)
+//	Module BTC.CAB.TimeSeries.MemoryProvider (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.TimeSeries.API
+//	)
+//	Module BTC.CAB.TimeSeries.SQLProvider (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.TimeSeries.API
+//	 	BTC.CAB.EMSServices.Interop
+//	 	BTC.CAB.EMSServices.Streams
+//	 	BTC.CAB.Commons
+//	 	BTC.CAB.TimeSeries.Interop
+//	)
+//	Module BTC.CAB.TimeSeries.SQLProvider.MsSql (
+//	 	Type = Framework
+//	 	Language = C++
+//	 	Uses =
+//	 	BTC.CAB.TimeSeries.SQLProvider
+//	 	BTC.CAB.TimeSeries.API
+//	)

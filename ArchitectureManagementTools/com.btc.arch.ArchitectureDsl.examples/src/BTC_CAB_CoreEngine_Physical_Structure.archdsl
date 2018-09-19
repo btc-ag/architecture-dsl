@@ -1,0 +1,30 @@
+ModuleGroup BTC.CAB.CoreEngine ( 
+	Maintainer = "Andreas Meyer"
+	Domain = ProductDevelopment
+)
+
+Module BTC.CAB.CoreEngine.Common (
+  Type = Framework
+  Language = C#
+)
+Module BTC.CAB.CoreEngine.Common.Test (
+  Type = ImplementationTest
+  Language = C#
+)
+Module BTC.CAB.CoreEngine.Model.Api (
+  Type = Interface
+  Language = C#
+)
+
+Module BTC.CAB.CoreEngine.Model.Impl (
+  Type = Implementation
+  Language = C#
+  ImplementedModules = BTC.CAB.CoreEngine.Model.Api
+  UsedModules = BTC.CAB.CoreEngine.Common
+)
+Module BTC.CAB.CoreEngine.Model.Test (
+  Type = InterfaceTest
+  Language = C#
+  TestedModule = BTC.CAB.CoreEngine.Model.Api  
+  UsedModules = BTC.CAB.CoreEngine.Common BTC.CAB.CoreEngine.Common.Test
+)

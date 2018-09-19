@@ -1,0 +1,151 @@
+ModuleGroup BTC.CAB (
+	Domain = ProductDevelopment
+)
+
+Module BTC.CAB.AsyncCommunication.API (
+	Type = Interface
+	Language = C++
+	UsedModules =  
+		BTC.CAB.Commons.Core
+		BTC.CAB.Commons.CoreExtras
+		BTC.CAB.Commons.Dom
+)
+
+Module BTC.CAB.DataBase (
+ 	Type = Framework
+ 	Language = C++
+ 	UsedModules =
+	 	BTC.CAB.Utilities
+	 	BTC.CAB.Env
+)
+
+Module BTC.CAB.EMSServices.API (
+ 	Type = Interface
+ 	Language = C++
+)
+
+Module BTC.CAB.EMSServices.Channels.API (
+ 	Type = Interface
+ 	Language = C++
+)
+
+Module BTC.CAB.EMSServices.Channels.NamedPipes (
+ 	Type = Framework
+ 	Language = C++
+ 	UsedModules =
+	 	BTC.CAB.EMSServices.Channels.API
+)
+
+Module BTC.CAB.EMSServices.Channels.TcpIp (
+ 	Type = Framework
+ 	Language = C++
+ 	UsedModules =
+	 	BTC.CAB.EMSServices.Channels.API
+)
+
+Module BTC.CAB.EMSServices.Context (
+ 	Type = Framework
+ 	Language = C++
+ 	UsedModules =
+	 	BTC.CAB.EMSServices.API
+)
+
+Module BTC.CAB.EMSServices.Streams (
+ 	Type = Framework
+ 	Language = C++
+ 	UsedModules =
+	 	BTC.CAB.Commons.Core
+)
+
+Module BTC.CAB.EMSServices.Interop (
+ 	Type = Framework
+ 	Language = C++
+ 	UsedModules =
+	 	BTC.CAB.EMSServices.Channels.API
+	 	BTC.CAB.EMSServices.Streams
+)
+
+Module BTC.CAB.EMSServices.Interop.Test (
+ 	Type = Framework
+ 	Language = C++
+ 	UsedModules =
+	 	BTC.CAB.EMSServices.Interop
+	 	BTC.CAB.EMSServices.Streams
+)
+
+Module BTC.CAB.EMSServices.ListenerService (
+ 	Type = Framework
+ 	Language = C++
+ 	UsedModules =
+	 	BTC.CAB.EMSServices.API
+	 	BTC.CAB.EMSServices.Channels.API
+)
+
+Module BTC.CAB.EMSServices.SpringServices (
+ 	Type = Framework
+ 	Language = C++
+ 	UsedModules =
+	 	BTC.CAB.EMSServices.API
+	 	BTC.CAB.EMSServices.Context
+)
+
+Module BTC.CAB.Env (
+ 	Type = Framework
+ 	Language = C++
+ 	UsedModules =
+	 	BTC.CAB.Internationalization
+	 	BTC.CAB.Utilities
+)
+
+Module BTC.CAB.Internationalization (
+ 	Type = Framework
+ 	Language = C++
+)
+
+Module BTC.CAB.TimeSeries.API (
+ 	Type = Interface
+	Language = C++
+ 	UsedModules =
+	 	BTC.CAB.Commons.Core
+)
+
+Module BTC.CAB.TimeSeries.Interop (
+ 	Type = Framework
+ 	Language = C++
+ 	UsedModules =
+	 	BTC.CAB.EMSServices.Interop
+	 	BTC.CAB.TimeSeries.API
+	 	BTC.CAB.EMSServices.Streams
+	 	BTC.CAB.Commons.Core
+)
+
+Module BTC.CAB.TimeSeries.MemoryProvider (
+ 	Type = Framework
+ 	Language = C++
+ 	UsedModules =
+	 	BTC.CAB.TimeSeries.API
+)
+	
+Module BTC.CAB.TimeSeries.SQLProvider (
+ 	Type = Framework
+ 	Language = C++
+ 	UsedModules =
+	 	BTC.CAB.TimeSeries.API
+	 	BTC.CAB.EMSServices.Interop
+	 	BTC.CAB.EMSServices.Streams
+	 	BTC.CAB.Commons.Core
+	 	BTC.CAB.TimeSeries.Interop
+)
+	
+Module BTC.CAB.TimeSeries.SQLProvider.MsSql (
+ 	Type = Framework
+ 	Language = C++
+ 	UsedModules =
+	 	BTC.CAB.TimeSeries.SQLProvider
+	 	BTC.CAB.TimeSeries.API
+)
+	
+Module BTC.CAB.Utilities (
+ 	Type = Framework
+	Language = C++
+)

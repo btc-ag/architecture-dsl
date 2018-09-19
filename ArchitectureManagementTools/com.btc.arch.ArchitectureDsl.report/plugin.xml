@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.btc.arch.ArchitectureDsl.generator.archdsl_generator">
+      <generator
+            class="com.btc.arch.architecturedsl.report.ValidationReportGenerator"
+            description="Generates a HTML validation report"
+            symbolic_name="html-validation">
+      </generator>
+   </extension>
+   <extension
+         point="com.btc.commons.emf.diagnostics.diagnostics">
+      <diagnostic
+            default-severity="ERROR"
+            description="Some problem supplied by the dependency parser"
+            id="com.btc.arch.ArchitectureDsl.report.dependencyParseProblem"
+            subject-type="EObject">
+      </diagnostic>
+   </extension>
+   <extension
+         point="com.btc.commons.emf.diagnostics.diagnostics">
+      <diagnostic
+            default-severity="WARNING"
+            description="Required information for importing module dependencies is missing or inconsistent"
+            id="com.btc.arch.architectureDsl.report.moduleImport"
+            subject-type="Module">
+      </diagnostic>
+   </extension>
+
+</plugin>

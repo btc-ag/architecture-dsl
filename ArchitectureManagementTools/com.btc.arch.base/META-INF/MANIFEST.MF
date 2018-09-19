@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Architecture Management Domain-specific basic concepts
+Bundle-SymbolicName: com.btc.arch.base;singleton:=true
+Bundle-Version: 0.12.0
+Bundle-Vendor: BTC AG
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: com.btc.arch.base,
+ com.btc.arch.base.dependency;uses:="com.btc.commons.java"
+Require-Bundle: com.btc.commons.java;bundle-version="0.8.0",
+ org.junit4;resolution:=optional,
+ org.eclipse.core.runtime;bundle-version="3.6.0"
+Import-Package: org.apache.log4j;version="1.2.15"
+Service-Component: component.xml
+Bundle-Activator: com.btc.arch.base.dependency.DependencySourceServiceFactoryBundle

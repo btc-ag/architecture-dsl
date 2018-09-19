@@ -1,0 +1,20 @@
+Test BTC.CAB.Encoding.SML.Test (
+  TestModule = BTC.CAB.Encoding.SML.Test
+  TestExecutionSpecification = "tests.xml"
+  TestExecutionType = BTCUnitTester
+  TestUnit = BTC.CAB.Encoding.SML.General
+)
+
+Test BTC.CAB.Encoding.ASN1.APITest (
+  TestModule = BTC.CAB.Encoding.ASN1.Test
+  TestExecutionSpecification = "testsASN1.API.txt"
+  TestExecutionType = BTCUnitTester
+  TestUnit = BTC.CAB.Encoding.ASN1.API
+)
+
+Test BTC.CAB.Encoding.ASN1.SpecParserTest (
+  TestModule = BTC.CAB.Encoding.ASN1.Test
+  TestExecutionSpecification = "testsASN1.SpecParser.txt"
+  TestExecutionType = BTCUnitTester
+  TestUnit = BTC.CAB.Encoding.ASN1.SpecParser
+)

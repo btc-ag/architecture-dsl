@@ -1,0 +1,37 @@
+import architectureDsl;
+import ecore;
+
+create Set[Module] allDependencies(Module module):
+	this.addAll(module.usedModules) -> 
+	this.addAll(module.implementedModules) ->
+	this.addAll(module.testedModule);	
+	
+create Set[Module] allTransitiveDependencies(Module module):
+	this.addAll(module.allDependencies()) ->
+	this.addAll(module.allDependencies().allTransitiveDependencies());
+
+// TODO check for overridden module group
+ModuleGroup effectiveModuleGroup(Module module):
+	module.eRootContainer.eAllContents.typeSelect(ModuleGroup).select(moduleGroup|module.name.startsWith(moduleGroup.name)).sortBy(e|e.name.length).last();
+
+// TODO consider subdomains!
+create Set[Domain] effectiveDomains(Module module):
+	module.effectiveModuleGroup() == null ? true : this.add(module.effectiveModuleGroup().domain);
+	
+create Set[String] effectiveDomainNames(Module module):
+	this.addAll(module.effectiveDomains().collect(e|e.name));
+	
+Boolean mayReference(Module from, Module to):
+	to.effectiveDomains().exists(e|from.effectiveDomains().contains(e));
+	
+//Set[Domain] allowedTargetDomains(Module module):
+//	module.effectiveDomains().allowedDependenciesTo.toSet();
+
+//Set[String] allowedTargetDomainNames(Module module):
+//	module.allowedTargetDomains().name;
+
+create Set[String] illegalDependencyNames(Module module):
+	this.addAll(module.allDependencies().select(e|!module.mayReference(e)).collect(e|e.name));
+
+Boolean uniqueDomain(Module module):
+	module.effectiveDomains().size <= 1;

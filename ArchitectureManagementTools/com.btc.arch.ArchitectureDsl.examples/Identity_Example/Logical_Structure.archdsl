@@ -1,0 +1,69 @@
+StandardInterface Authentication (
+	Domain = Authentication
+	Modules = BTC.CAB.Identity.Authentication.API
+)
+
+StandardInterface Remote_Authentication (
+	Domain = Authentication
+	Modules = BTC.CAB.Identity.AuthenticationRemote.API
+)
+
+StandardInterface Authorisation (
+	Domain = Authentication
+	Modules = BTC.CAB.Identity.Authorisation.API
+)
+
+StandardInterface LDAP (
+	Domain = Authentication
+	Modules = BTC.CAB.Identity.Authentication.LDAP.API
+)
+
+StandardInterface Data_Access (
+	Domain = Authentication
+	Modules = BTC.CAB.DataAccess.API
+)
+
+Component LDAP_Authentication (
+	Domain = Authentication
+	ProvidedInterfaces = Authentication
+	RequiredInterfaces = LDAP
+	Modules = 
+		BTC.CAB.Identity.Authentication.LDAP.Impl
+		BTC.CAB.Identity.Authentication.LDAP.ImplCore
+		BTC.CAB.Identity.Authentication.Commons
+)
+
+Component File_Authentication (
+	Domain = Authentication
+	ProvidedInterfaces = Authentication
+	Modules = 
+		BTC.CAB.Identity.Authentication.File.Impl
+		BTC.CAB.Identity.Authentication.Commons
+)
+
+Component DB_Authentication (
+	Domain = Authentication
+	ProvidedInterfaces = Authentication
+	RequiredInterfaces = Data_Access
+	Modules =
+		BTC.CAB.Identity.Authentication.DB.Impl
+		BTC.CAB.Identity.Authentication.Commons
+)
+
+Component Oracle_Driver (
+	Domain = Authentication
+	ProvidedInterfaces = Data_Access
+	Modules = 
+)
+
+Component Login_Service (
+	Domain = Authentication
+	ProvidedInterfaces = Remote_Authentication
+	Modules =
+)
+
+Component Client_Consumer (
+	Domain = Identity
+	RequiredInterfaces = Authentication
+	Modules =
+)

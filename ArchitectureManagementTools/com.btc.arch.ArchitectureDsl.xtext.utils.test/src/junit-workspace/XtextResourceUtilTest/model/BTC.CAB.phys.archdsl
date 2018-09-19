@@ -1,0 +1,10 @@
+Domain ProductDevelopment (
+)
+
+ModuleGroup BTC.CAB (
+	Domain = ProductDevelopment
+)
+
+ModuleGroup Kema (
+	Domain = ProductDevelopment
+)

@@ -1,0 +1,27 @@
+Folgende Konfiguration sollte unter Windows XP funktionieren.
+ 
+* Java JDK 1.6 (!)
+* Eclipse Helios Modeling 3.6.2: http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/helios/SR2/eclipse-modeling-helios-SR2-incubation-win32.zip
+** Wenn JDK 1.7 vorhanden ist, Eclipse zwingen das 1.6er zu benutzen:
+Die Datei eclipse.ini direkt im Eclipse-Hauptverzeichnis öffnen und folgende Zeilen direkt nach openFile eintragen (Der Java-Pfad muss dabei natürlich einem lokal gültigen Pfad entsprechen):
+-vm
+C:\Program Files (x86)\Java\jdk1.6.0_22\bin
+
+
+* Eclipse starten
+* Help / Install New Software (Helios - http://download.eclipse.org/releases/helios/)
+** Xtext 1.0.2
+** BIRT Framework (Für die Report-Erzeugung)
+** Graphical Editing Framework Zest Visualization Toolkit SDK (Für Graph-Visualisierung in der GUI)
+** Optional: eGit (Help / Eclipse Marketplace)
+ 
+* Plugins aus dem Repository in den dropins-Ordner der Eclipse-Instanz kopieren:
+** external/org.apache.commons-cli-1.2.jar
+** org.apache.commons-collections-3.2.1.jar
+
+
+Weitere Konfiguration von Eclipse:
+* Unter Preferences/Java/Editor/Save Actions sollten die folgenden Haken gesetzt sein:
+** Perform the selected actions on save
+** Format source code / Format all lines
+** Additional Actions

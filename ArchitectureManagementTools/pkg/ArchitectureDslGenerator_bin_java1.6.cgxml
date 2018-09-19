@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://olga0822.e-konzern.de/cab-get.xsd">
+  <type>bin</type>
+  <platform frameworks="java1.6"/>
+  <synopsis>ArchitectureDslGenerator</synopsis>
+  <description>
+    This package contains the binaries
+  </description>
+  <fileset dir="ArchitectureDslGenerator_build/I.ArchitectureDslGenerator">
+    <include name="*.zip"/>
+  </fileset>
+</package>

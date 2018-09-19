@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{33C1FC24-6593-42DB-8CAA-8D1C99D6FC51}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BTC.AMM.AmmClient</RootNamespace>
+    <AssemblyName>BTC.AMM.AmmClient</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>BTC.AMM.AmmClient.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>BTC.AMM.AmmClient.App</SilverlightAppEntry>
+    <TestPageFileName>amm.html</TestPageFileName>
+    <CreateTestPage>true</CreateTestPage>
+    <ValidateXaml>true</ValidateXaml>
+    <EnableOutOfBrowser>false</EnableOutOfBrowser>
+    <OutOfBrowserSettingsFile>Properties\OutOfBrowserSettings.xml</OutOfBrowserSettingsFile>
+    <UsePlatformExtensions>false</UsePlatformExtensions>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <LinkedServerProject>
+    </LinkedServerProject>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\..\..\VS\BtcAmmRulesSl.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\..\..\VS\BtcAmmRulesSl.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>BTC.CAB.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BTC.AMM.AppFrame.SlControls">
+      <HintPath>..\..\..\lib\AmmFramework\AppFrame\BTC.AMM.AppFrame.SlControls.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations, Version=2.0.5.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL" />
+    <Reference Include="System.Runtime.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BTC.CAB.snk" />
+    <None Include="Properties\AppManifest.xml" />
+    <Content Include="ServiceReferences.ClientConfig">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\I18NRes\SlGui\BTC.AMM.I18NRes.SlGui.csproj">
+      <Project>{BC1D3C4A-1CA4-4417-8DA1-A8D2ECE0CEC6}</Project>
+      <Name>BTC.AMM.I18NRes.SlGui</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Analysis\Documents\BTC.AMM.Client.Analysis.Documents.csproj">
+      <Project>{13BD5057-59C0-46DB-9D52-E51161DF3A8E}</Project>
+      <Name>BTC.AMM.Client.Analysis.Documents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Analysis\Views\BTC.AMM.Client.Analysis.Views.csproj">
+      <Project>{CC86FD08-928D-457D-8DD6-743E8FACFE96}</Project>
+      <Name>BTC.AMM.Client.Analysis.Views</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Administration\Documents\BTC.AMM.Client.Administration.Documents.csproj">
+      <Project>{D65971AD-1BEC-4B17-A934-F7BF5E60E7EC}</Project>
+      <Name>BTC.AMM.Client.Administration.Documents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Administration\Views\BTC.AMM.Client.Administration.Views.csproj">
+      <Project>{B5AB50AD-A69B-4476-8E4D-1D7488843CA5}</Project>
+      <Name>BTC.AMM.Client.Administration.Views</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppFrame\AppFrame\BTC.AMM.AppFrame.AppFrame.csproj">
+      <Project>{F0A0EDF5-2C4D-4429-9D37-E71236CB282C}</Project>
+      <Name>BTC.AMM.AppFrame.AppFrame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeviceManagement\Documents\BTC.AMM.Client.DeviceManagement.Documents.csproj">
+      <Project>{9536D2EC-DF0B-4500-AF2C-A4F12BF53797}</Project>
+      <Name>BTC.AMM.Client.DeviceManagement.Documents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeviceManagement\Views\BTC.AMM.Client.DeviceManagement.Views.csproj">
+      <Project>{4C377AE1-7753-4593-BE94-1D82DA701532}</Project>
+      <Name>BTC.AMM.Client.DeviceManagement.Views</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Processes\Documents\BTC.AMM.Client.Processes.Documents.csproj">
+      <Project>{10682994-3BC6-4A13-B70F-7E291E09EE6B}</Project>
+      <Name>BTC.AMM.Client.Processes.Documents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Processes\Views\BTC.AMM.Client.Processes.Views.csproj">
+      <Project>{393EDA09-6D11-4511-AC04-5A0070C112A3}</Project>
+      <Name>BTC.AMM.Client.Processes.Views</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RuleEngine\Documents\BTC.AMM.Client.RuleEngine.Documents.csproj">
+      <Project>{16665D6C-F027-401E-9CE1-9C5E185FCA50}</Project>
+      <Name>BTC.AMM.Client.RuleEngine.Documents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RuleEngine\Views\BTC.AMM.Client.RuleEngine.Views.csproj">
+      <Project>{4BD9F67F-C43F-4D3D-A7B1-655275C9BBA1}</Project>
+      <Name>BTC.AMM.Client.RuleEngine.Views</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TariffManagement\Documents\BTC.AMM.Client.TariffManagement.Documents.csproj">
+      <Project>{E20D03C4-0841-4941-8AD9-9945B30BF354}</Project>
+      <Name>BTC.AMM.Client.TariffManagement.Documents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TariffManagement\Views\BTC.AMM.Client.TariffManagement.Views.csproj">
+      <Project>{721D684B-E49C-4DBE-93E8-A74DF0C698E6}</Project>
+      <Name>BTC.AMM.Client.TariffManagement.Views</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tasks\Documents\BTC.AMM.Client.Tasks.Documents.csproj">
+      <Project>{94603AFB-A3AC-4C48-B4A0-F79AC3648DE2}</Project>
+      <Name>BTC.AMM.Client.Tasks.Documents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tasks\Views\BTC.AMM.Client.Tasks.Views.csproj">
+      <Project>{EC3D0CB8-F9F9-4F10-BC23-C2A6E498836E}</Project>
+      <Name>BTC.AMM.Client.Tasks.Views</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

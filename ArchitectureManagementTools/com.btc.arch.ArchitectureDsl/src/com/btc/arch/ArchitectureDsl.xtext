@@ -1,0 +1,321 @@
+grammar com.btc.arch.ArchitectureDsl with org.eclipse.xtext.common.Terminals
+
+generate architectureDsl "http://www.btc-ag.com/arch/ArchitectureDsl"
+ 
+Model:
+	// Domain View
+	domains+=Domain* &
+	
+	// Physical View
+	moduleGroups+=ModuleGroup* &
+	modules+=Module* &
+	
+	// Logical View
+	standardInterfaces+=StandardInterface* &
+	components+=Component* &
+	//systems+=System* &
+	
+	// Logical Distribution View
+	compositionContexts+=CompositionContext* &
+	connectors+=ConnectorInstance* &
+	
+	// Physical Delivery View
+	// TODO: Can the physical delivery view be left out for now, 
+	// since at the moment each module is uniquely mapped to one dll?
+	// TODO: Information whether the module is going to become a .exe or .dll file has
+	// to be modelled somewhere. Needed in the generation of the CMakeSet.txt 
+	// (MY_TARGET: First parameter: EXE or SHARED_LIB)
+	// Use dll's from single modules as default so only delivery units that differ from this 
+	// default have to be described in the DSL?
+	//packages+=Package*
+	releaseUnits+=ReleaseUnit* &
+	framework += Framework* &
+	platforms+=Platform*&
+	platformSets+=PlatformSet*&
+	
+	// Test View
+	tests+=Test*
+	;
+		
+//terminal ID: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9'|'.'|'-'|'*')*;
+// TODO: Use a different terminal for e.g. filenames and real IDs so that some special characters can be removed here.
+terminal ID: '^'?('a'..'z'|'A'..'Z'|'*'|'_'|'.') ('a'..'z'|'A'..'Z'|'_'|'0'..'9'|'.'|'-'|'*'|'/'|'$'|'{'|'}')*;
+			
+BuildingBlock :
+	Component | Module; 
+
+// Logical View
+Interface:
+	ImportInterface | ExportInterface | StandardInterface | LogicalInterface
+;
+
+// TODO: Explicitly name the using component of an ImportInterface
+// or add rule that an ImportInterface can only be required by one component.
+ImportInterface:
+	'ImportInterface ' name=ID '('
+		'Domain =' domain=[Domain]
+		// The modules of Interfaces have to be of type InterfaceModule
+		'Modules =' (modules+=[Module])* 
+	')'
+;
+
+// TODO: Explicitly name the implementing component of an ExportInterface
+// or add rule that an ExportInterface can only be required by one component.
+ExportInterface:
+	'ExportInterface ' name=ID '('
+		'Domain =' domain=[Domain]
+		'Modules =' (modules+=[Module])*
+	')'
+;
+
+StandardInterface: 
+	'StandardInterface' name=ID '('
+		'Domain =' domain=[Domain]
+		'Modules =' (modules+=[Module])*
+	')'
+;
+	
+LogicalInterface:
+	'LogicalInterface' name=ID '('
+		'ReferencedInterfaces =' referencedInterfaces+=[Interface]*
+	')'
+;
+
+// Mapping View
+Component:
+	'Component' name=ID '('
+		'Domain =' domain=[Domain]
+		('ProvidedInterfaces =' providedInterfaces+=[Interface]*)?
+		('RequiredInterfaces =' requiredInterfaces+=[Interface]*)?
+		'Modules =' (modules+=[Module])*
+	')'
+;
+
+
+// Logical Distribution View
+// TODO: Component Instance
+CompositionContext:
+	'CompositionContext ' name=ID '('
+		'ComponentsInstances =' componentIntancess+=[ComponentInstance]*
+	')'
+;
+// TODO: Model connection between composition contexts (protocols, network, ...)?
+
+/*
+System: 
+	'System' name=ID '('
+	instances+=ComponentInstance*
+	interfaceInstances+=InterfaceInstance* 
+	')';
+	
+InterfaceInstance:
+	'Connect' name=ID ':' interface=[Interface] 'ProvidedBy' sourceComponentInstance=[ComponentInstance] 'RequiredBy' targetComponentInstances+=[ComponentInstance]*
+	;
+*/
+
+ComponentInstance:
+	'ComponentInstance' name=ID ':' component=[Component]
+;
+
+ConnectorInstance:
+	'ConnectorInstance' name=ID '(' 
+	'Components' componentInstance1=[ComponentInstance] componentInstance2=[ComponentInstance] 
+	'Interface' interface=[Interface] ')';
+
+// Physical View
+Module:
+	'Module' name=ID '('
+		('Guid =' guid=STRING)?
+		'Type =' type+=ModuleType+
+		'Language =' language=Language
+		('LinkMode =' linkMode=LinkMode)?
+		('Version =' version=STRING)?
+		('Group =' moduleGroup=[ModuleGroup])? // Normally the module group is defined using the name prefix
+		('Maintainer =' maintainer=STRING mail=STRING?)? // Normally the maintainer is taken over from the parent module group
+		('Description =' description=STRING)? // Should become mandatory in the future
+		('Documentation =' documentation=STRING)? // Should be mandatory for versioned modules (= release units)
+		('Directory =' directory=STRING)?  // When is this option used?
+		('ImplementedModules =' implementedModules+=[Module]*)? // Only to be used for the module type Implementation, but then mandatory.
+		('TestedModule =' testedModule+=[Module]*)? // Only to be used when type is ImplementationTest or InterfaceTest. TODO: One or n modules as testees?
+		('UsedModules =' usedModules+=[Module]*)?
+		('CustomCmakeCodeBefore =' customCmakeCodeBefore=STRING)?
+		('CustomCmakeCodeAfter =' customCmakeCodeAfter=STRING)?
+	')';
+
+//enum CustomCmakeCodePosition: POSITION_BEFORE | POSITION_AFTER;
+
+ModuleGroup: 
+	'ModuleGroup' name=ID '('
+		('Version =' version=VERSION)?
+		('Maintainer =' maintainer=STRING mail=STRING?)?
+		('Domain =' domain=[Domain])? 
+		('AllowedTargetDomains =' allowedTargetDomains+=[Domain]+)?
+		('Documentation =' documentation=STRING)? // Should be mandatory for versioned module groups (= release units)
+		('Requirements =' requirements=STRING)? // Should be mandatory for versioned module groups (= release units)
+		('Description =' description=STRING)? // Should become mandatory in the future
+		//('ContainedModules =' containedModules+=[Module]*)?
+	')'
+	;
+
+
+// Physical Delivery View
+DeliveryUnit:
+	'DeliveryUnit ' name=ID '('
+		'Type =' type=DeliveryUnitType
+		'Modules =' modules+=[Module]
+	')'
+;
+
+// TODO: Validation
+// - There has to be one package in each release unit that has the same name as the release unit itself (without any suffixes)
+// - Every package name has to have the release unit name as prefix
+// - The package that is named like the release unit (and only this package) has the type src (next to other types)
+// - 
+
+ReleaseUnit:
+	'ReleaseUnit' name=ID '('
+		// TODO: Is it OK that VERSION always ends with -unreleased? Else: Could VERSION | DEPENDENCYVERSION be used here?
+	  	'Version =' version=VERSION  
+	  	// TODO: Is it necessary to set this at all, since it seems to be overwritten in any case.
+	  	('SupportEndDate =' supportEndDate=(DATE|'none'))?
+	  	'Maintainer =' maintainer=STRING mail=STRING?
+	  	'URL =' url=URL
+	  	'Description =' description=STRING
+	  	packages+=Package+
+	')'
+;
+
+Package:
+	//(main?='Main ')? 
+	'Package ' name=ID '('
+		'Types =' types+=PackageType+
+		// TODO: Synopsis and Description may be different for different types
+		('Synopsis =' synopsis=STRING)?
+		('Description =' description=STRING)?
+		('PlatformSets =' platformsets+=[PlatformSet]+)?
+		('BuildDependencies =' dependencies+=PackageDependency+)?
+		// TODO: There may be different sets of dependencies for different platforms (see Identity) and types (see TimeSeries)
+		('Dependencies =' dependencies+=PackageDependency+)?
+		('Additional Bin Dependencies =' additionalBinDependencies+=PackageDependency+)?
+		('Additional Dev Dependencies =' additionalDevDependencies+=PackageDependency+)?
+		('Additional Src Dependencies =' additionalSrcDependencies+=PackageDependency+)?
+		// TODO: In the future there should only be one fileset.
+		// TODO: Should includeemptydirs="true" be set or not?	
+		('Fileset =' filesets+=Fileset+)?
+	')'
+; 
+
+Platform: 
+	'Platform' name=ID '(' // Set name to a combination of the attribute values
+		('PSystem =' system=System)?
+		('Architecture =' architecture=ProcessorArchitecture)?
+   		('Frameworks =' frameworks+=[Framework]*)?
+		('Configuration =' configuration=Configuration)?
+     ')'
+;
+
+PlatformSet:
+	'PlatformSet' name=ID '('
+		platforms+=[Platform]+
+	')'
+;
+
+Fileset: 
+	{Fileset}
+	'('
+		(includeDefaultFiles?='Include Default Files')?
+		(excludeFilesFromOtherPckages?='Exclude Files From Other Packages')?
+		('Include Files =' includeFiles+=ID*)?
+		('Exclude Files =' excludeFiles+=ID*)?
+		('Exceptional Directories =' exceptionalDirectories+=DirectoryReference*)?
+		('Additional Bin Directories =' additionalBinDirectories+=DirectoryReference*)?
+	')'
+;
+
+DirectoryReference:
+	{DirectoryReference}
+	'('
+		'PlatformSets =' platformsets+=[PlatformSet]+
+		'Directory = ' directory=STRING
+		('Prefix = ' prefix=STRING)? // TODO: Is this necessary?
+	')'  
+;
+
+// TODO: Use enums instead?
+Channel: 'stable' | 'testing' | 'unstable';
+Configuration: 'Release' | 'Debug';
+Framework: 'Framework ' name=ID;//'vc9' | 'vc10' | 'vc11';
+PackageType: 'dev' | 'bin' | 'src';
+ProcessorArchitecture: 'x86' | 'x64' | 'any';
+System: 'win' | 'posix';
+TypeRule: 'rule1' | 'rule2';
+SupportEndDate: DATE | 'none';
+
+PackageDependency:
+	{PackageDependency}
+	package=[Package] version=(DEPENDENCYVERSION|DEPENDENCYVERSIONPLUS) channel=Channel ('type='type=PackageType)? ('platform='platform=STRING)?;  
+
+// TODO: Improve the VERSION terminal definitions
+terminal VERSION: ('0'..'9')+'.'('0'..'9')+'.'('0'..'9')+('-unreleased');
+terminal DEPENDENCYVERSION: ('0'..'9')+(('.'('0'..'9')+)|('.'('0'..'9')+'.'('0'..'9')+))?;
+terminal DEPENDENCYVERSIONPLUS: ('0'..'9')+(('.'('0'..'9')+)|('.'('0'..'9')+'.'('0'..'9')+))?('+');
+
+terminal URL: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|':'|'0'..'9'|'.'|'-'|'/')*;
+terminal DATE: ('0'..'9')('0'..'9')('0'..'9')('0'..'9')'-'('0'('0'..'9') | '1'('0'..'2'))'-'('0'..'3')('0'..'9');
+//terminal PACKAGENAME: ('a'..'z'|'A'..'Z'|'*'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9'|'.'|'-'|'*'|'/')*;
+
+// TODO: Add extension for e.g. version "1.0.0 - 1.5.0"  | (VERSION '-' VERSION)
+// (('<<' | '==' | '>=')? VERSION);
+//terminal VERSION_RANGE: ('<<'VERSION | '=='VERSION | '>='VERSION | VERSION'-'VERSION);
+
+//PackageVersionReference:
+//	// A reference to the package cannot be used here, since the package 
+//	// id contains the version of the package.
+//	// A solution could to change Package to a container for versions and 
+//	// add all attributes to Version 
+//	package=[Package] ('('version=(VERSION_RANGE|VERSION)')')?
+//;
+
+ModuleVersionReference:
+	module=[Module] '('version=VERSION')'
+;
+
+enum DeliveryUnitType:
+	Exe | Lib ;
+
+// Test View
+
+Test:
+	'Test' name=ID '('
+		//'Type = ' type=TestType
+		'TestModule =' testModule=[Module]
+		'TestExecutionSpecification =' testExecutionSpecification=STRING
+		'TestExecutionType =' testExecutionType=TestExecutionType  // Path, relative to TestModule path?
+		'TestUnit =' testUnit=[BuildingBlock]
+	')';
+
+	
+enum TestType:
+	ImplementationTest | InterfaceTest ;
+
+enum TestExecutionType:
+	// Has to be BTCUnitTester and BTCTestFW instead of BtcUnitTester and BtcTestFW,
+	// since the modules have the same name, which would lead to a keyword conflict.
+	BTCUnitTester | BTCTestFW | NUnit ;
+	
+enum ModuleType:
+	Interface | Implementation | AbstractImplementation | InterfaceUtility | InterfaceTest | ImplementationTest | Framework | FrameworkTest | Configurator ;
+	
+enum Language:
+	CPP = "C++" | CSharp = "C#" | Python | Java;
+
+enum LinkMode:
+	Dynamic | Static;
+	
+// Domain view
+Domain: 
+	'Domain ' name=ID '('
+		('Subdomains =' subdomains+=[Domain]*)?
+	')';
+	
+	

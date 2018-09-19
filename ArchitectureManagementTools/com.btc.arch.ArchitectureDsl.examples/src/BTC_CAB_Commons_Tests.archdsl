@@ -1,0 +1,36 @@
+Test BTC.CAB.Commons.Core.Test (
+  TestModule = BTC.CAB.Test.CommonsUnitTest
+  TestExecutionSpecification = "testsAll.xml"
+  TestExecutionType = BTCUnitTester
+  TestUnit = BTC.CAB.Commons.Core
+)
+
+Test BTC.CAB.Commons.RegEx.Test (
+  TestModule = BTC.CAB.Test.CommonsUnitTest
+  TestExecutionSpecification = "tests.RegEx.txt"
+  TestExecutionType = BTCUnitTester
+  TestUnit = BTC.CAB.Commons.RegEx
+)
+
+Test BTC.CAB.Commons.Messaging.Driver.Mail.Test (
+  TestModule = BTC.CAB.Commons.Messaging.Test
+  TestExecutionSpecification = "tests.Mail.txt"
+  TestExecutionType = BTCUnitTester
+  TestUnit = BTC.CAB.Commons.Messaging.Driver.Mail
+)
+
+Test BTC.CAB.Commons.Messaging.Driver.MSMQ.Test (
+  TestModule = BTC.CAB.Commons.Messaging.Test
+  TestExecutionSpecification = "tests.MSMQ.txt"
+  TestExecutionType = BTCUnitTester
+  TestUnit = BTC.CAB.Commons.Messaging.Driver.MSMQ
+)
+
+
+
+Test BTC.CAB.Commons.Compress.Test (
+  TestModule = BTC.CAB.Test.CommonsUnitTest
+  TestExecutionSpecification = "tests.Compress.txt"
+  TestExecutionType = BTCUnitTester
+  TestUnit = BTC.CAB.Commons.Compress
+)

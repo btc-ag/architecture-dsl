@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Diagnostics
+Bundle-SymbolicName: com.btc.arch.ArchitectureDsl.diagnostics;singleton:=true
+Bundle-Version: 0.12.0
+Bundle-Activator: com.btc.arch.architectureDsl.diagnostics.Activator
+Bundle-Vendor: BTC AG
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore,
+ com.btc.arch.ArchitectureDsl.xtext.utils,
+ com.btc.commons.emf.diagnostics,
+ com.btc.commons.java,
+ org.eclipse.xtext.util,
+ com.btc.arch.ArchitectureDsl,
+ com.btc.arch.base,
+ org.junit4;bundle-version="4.8.1";resolution:=optional
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Import-Package: org.apache.log4j
+Export-Package: com.btc.arch.architectureDsl.diagnostics,
+ com.btc.arch.architectureDsl.diagnostics.service

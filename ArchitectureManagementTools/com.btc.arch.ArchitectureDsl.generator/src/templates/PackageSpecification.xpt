@@ -1,0 +1,22 @@
+«REM»
+«IMPORT com::btc::arch::architectureDsl»
+
+«DEFINE main FOR List[Package]»
+	«EXPAND main FOREACH this»
+«ENDDEFINE»
+
+«DEFINE main FOR Package»
+«FILE this.name+".pkg"»
+
+Package: «this.name»
+Version: «this.version»
+Architecture: «this.architecture»
+Maintainer: «this.maintainedBy»
+Depends: «FOREACH this.dependsOn AS packageVersionReference»«packageVersionReference.package.name» («packageVersionReference.version») «ENDFOREACH»
+Files: «FOREACH this.coreDeliveryUnits AS moduleVersionReference»«moduleVersionReference.module.name» («moduleVersionReference.version») «ENDFOREACH»
+Description: «this.description»
+
+
+«ENDFILE»
+«ENDDEFINE»
+«ENDREM»

@@ -1,0 +1,24 @@
+System RTB_Simple_Example (
+	Instance ua: User_Application
+	Instance mms_driver: RTB_Driver_MMS
+	Instance wea:WEA
+	Connect rtb_api:RTB_API ProvidedBy mms_driver RequiredBy ua
+	Connect fc:FieldCommunication ProvidedBy wea  RequiredBy mms_driver
+)
+
+System RTB_Multiplexer_Example (
+	Instance ua: User_Application
+	Instance mp: RTB_Multiplexer
+	Instance d1: RTB_Driver_EWEBox
+	Instance d2: RTB_Driver_IEC61850
+	Connect rtb_api1:RTB_API ProvidedBy mp RequiredBy ua
+	Connect rtb_api2:RTB_API ProvidedBy d1 RequiredBy mp
+	Connect rtb_api3:RTB_API ProvidedBy d2 RequiredBy mp 
+)
+/*
+System RTB_Simple (
+	Instance ua: User_Application
+	Instance mms_driver: RTB_Driver_MMS
+	Connect ua:RTB_API To mms_driver:RTB_API 
+	Connect mms_driver:FieldCommunication To wea:FieldCommunication
+)*/

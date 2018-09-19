@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Xtext Utils Test
+Bundle-SymbolicName: com.btc.arch.ArchitectureDsl.xtext.utils.test
+Bundle-Version: 0.12.0
+Bundle-Vendor: BTC
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: com.btc.arch.ArchitectureDsl;bundle-version="0.9.0",
+ com.btc.arch.ArchitectureDsl.xtext.utils;bundle-version="0.9.0",
+ org.junit4;bundle-version="4.8.1",
+ org.eclipse.xtext;bundle-version="1.0.2",
+ org.eclipse.core.resources;bundle-version="3.6.1",
+ org.eclipse.core.runtime;bundle-version="3.6.0",
+ com.btc.commons.java;bundle-version="0.9.0"

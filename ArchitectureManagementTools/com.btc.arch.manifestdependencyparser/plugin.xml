@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.btc.arch.base.DependencySourceServiceFactory">
+      <dependency_source_service_factory
+            class="com.btc.manifestdependencyparser.ManifestDependencySourceServiceFactory"
+            description="Creates parser for manifest files"
+            programming_language="Java">
+      </dependency_source_service_factory>
+   </extension>
+
+</plugin>

@@ -1,0 +1,62 @@
+package com.btc.commons.java;
+
+/*******************************************************************************
+ * Adopted from org.eclipse.xtext.util
+ * 
+ * Copyright (c) 2008 itemis AG (http://www.itemis.eu) and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ *******************************************************************************/
+
+/**
+ * @author Sven Efftinge - Initial contribution and API
+ * 
+ * @param <S1>
+ * @param <S2>
+ * @param <S3>
+ */
+public final class Triple<S1, S2, S3> extends Pair<S1, S2> {
+
+	private final S3 third;
+
+	public Triple(final S1 first, final S2 second, final S3 third) {
+		super(first, second);
+		this.third = third;
+	}
+
+	public S3 getThird() {
+		return third;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (other == null)
+			return false;
+		if (other == this)
+			return true;
+		if (other instanceof Triple<?, ?, ?>) {
+			Triple<?, ?, ?> r = (Triple<?, ?, ?>) other;
+			if (!super.equals(other))
+				return false;
+			return third == null ? r.getThird() == null : third.equals(r
+					.getThird());
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode() + 17
+				* (third == null ? 0 : getThird().hashCode());
+	}
+
+	@Override
+	public String toString() {
+		return "Triple(" + getFirst() + "," + getSecond() + "," + getThird()
+				+ ")";
+	}
+
+}

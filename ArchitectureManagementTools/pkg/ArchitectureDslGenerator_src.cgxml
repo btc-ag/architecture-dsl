@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<source xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://olga0822.e-konzern.de/cab-get.xsd">
+  <name>ArchitectureDslGenerator</name>
+  <version>0.5.0-unreleased</version>
+  <support>2016-12-30</support>
+  <url>http://wiki.e-konzern.de/display/BTCCABMGMT/cab-get</url>
+  <maintainer name="Niels Streekmann" email="niels.streekmann@btc-ag.com"/>
+  <synopsis>ArchitectureDslGenerator src files</synopsis>
+  <description>
+  </description>
+  <fileset includeemptydirs="true">
+    <include name="**"/>
+  </fileset>
+  <dependencies/>
+</source>

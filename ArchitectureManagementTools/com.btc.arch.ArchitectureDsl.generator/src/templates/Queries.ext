@@ -1,0 +1,7 @@
+import com::btc::arch::architectureDsl;
+
+String getEffectiveMaintainer(ModuleGroup moduleGroup):
+	JAVA com.btc.arch.architectureDsl.util.ModuleGroupQueries.getEffectiveMaintainer(com.btc.arch.architectureDsl.ModuleGroup);
+
+List[ModuleGroup] getAllVersionedTargetModuleGroups(ModuleGroup moduleGroup):
+	JAVA com.btc.arch.architectureDsl.util.ModuleGroupQueries.getAllVersionedTargetModuleGroups(com.btc.arch.architectureDsl.ModuleGroup);	

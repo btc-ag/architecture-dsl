@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.btc.commons.emf.diagnostics.diagnostics">
+      <diagnostic
+            default-severity="ERROR"
+            description="Violation of AMM-specific module type rules"
+            documentation-link="http://wiki.e-konzern.de/x/6RswAg"
+            id="com.btc.amm.archdsl.ammModuleType"
+            subject-type="Module,Module">
+      </diagnostic>
+   </extension>
+   <extension
+         point="com.btc.arch.ArchitectureDsl.diagnosticProcessingElements">
+      <processingElement
+            class="com.btc.amm.archdsl.service.AMMTypeBasedModuleDependencyValidatorService"
+            description="Checks AMM-specific module type rules (DTO, BO, BLL, ...)"
+            id="com.btc.amm.archdsl.typeCheck">
+      </processingElement>
+   </extension>
+
+</plugin>

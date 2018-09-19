@@ -1,0 +1,118 @@
+Domain RealTimeBus ()
+
+StandardInterface FieldCommunication (
+	Domain = RealTimeBus 
+	Modules = 
+)
+
+StandardInterface RTB_API (
+	Domain = RealTimeBus
+	Modules = BTC.CAB.RTB.API
+) 
+
+StandardInterface RTB_SmartMeter_API (
+	Domain = RealTimeBus
+	Modules = BTC.CAB.RTB.Domains.SmartMeter.API
+) 
+
+Component RTB (
+	Domain = RealTimeBus
+	ProvidedInterfaces = RTB_API
+	RequiredInterfaces = Eventing_API Logging_API
+	Modules = 
+		BTC.CAB.RTB.Common.CPP
+		BTC.CAB.RTB.Model
+)
+
+Component RTB_Multiplexer (
+	Domain = RealTimeBus
+	ProvidedInterfaces = RTB_API
+	RequiredInterfaces = RTB_API Eventing_API
+	Modules = BTC.CAB.RTB.Driver.Multiplexer
+)
+
+Component RTB_Remoting (
+	Domain = RealTimeBus
+	ProvidedInterfaces = RTB_API
+	RequiredInterfaces = RTB_API AsyncCommunication_API Logging_API
+	Modules = BTC.CAB.RTB.Driver.Remoting
+) 
+
+// TODO: What about SmartMeter.FromRTB and SmartMeter.ToRTB?
+
+Component RTB_Driver_Ads (
+	Domain = RealTimeBus
+	ProvidedInterfaces = RTB_API
+	RequiredInterfaces =  
+		Eventing_API
+		Eventing_Caller_API  
+	Modules = BTC.CAB.RTB.Driver.Ads
+	BTC.CAB.RTB.Driver.Base
+)
+
+Component RTB_Driver_EWEBox (
+	Domain = RealTimeBus
+	// ExportInterfaces = ExportInterface EWEBox_API(Domain = RealTimeBus Modules = )
+	ProvidedInterfaces = RTB_API // EWEBox_API
+	RequiredInterfaces = RTB_SmartMeter_API 
+		AsyncCommunication_API
+		Eventing_API
+	Modules = BTC.CAB.RTB.Driver.EWEBox
+	BTC.CAB.RTB.Driver.Base
+)
+
+Component RTB_Domains_SmartMeter_EWEBox ( 
+	Domain = RealTimeBus
+	ProvidedInterfaces = RTB_SmartMeter_API
+	RequiredInterfaces = 
+		RTB_API  
+		AsyncCommunication_API
+		Logging_API
+	Modules = BTC.CAB.RTB.Domains.SmartMeter.EWEBox
+)
+
+Component RTB_Driver_QNEMSpyDER (
+	Domain = RealTimeBus
+	ProvidedInterfaces = RTB_API
+	RequiredInterfaces = RTB_SmartMeter_API Eventing_API
+	Modules = BTC.CAB.RTB.Driver.QNEMSpyDER
+	BTC.CAB.RTB.Driver.Base
+)
+
+Component RTB_Domains_SmartMeter_QNEMSpyDER (
+	Domain = RealTimeBus
+	RequiredInterfaces = 
+		RTB_API 
+		RTB_SmartMeter_API 
+		AsyncCommunication_API
+		Logging_API
+	Modules = BTC.CAB.RTB.Domains.SmartMeter.QNEMSpyDER
+)
+
+Component RTB_Driver_IEC61850 (
+	Domain = RealTimeBus
+	ProvidedInterfaces = RTB_API  
+	RequiredInterfaces = Eventing_API 
+	Modules = BTC.CAB.RTB.Driver.IEC61850
+	BTC.CAB.RTB.Driver.Base
+)
+
+Component RTB_Driver_MMS (
+	Domain = RealTimeBus
+	ProvidedInterfaces = RTB_API
+	RequiredInterfaces = Eventing_API FieldCommunication 
+	Modules = BTC.CAB.RTB.Driver.MMS
+	BTC.CAB.RTB.Driver.Base
+)
+
+Component User_Application (
+	Domain = RealTimeBus
+	RequiredInterfaces = RTB_API
+	Modules = 
+)
+
+Component WEA (
+	Domain = RealTimeBus
+	ProvidedInterfaces = FieldCommunication
+	Modules = 
+) 

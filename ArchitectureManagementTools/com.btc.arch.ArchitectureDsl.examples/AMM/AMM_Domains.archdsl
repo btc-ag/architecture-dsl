@@ -1,0 +1,82 @@
+Domain AMM (
+	Subdomains =
+		AMMDevelopment
+		AMMServerDevelopment
+		Messdatenmanagement
+		Head-End
+		UserManagement
+		ReportingAnalysis
+		CRMBillingCommunication
+		SystemConfigurationManagement
+		DeviceManagement
+		InputOutputManagement
+		TariffManagement
+		ProcessManagement
+		RealTimeBus
+)
+
+Domain Messdatenmanagement (
+	Subdomains = 
+		MeterDataEnrichment
+		MeterDataManagement
+		RawDataManagement
+)
+
+Domain Head-End (
+	Subdomains =
+		MeterControl
+		MeterDataDispatcher
+		MeterDataPreparation
+		MeterDataVerification
+)
+
+Domain AMMDevelopment (
+)
+
+Domain AMMServerDevelopment (
+)
+
+Domain CRMBillingCommunication (
+)
+
+Domain DeviceManagement (	
+)
+
+Domain InputOutputManagement (
+)
+
+Domain MeterControl (
+)
+
+Domain MeterDataDispatcher (
+)
+
+Domain MeterDataEnrichment (
+)
+
+Domain MeterDataManagement (
+)
+
+Domain MeterDataPreparation (
+)
+
+Domain MeterDataVerification (
+)
+
+Domain ProcessManagement (
+)
+
+Domain RawDataManagement (
+)
+
+Domain ReportingAnalysis (
+) 
+
+Domain SystemConfigurationManagement (
+)
+
+Domain TariffManagement (
+)
+
+Domain UserManagement (
+)

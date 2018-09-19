@@ -1,0 +1,71 @@
+Domain Zero (
+)
+Domain Crypto (	
+)
+Domain TimeSeries (	
+)
+Domain ABC ()
+
+Domain NonLeafDomain(
+	Subdomains = LeafDomain
+)
+
+Domain LeafDomain(
+)
+
+ModuleGroup A.B.C (
+	Domain = Zero
+)
+ModuleGroup A.B.D (
+    Domain = Crypto
+    AllowedTargetDomains = Zero
+)
+ModuleGroup A.B.E (
+    Domain = TimeSeries
+    AllowedTargetDomains = Zero
+)
+
+ModuleGroup LeafDomainModuleGroup (
+    Domain = LeafDomain
+)
+
+ModuleGroup NonLeafDomainModuleGroup (
+    Domain = NonLeafDomain
+)
+
+Module A.B.C.Y (
+  Type = Framework
+  Language = C++
+)
+Module A.B.D.A (
+  Type = Framework
+  Language = C++
+  UsedModules = A.B.C.Y
+)
+Module A.B.E.Good (
+  Type = Framework
+  Language = C++
+  UsedModules = A.B.C.Y
+)
+Module A.B.E.Bad (
+  Type = Framework
+  Language = C++
+  UsedModules = A.B.D.A
+)
+Module NoDomain (
+  Type = Framework
+  Language = C++
+  UsedModules = A.B.D.A  
+)
+
+Module LeafDomainModule (
+  Type = Framework
+  Language = C++
+  Group = LeafDomainModuleGroup
+)
+
+Module NonLeafDomainModule (
+  Type = Framework
+  Language = C++
+  Group = NonLeafDomainModuleGroup
+)

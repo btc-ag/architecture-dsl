@@ -1,0 +1,38 @@
+«IMPORT com::btc::arch::architectureDsl»
+
+«EXTENSION templates::Extensions»
+
+«DEFINE main (String basepath) FOR Model-»
+	«EXPAND main(basepath) FOREACH  this.tests»
+«ENDDEFINE»
+
+«DEFINE main (String basepath) FOR Test-»
+
+«REM»TODO: Wo muss das Skript abgelegt werden?«ENDREM»
+«FILE this.name+".cmd"-»
+«REM»TODO: Der Pfad sollte konfigurierbar sein.«ENDREM»
+«basepath.getDriveLetter()»
+cd «basepath.getPathWithoutDriveLetter().toWindowsPath()»
+cd build\cmake
+win32_msvs9_nmake_coverage.py -cfull --fixedbuildfolder=..\..\coverage-build
+cd ..\..\coverage-build
+nmake «this.testModule.name» «this.testUnit.name» «this.testExecutionType.getModuleName()»
+
+cd dst
+«IF testExecutionType.equals(TestExecutionType::BTC_UNIT_TESTER)-»
+	«IF (this.testModule.directory.length > 0)-»
+		«this.testExecutionType.getExecutableName()» ..\..\«this.testModule.directory.replaceSubstring("/", "\\")»\etc\«testExecutionSpecification»
+	«ELSE-»	
+		«this.testExecutionType.getExecutableName()» ..\..\«this.testModule.getWindowsPath()»\etc\«testExecutionSpecification»	
+	«ENDIF-»
+«ENDIF-»
+«REM»TODO: ELSE: BTCTestFW, NUnit«ENDREM»
+del «this.testUnit.name».dll.orig.csmes
+rename «this.testUnit.name».dll.csmes «this.testUnit.name».dll.orig.csmes
+cmmerge -o «this.testUnit.name».dll.csmes -i «this.testUnit.name».dll.orig.csmes «this.testUnit.name».dll.orig.csmes «this.testModule.name».dll.csmes
+cmcsexeimport -m «this.testUnit.name».dll.csmes -e coverage.csexe -t "«this.testExecutionSpecification.replaceSubstring(".xml", "")»" -P
+cmreport -m «this.testUnit.name».dll.csmes --html=«this.getHTMLCoverageReportName()» --emma=«this.testUnit.name».«this.testExecutionSpecification.replaceSubstring(".xml", "")».coverage.emma.xml --select=".*" --unexecuted --bargraph --global=selected --method=selected --source=selected --source-sort=coverage --toc --title="Unit test code coverage for «this.testUnit.name»"
+start «this.getHTMLCoverageReportName()»
+cd ..\..
+«ENDFILE-»
+«ENDDEFINE»

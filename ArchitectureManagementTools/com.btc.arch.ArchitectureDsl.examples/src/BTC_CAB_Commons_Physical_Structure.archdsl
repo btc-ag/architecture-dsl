@@ -1,0 +1,224 @@
+ModuleGroup BTC.CAB ( 
+	Maintainer = "Jörg Friebe"
+	Domain = ProductDevelopment
+)
+
+ModuleGroup BTC.CAB.Commons ( 
+	Maintainer = "Rüdiger Stevens"
+)
+
+Module BTC.CAB.Commons.Application (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Logging.API
+  	BTC.CAB.Commons.Logging.Default
+)
+
+Module BTC.CAB.Commons.Compress (
+	Type = Implementation
+	Language = C++
+//	Implements = BTC.CAB.Commons.Core:... (nur bestimmte Klassen)
+//	TestedImplementationModules ...
+)
+
+Module BTC.CAB.Commons.Core (
+  Type = Framework
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.TypeTraits
+)
+
+Module BTC.CAB.Test.CommonsUnitTest (
+  Type = InterfaceTest ImplementationTest
+  Language = C++
+  Directory = "BTC/Test/CommonsUnitTest"
+  TestedModule = BTC.CAB.Commons.Core
+  UsedModules =
+    BTC.CAB.Commons.Core
+    BTC.CAB.Commons.CoreExtras
+    BTC.CAB.Commons.Dom
+    BTC.CAB.Commons.Sax
+    BTC.CAB.Commons.Logging.API
+    BTC.CAB.Commons.Logging.Default
+    BTC.CAB.Commons.Values
+    BTC.CAB.Commons.RegEx
+    //BTC.CAB.Commons.IoC
+    //BtcUnitTests
+    //BtcTestFW
+)
+
+Module BTC.CAB.Commons.CoreYacl (
+  Type = Framework
+  Language = C++
+  Description = "Modul macht das und das"
+  UsedModules =
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.CoreExtras
+)
+
+Module BTC.CAB.Commons.Core.NET.WD (
+	 	Type = Framework
+	 	Language = C#
+)
+	
+Module BTC.CAB.Commons.Core.NET.Bridge (
+ 	Type = Framework
+ 	Language = C#
+ 	UsedModules =
+	 	BTC.CAB.Commons.Core.NET.WD
+)
+
+
+Module BTC.CAB.Commons.CoreExtras (
+  Type = Implementation
+  Language = C++
+  UsedModules =
+  	BTC.CAB.Commons.Core
+)
+
+Module BTC.CAB.Commons.Dom (
+  Type = Implementation
+  Language = C++
+  UsedModules =
+  	BTC.CAB.Commons.Core
+)
+
+Module BTC.CAB.Commons.DomConfig (
+  Type = Implementation
+  Language = C++
+  UsedModules =
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Expander
+  	BTC.CAB.Commons.Values
+)
+
+Module BTC.CAB.Commons.Eventing.API (
+  Type = Interface
+  Language = C++
+  UsedModules =
+  	BTC.CAB.Commons.Core
+)
+
+Module BTC.CAB.Commons.Eventing.API.NET (
+ 	Type = Interface
+ 	Language = C#
+ 	UsedModules =
+	 	BTC.CAB.Commons.Core.NET.Bridge
+	 	BTC.CAB.Commons.Eventing.API
+	 	BTC.CAB.Commons.Core.NET.WD
+)
+
+Module BTC.CAB.Commons.Eventing.CallerAPI (
+  Type = Interface
+  Language = C++
+  UsedModules =
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Eventing.API
+)
+
+Module BTC.CAB.Commons.Eventing.Impl (
+  Type = Implementation
+  Language = C++
+  UsedModules =
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Eventing.API
+  	BTC.CAB.Commons.Eventing.CallerAPI
+)
+
+Module BTC.CAB.Commons.Expander (
+  Type = Implementation
+  Language = C++
+  UsedModules =  
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.CoreExtras
+)
+
+Module BTC.CAB.Commons.Log4NETAdapter (
+ 	Type = Framework
+ 	Language = C#
+ 	UsedModules =
+	 	BTC.CAB.Commons.Core.NET.WD
+)
+
+Module BTC.CAB.Commons.Logging.API (
+  Type = Interface
+  Language = C++
+  UsedModules =  
+  	BTC.CAB.Commons.Core
+)
+
+Module BTC.CAB.Commons.Logging.Default (
+  Type = Implementation
+  Language = C++
+  UsedModules =  
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Logging.API
+)
+
+Module BTC.CAB.Commons.Messaging.Driver.API (
+	Type = Interface
+	Language = C++
+)
+
+Module BTC.CAB.Commons.Messaging.Driver.MSMQ (
+	Type = Implementation
+	Language = C++
+	UsedModules = BTC.CAB.Commons.Messaging.Driver.API
+)
+
+Module BTC.CAB.Commons.Messaging.Driver.Mail (
+	Type = Implementation
+	Language = C++
+	UsedModules = BTC.CAB.Commons.Messaging.Driver.API
+)
+
+Module BTC.CAB.Commons.Messaging.Test (
+	Type = ImplementationTest
+	Language = C++
+//	TestedImplementationModules ...
+)
+
+Module BTC.CAB.Commons.RegEx (
+	Type = Framework
+	Language = C++
+//	TestedImplementationModules ...
+)
+
+Module BTC.CAB.Commons.Sax (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.CoreExtras
+)
+
+Module BTC.CAB.Commons.TypeTraits (
+  Type = Framework
+  Language = C++
+)
+
+Module BTC.CAB.Commons.Values (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.CoreExtras
+)
+
+Module BTC.CAB.Commons.Values.NET (
+ 	Type = Framework
+ 	Language = C#
+ 	UsedModules =
+	 	BTC.CAB.Commons.Values
+ 		BTC.CAB.Commons.Core.NET.Bridge
+ 		BTC.CAB.Commons.Core.NET.WD
+)

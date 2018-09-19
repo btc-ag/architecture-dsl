@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tools for handling VisualStudio projects
+Bundle-SymbolicName: com.btc.arch.visualstudio;singleton:=true
+Bundle-Version: 0.12.0
+Bundle-Vendor: BTC AG
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.apache.commons.collections.iterators,
+ org.eclipse.osgi.util,
+ org.osgi.framework;version="1.3.0",
+ org.apache.log4j
+Export-Package: com.btc.arch.visualstudio;uses:="javax.xml.xpath,org.w3c.dom,javax.xml.namespace",
+ com.btc.arch.visualstudio.service
+Require-Bundle: com.btc.commons.java,
+ org.junit4;resolution:=optional,
+ com.btc.arch.base
+Service-Component: component.xml

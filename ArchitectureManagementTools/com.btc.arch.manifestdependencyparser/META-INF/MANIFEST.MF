@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ManifestDependencyParser
+Bundle-SymbolicName: com.btc.arch.manifestdependencyparser;singleton:=true
+Bundle-Version: 0.1.0
+Bundle-Vendor: BTC
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.apache.log4j;bundle-version="1.2.15",
+ com.btc.arch.base;bundle-version="0.11.0",
+ com.btc.commons.java;bundle-version="0.11.0"
+Export-Package: com.btc.manifestdependencyparser

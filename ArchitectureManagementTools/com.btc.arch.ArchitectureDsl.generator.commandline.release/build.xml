@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="com.btc.arch.ArchitectureDsl.generator.commandline.release" default="build.update.jar" basedir=".">
+
+	<target name="init">
+		<property name="feature.temp.folder" value="${basedir}/feature.temp.folder"/>
+		<property name="feature.destination" value="${basedir}"/>
+		<property name="p2.build.repo" value="file:${buildDirectory}/buildRepo"/>
+		<condition property="p2.publish.parts" value="true"		>
+			<istrue value="${p2.gathering}"/>
+		</condition>
+	</target>
+
+	<target name="all.plugins" depends="init">
+		<ant antfile="build.xml" dir="../org.apache.commons.cli" target="${target}">
+		</ant>
+		<ant antfile="build.xml" dir="../com.btc.commons.java" target="${target}">
+		</ant>
+		<ant antfile="build.xml" dir="../com.btc.commons.emf.diagnostics" target="${target}">
+		</ant>
+		<ant antfile="build.xml" dir="../com.btc.commons.eclipse.core" target="${target}">
+		</ant>
+		<ant antfile="build.xml" dir="../com.btc.arch.base" target="${target}">
+		</ant>
+		<ant antfile="build.xml" dir="../com.btc.arch.visualstudio" target="${target}">
+		</ant>
+		<ant antfile="build.xml" dir="../com.btc.arch.manifestdependencyparser" target="${target}">
+		</ant>
+		<ant antfile="build.xml" dir="../com.btc.arch.ArchitectureDsl.xtext.utils" target="${target}">
+		</ant>
+		<ant antfile="build.xml" dir="../com.btc.arch.ArchitectureDsl" target="${target}">
+		</ant>
+		<ant antfile="build.xml" dir="../com.btc.arch.ArchitectureDsl.generator" target="${target}">
+		</ant>
+		<ant antfile="build.xml" dir="../com.btc.arch.visualstudio.generators" target="${target}">
+		</ant>
+		<ant antfile="build.xml" dir="../com.btc.arch.ArchitectureDsl.generator.commandline" target="${target}">
+		</ant>
+		<ant antfile="build.xml" dir="../com.btc.arch.ArchitectureDsl.diagnostics" target="${target}">
+		</ant>
+		<ant antfile="build.xml" dir="../com.btc.arch.ArchitectureDsl.report" target="${target}">
+		</ant>
+		<ant antfile="build.xml" dir="../com.btc.amm.archdsl" target="${target}">
+		</ant>
+	</target>
+	<target name="all.features" depends="init">
+	</target>
+	<target name="update.feature" depends="init">
+	</target>
+
+	<target name="all.children" depends="init,all.features,all.plugins,update.feature">
+	</target>
+
+	<target name="children" if="include.children">
+		<antcall target="all.children"/>
+	</target>
+
+	<target name="build.jars" depends="init" description="Build all the jars for the feature: com.btc.arch.ArchitectureDsl.generator.commandline.release.">
+		<antcall target="all.children">
+			<param name="target" value="build.jars"/>
+		</antcall>
+	</target>
+
+	<target name="build.sources" depends="init">
+		<antcall target="all.children">
+			<param name="target" value="build.sources"/>
+		</antcall>
+	</target>
+
+	<target name="build.zips" depends="init">
+		<antcall target="all.children">
+			<param name="target" value="build.zips"/>
+		</antcall>
+	</target>
+
+	<target name="build.update.jar" depends="init" description="Build the feature jar of: com.btc.arch.ArchitectureDsl.generator.commandline.release for an update site.">
+		<antcall target="all.children">
+			<param name="target" value="build.update.jar"/>
+		</antcall>
+		<property name="feature.base" value="${feature.temp.folder}"/>
+		<delete dir="${feature.temp.folder}"/>
+		<mkdir dir="${feature.temp.folder}"/>
+		<mkdir dir="${feature.temp.folder}/features/com.btc.arch.ArchitectureDsl.generator.commandline.release_1.0.0.201408261655"/>
+		<antcall target="gather.bin.parts" inheritAll="false">
+			<param name="os" value="*"/>
+			<param name="feature.base" value="${feature.temp.folder}"/>
+			<param name="updateJar.omitRootfiles" value="true"/>
+			<param name="ws" value="*"/>
+			<param name="arch" value="*"/>
+			<param name="nl" value="*"/>
+		</antcall>
+		<jar destfile="${feature.destination}/com.btc.arch.ArchitectureDsl.generator.commandline.release_1.0.0.201408261655.jar" basedir="${feature.temp.folder}/features/com.btc.arch.ArchitectureDsl.generator.commandline.release_1.0.0.201408261655"/>
+		<delete dir="${feature.temp.folder}"/>
+	</target>
+
+	<target name="publish.bin.parts" depends="init" if="p2.publish.parts">
+		<mkdir dir="${feature.temp.folder}/features/com.btc.arch.ArchitectureDsl.generator.commandline.release_1.0.0.201408261655"/>
+		<copy todir="${feature.temp.folder}/features/com.btc.arch.ArchitectureDsl.generator.commandline.release_1.0.0.201408261655" failonerror="true" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="feature.xml"/>
+			</fileset>
+		</copy>
+		<eclipse.idReplacer featureFilePath="${feature.temp.folder}/features/com.btc.arch.ArchitectureDsl.generator.commandline.release_1.0.0.201408261655/feature.xml"  selfVersion="1.0.0.201408261655" featureIds="" pluginIds="org.eclipse.ecf.identity:0.0.0,3.1.0.v20100906-1425,org.eclipse.equinox.p2.jarprocessor:0.0.0,1.0.200.v20100503a,org.eclipse.equinox.app:0.0.0,1.3.1.R36x_v20100803,org.eclipse.ecf.filetransfer:0.0.0,4.0.0.v20100906-1425,org.apache.commons.codec:0.0.0,1.3.0.v20100518-1140,org.apache.batik.dom.svg:0.0.0,1.6.0.v200805290154,org.eclipse.ocl.ecore:0.0.0,3.0.2.R30x_v201101110610,org.eclipse.birt.report.engine.emitter.pdf.config:0.0.0,2.6.2.r262_v20110127,org.eclipse.birt.report.data.adapter:0.0.0,2.6.2.r262_v20110215,org.eclipse.birt.chart.device.extension:0.0.0,2.6.2.r262_v20110127,org.eclipse.emf.ecore:0.0.0,2.6.1.v20100914-1218,org.eclipse.equinox.p2.extensionlocation:0.0.0,1.2.0.v20100518,org.apache.batik.transcoder:0.0.0,1.6.0.v200805290154,org.eclipse.emf.mwe.core:0.0.0,1.0.2.v201102150556,org.antlr.runtime:0.0.0,3.0.0.v200803061811,org.apache.xml.resolver:0.0.0,1.2.0.v201005080400,com.btc.commons.emf.diagnostics:0.0.0,0.12.0,org.eclipse.birt.chart.engine.extension:0.0.0,2.6.2.r262_v20110113,org.apache.batik.css:0.0.0,1.6.0.v200912221622,com.btc.arch.ArchitectureDsl:0.0.0,0.12.0,org.apache.log4j:0.0.0,1.2.15.v201005080500,org.eclipse.equinox.transforms.hook:0.0.0,1.0.200.v20100503,org.eclipse.birt.chart.engine:0.0.0,2.6.2.r262_v20110120,org.eclipse.datatools.connectivity.oda:0.0.0,3.3.1.v201102051100,org.eclipse.birt.report.model:0.0.0,2.6.2.r262_v20110209,org.eclipse.equinox.common:0.0.0,3.6.0.v20100503,org.eclipse.osgi.services:0.0.0,3.2.100.v20100503,org.w3c.dom.svg:0.0.0,1.1.0.v200806040011,javax.xml:0.0.0,1.3.4.v201005080400,org.mozilla.javascript:0.0.0,1.7.2.v201005080400,org.eclipse.birt.data:0.0.0,2.6.2.r262_v20110215,org.eclipse.core.resources.win32.x86:0.0.0,3.5.100.v20100505-1345,org.eclipse.core.expressions:0.0.0,3.4.200.v20100505,com.google.collect:0.0.0,0.8.0.v201102150722,org.apache.batik.xml:0.0.0,1.6.0.v200805290154,org.eclipse.equinox.preferences:0.0.0,3.3.0.v20100503,org.eclipse.equinox.security.win32.x86:0.0.0,1.0.200.v20100503,org.eclipse.equinox.p2.director:0.0.0,2.0.3.R36x_v20101117-1018,org.w3c.css.sac:0.0.0,1.3.0.v200805290154,org.eclipse.equinox.p2.reconciler.dropins:0.0.0,1.1.2.R36x_v20110114,org.eclipse.equinox.p2.engine:0.0.0,2.0.1.R36x_v20110201,org.eclipse.equinox.p2.metadata:0.0.0,2.0.1.R36x_v20101202,com.btc.arch.base:0.0.0,0.12.0,org.eclipse.birt.report.engine.emitter.ppt.config:0.0.0,2.6.2.r262_v20110127,org.eclipse.birt.chart.reportitem:0.0.0,2.6.2.r262_v20110120,org.eclipse.birt.core:0.0.0,2.6.2.r262_v20110209,org.sat4j.pb:0.0.0,2.2.0.v20100429,com.btc.arch.ArchitectureDsl.report:0.0.0,0.12.0,org.eclipse.equinox.weaving.hook:0.0.0,1.0.0.v20100503,org.sat4j.core:0.0.0,2.2.0.v20100429,org.eclipse.equinox.frameworkadmin.equinox:0.0.0,1.0.200.v20100505,org.eclipse.ecf.provider.filetransfer.ssl:0.0.0,1.0.0.v20100906-1425,com.btc.amm.archdsl:0.0.0,0.12.0,org.eclipse.birt.report.engine.script.javascript:0.0.0,2.6.2.r262_v20110127,org.eclipse.birt.report.engine.fonts:0.0.0,2.6.2.r262_v20110127,org.apache.commons.logging:0.0.0,1.1.1.v201005080502,org.w3c.dom.smil:0.0.0,1.0.0.v200806040011,com.btc.arch.ArchitectureDsl.generator.commandline:0.0.0,0.12.0,com.btc.arch.ArchitectureDsl.xtext.utils:0.0.0,0.11.0.201408261655,com.btc.arch.visualstudio.generators:0.0.0,0.1.0,org.eclipse.birt.chart.device.svg:0.0.0,2.6.2.r262_v20101230,org.eclipse.equinox.p2.metadata.repository:0.0.0,1.1.0.v20100513,org.eclipse.equinox.p2.core:0.0.0,2.0.3.R36x_v20110111,org.eclipse.birt.data.aggregation:0.0.0,2.6.2.r262_v20110127,org.apache.batik.util:0.0.0,1.6.0.v200805290154,org.eclipse.equinox.simpleconfigurator:0.0.0,1.0.200.v20100503,org.apache.commons.cli:0.0.0,1.2.0.201408261655,org.apache.batik.parser:0.0.0,1.6.0.v200805290154,org.apache.batik.ext.awt:0.0.0,1.6.0.v200805290154,com.ibm.icu:0.0.0,4.2.1.v20100412,org.eclipse.emf.ecore.xmi:0.0.0,2.5.0.v20100521-1846,com.google.inject:0.0.0,2.0.0.v201003051000,org.eclipse.birt.report.engine.emitter.ppt:0.0.0,2.6.2.r262_v20110127,org.eclipse.equinox.p2.publisher:0.0.0,1.1.2.v20100824-2220,org.eclipse.datatools.connectivity.oda.profile:0.0.0,3.2.4.v201007150318,org.eclipse.xtext.util:0.0.0,1.0.2.v201102150722,org.eclipse.birt.report.engine.emitter.html.config:0.0.0,2.6.2.r262_v20110127,org.eclipse.birt.report.engine.emitter.pdf:0.0.0,2.6.2.r262_v20110127,org.eclipse.emf.mwe2.runtime:0.0.0,1.0.2.v201102150556,org.eclipse.core.runtime.compatibility.registry:0.0.0,3.3.0.v20100520,org.eclipse.core.contenttype:0.0.0,3.4.100.v20100505-1235,org.apache.xml.serializer:0.0.0,2.7.1.v201005080400,org.eclipse.core.filesystem:0.0.0,1.3.1.R36x_v20100727-0745,org.apache.batik.svggen:0.0.0,1.6.0.v200805290154,org.eclipse.emf.mwe.utils:0.0.0,1.0.2.v201102150556,org.eclipse.equinox.p2.directorywatcher:0.0.0,1.0.203.R36x_v20101220,org.eclipse.equinox.registry:0.0.0,3.5.0.v20100503,org.apache.batik.dom:0.0.0,1.6.0.v200912221622,org.eclipse.datatools.connectivity.oda.consumer:0.0.0,3.2.3.v201102051100,org.eclipse.emf.common:0.0.0,2.6.0.v20100914-1218,org.eclipse.ecf:0.0.0,3.1.0.v20100906-1425,org.eclipse.xpand:0.0.0,1.0.1.v201008251147,org.eclipse.core.filesystem.win32.x86:0.0.0,1.1.201.R36x_v20100727-0745,org.eclipse.xtend.typesystem.emf:0.0.0,1.0.1.v201008251147,org.eclipse.equinox.frameworkadmin:0.0.0,2.0.0.v20100503,org.eclipse.equinox.p2.garbagecollector:0.0.0,1.0.100.v20100503,com.btc.arch.manifestdependencyparser:0.0.0,0.1.0,com.btc.arch.visualstudio:0.0.0,0.12.0,org.eclipse.xtend:0.0.0,1.0.1.v201008251147,org.eclipse.core.jobs:0.0.0,3.5.1.R36x_v20100824,org.w3c.sac:0.0.0,1.3.0.v20100915,org.eclipse.equinox.p2.repository:0.0.0,2.0.2.R36x_v20110111-1500,org.eclipse.equinox.p2.artifact.repository:0.0.0,1.1.1.R36x_v20100901,com.btc.arch.ArchitectureDsl.generator:0.0.0,0.12.0,org.eclipse.birt.report.item.crosstab.core:0.0.0,2.6.2.r262_v20110127,org.eclipse.equinox.security:0.0.0,1.0.200.v20100503,org.eclipse.osgi:0.0.0,3.6.2.R36x_v20110210,com.btc.commons.java:0.0.0,0.12.0,org.eclipse.birt.report.engine.emitter.config:0.0.0,2.6.2.r262_v20110127,org.eclipse.core.resources:0.0.0,3.6.1.R36x_v20110131-1630,org.eclipse.equinox.simpleconfigurator.manipulator:0.0.0,2.0.0.v20100503,com.btc.arch.ArchitectureDsl.diagnostics:0.0.0,0.12.0,org.eclipse.emf.query:0.0.0,1.2.100.v200903190031,org.eclipse.xtext:0.0.0,1.0.2.v201102150722,org.eclipse.emf.query.ocl:0.0.0,2.0.0.v20091215-1624,org.eclipse.datatools.connectivity:0.0.0,1.2.2.v201010220354,org.eclipse.core.runtime:0.0.0,3.6.0.v20100505,org.eclipse.birt.report.engine.emitter.html:0.0.0,2.6.2.r262_v20110209,org.aopalliance:0.0.0,1.0.0.v200905130917,org.eclipse.equinox.servletbridge.extensionbundle:0.0.0,1.2.0.v20100503,org.apache.xerces:0.0.0,2.9.0.v201005080400,org.apache.commons.lang:0.0.0,2.4.0.v201005080502,org.apache.batik.util.gui:0.0.0,1.6.0.v200805290154,org.eclipse.ocl:0.0.0,3.0.2.R30x_v201101110610,org.eclipse.equinox.p2.touchpoint.eclipse:0.0.0,2.0.3.R36x_v20101202,org.apache.batik.bridge:0.0.0,1.6.0.v200912221622,com.lowagie.text:0.0.0,2.1.7.v201004222200,org.eclipse.ecf.ssl:0.0.0,1.0.100.v20100906-1425,org.eclipse.birt.report.engine:0.0.0,2.6.2.r262_v20110214,lpg.runtime.java:0.0.0,2.0.17.v201004271640,org.eclipse.xtext.logging:0.0.0,1.2.15,org.eclipse.ecf.provider.filetransfer:0.0.0,3.1.0.v20100906-1425,com.btc.commons.eclipse.core:0.0.0,0.11.0.201408261655,org.apache.commons.collections:0.0.0,3.2.1,"/>
+		<eclipse.gatherFeature 
+		   metadataRepository="${p2.build.repo}"
+		   artifactRepository="${p2.build.repo}"
+		   buildResultFolder="${feature.temp.folder}/features/com.btc.arch.ArchitectureDsl.generator.commandline.release_1.0.0.201408261655"
+		   baseDirectory="${basedir}"
+		/>
+	</target>
+
+	<target name="gather.bin.parts" depends="init" if="feature.base">
+		<antcall target="children">
+			<param name="target" value="gather.bin.parts"/>
+			<param name="destination.temp.folder" value="${feature.base}/plugins"/>
+		</antcall>
+		<antcall target="rootFiles">
+			<param name="rootTarget" value="rootFiles${os}_${ws}_${arch}"/>
+		</antcall>
+	</target>
+	<target name="rootFiles" unless="updateJar.omitRootfiles">
+		<antcall target="${rootTarget}"/>
+	</target>
+
+	<target name="rootFiles*_*_*">
+	</target>
+	<target name="rootFilesgroup_group_group">
+		<antcall target="rootFiles*_*_*"/>
+	</target>
+
+	<target name="zip.distribution" depends="init" description="Create a zip containing all the plug-ins and features for the feature: com.btc.arch.ArchitectureDsl.generator.commandline.release.">
+		<delete dir="${feature.temp.folder}"/>
+		<mkdir dir="${feature.temp.folder}"/>
+		<antcall target="gather.bin.parts">
+			<param name="feature.base" value="${feature.temp.folder}"/>
+			<param name="os" value="*"/>
+			<param name="arch" value="*"/>
+			<param name="ws" value="*"/>
+			<param name="nl" value="*"/>
+			<param name="include.children" value="true"/>
+		</antcall>
+		<zip destfile="${feature.destination}/com.btc.arch.ArchitectureDsl.generator.commandline.release_1.0.0.201408261655.bin.dist.zip" basedir="${feature.temp.folder}" filesonly="false" whenempty="skip" update="false"/>
+		<delete dir="${feature.temp.folder}"/>
+	</target>
+
+	<target name="zip.sources" depends="init">
+		<delete dir="${feature.temp.folder}"/>
+		<mkdir dir="${feature.temp.folder}"/>
+		<antcall target="all.children">
+			<param name="target" value="gather.sources"/>
+			<param name="destination.temp.folder" value="${feature.temp.folder}/plugins/com.btc.arch.ArchitectureDsl.generator.commandline.release.source_1.0.0.201408261655/src"/>
+			<param name="include.children" value="true"/>
+		</antcall>
+		<zip destfile="${feature.destination}/com.btc.arch.ArchitectureDsl.generator.commandline.release_1.0.0.201408261655.src.zip" basedir="${feature.temp.folder}" filesonly="true" whenempty="skip" update="false"/>
+		<delete dir="${feature.temp.folder}"/>
+	</target>
+
+	<target name="zip.logs" depends="init">
+		<delete dir="${feature.temp.folder}"/>
+		<mkdir dir="${feature.temp.folder}"/>
+		<condition property="logExtension.param" value="logExtension" else="logExtension.param"		>
+			<isset property="logExtension"/>
+		</condition>
+		<antcall target="all.children" inheritAll="false">
+			<param name="target" value="gather.logs"/>
+			<param name="destination.temp.folder" value="${feature.temp.folder}/plugins"/>
+			<param name="${logExtension.param}" value="${logExtension}"/>
+			<param name="include.children" value="true"/>
+		</antcall>
+		<zip destfile="${feature.destination}/com.btc.arch.ArchitectureDsl.generator.commandline.release_1.0.0.201408261655.log.zip" basedir="${feature.temp.folder}" filesonly="true" whenempty="skip" update="false"/>
+		<delete dir="${feature.temp.folder}"/>
+	</target>
+
+	<target name="clean" depends="init" description="Clean the feature: com.btc.arch.ArchitectureDsl.generator.commandline.release of all the zips, jars and logs created.">
+		<delete file="${feature.destination}/com.btc.arch.ArchitectureDsl.generator.commandline.release_1.0.0.201408261655.jar"/>
+		<delete file="${feature.destination}/com.btc.arch.ArchitectureDsl.generator.commandline.release_1.0.0.201408261655.bin.dist.zip"/>
+		<delete file="${feature.destination}/com.btc.arch.ArchitectureDsl.generator.commandline.release_1.0.0.201408261655.log.zip"/>
+		<delete file="${feature.destination}/com.btc.arch.ArchitectureDsl.generator.commandline.release_1.0.0.201408261655.src.zip"/>
+		<delete dir="${feature.temp.folder}"/>
+		<antcall target="all.children">
+			<param name="target" value="clean"/>
+		</antcall>
+	</target>
+
+	<target name="refresh" depends="init" if="eclipse.running" description="Refresh this folder.">
+		<eclipse.convertPath fileSystemPath="D:/Source/ArchitectureManagementTools/btc-project-epm-architecture/ArchitectureManagementTools/com.btc.arch.ArchitectureDsl.generator.commandline.release/" property="resourcePath"/>
+		<eclipse.refreshLocal resource="${resourcePath}" depth="infinite"/>
+		<antcall target="all.children">
+			<param name="target" value="refresh"/>
+		</antcall>
+	</target>
+	<target name="gather.sources">
+		<antcall target="children">
+			<param name="target" value="gather.sources"/>
+			<param name="destination.temp.folder" value="${feature.temp.folder}/plugins/com.btc.arch.ArchitectureDsl.generator.commandline.release.source_1.0.0.201408261655/src"/>
+		</antcall>
+	</target>
+
+	<target name="gather.logs" depends="init">
+		<mkdir dir="${feature.temp.folder}/plugins"/>
+		<property name="destination.temp.folder" value="${feature.temp.folder}/plugins"/>
+		<condition property="logExtension.param" value="logExtension" else="logExtension.param"		>
+			<isset property="logExtension"/>
+		</condition>
+		<antcall target="all.children" inheritAll="false">
+			<param name="target" value="gather.logs"/>
+			<param name="${logExtension.param}" value="${logExtension}"/>
+			<param name="destination.temp.folder" value="${feature.temp.folder}/plugins"/>
+		</antcall>
+	</target>
+
+</project>

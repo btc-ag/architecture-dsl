@@ -1,0 +1,28 @@
+ModuleGroup A (
+)
+
+ModuleGroup B (
+)
+
+ModuleGroup C (
+)
+
+Module A.A (
+  Type = Framework
+  Language = C++
+  UsedModules = 
+)
+
+Module Indirect.B (
+  Type = Framework
+  Language = C++
+  Group = B
+  UsedModules = 
+)
+
+// The module group of C.A.A is C, since there is no module group C.A
+Module C.A.A (
+  Type = Framework
+  Language = C++
+  UsedModules = 
+)

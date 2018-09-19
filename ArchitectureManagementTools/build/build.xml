@@ -1,0 +1,42 @@
+<project name="buildmain" default="nodefault" basedir=".">
+
+  <description>
+  
+  </description>
+
+  <!-- ===  CUSTOM PROPERTIES  ================================================================= -->
+
+  <!-- load properties from optional user-specific file before loading the defaults -->
+  <property file="build.properties"/>
+  <property file="default.properties"/>
+
+  <!-- directory configuration -->
+  <property name="pkg.dir" location="..\pkg"/>
+
+  <!-- ===  LOAD LIBRARY ======================================================================= -->
+
+  <!-- determine the name of this file and load the corresponding library -->
+  <basename property="current.filename" file="${ant.file.buildmain}" suffix="xml"/>
+  <import file="${current.filename}.lib.xml"/>
+
+  <!-- ===  CUSTOM TARGETS  ==================================================================== -->
+
+  <target name="clean" description="Removes directories that contain build results.">
+    <delete dir="ArchitectureDslGenerator_build" includeEmptyDirs="true"/>
+  </target>
+
+  <target name="pack" description="Prepares files for distribution by creating the packages as defined by CGXML.">
+    <echo message="Packing '${pack-bin.cgxml}'..."/>
+    <pathconvert property="cgxmls" pathsep=" ">
+      <fileset dir="${pkg.dir}" includes="*.cgxml"/>
+    </pathconvert>
+    <macro-cab-get-pack items="${cgxmls}"/>
+  </target>
+ 
+  <target name="-deduce-publish-channel" depends="buildlib.-deduce-publish-channel">
+    <condition property="publish.channel" value="unstable">  
+      <contains string="${svn.url}" substring="/branches/"/>
+    </condition>
+  </target>
+
+</project>

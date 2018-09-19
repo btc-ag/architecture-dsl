@@ -1,0 +1,123 @@
+ModuleGroup BTC.CAB.Identity (
+	Maintainer = "Alexander Westendorf"
+	Domain = Identity
+)
+
+ModuleGroup BTC.CAB.Identity.Authentication (
+	Domain = Authentication
+)
+
+ModuleGroup BTC.CAB.Identity.Authorisation (
+	Domain = Authorisation
+)
+
+// Framework
+Module BTC.CAB.Identity.Types (
+	Type = Framework
+	Language = C#
+)
+
+Module BTC.CAB.Identity.Authentication.Commons (
+	Type = Framework
+	Language = C#
+)
+
+// Interfaces
+Module BTC.CAB.Identity.Authentication.API (
+	Type = Interface 
+	Language = C#
+	UsedModules = BTC.CAB.Identity.Types
+)
+
+Module BTC.CAB.Identity.Authorisation.API (
+	Type = Interface 
+	Language = C#
+	UsedModules = BTC.CAB.Identity.Types
+)  
+
+Module BTC.CAB.Identity.AuthenticationRemote.API (
+	Type = Interface 
+	Language = C#
+	UsedModules = BTC.CAB.Identity.Types
+)
+
+Module BTC.CAB.DataAccess.API (
+	Type = Interface 
+	Language = C#
+	Group = BTC.CAB.Identity
+)
+
+Module BTC.CAB.Identity.Authentication.LDAP.API (
+	Type = Interface 
+	Language = C#
+)
+
+// Implementations
+Module BTC.CAB.Identity.Authentication.LDAP.Impl (
+	Type = Implementation
+	Language = C#
+	ImplementedModules = BTC.CAB.Identity.Authentication.API
+	UsedModules = BTC.CAB.Identity.Authentication.LDAP.ImplCore 
+)
+
+Module BTC.CAB.Identity.Authentication.LDAP.ImplCore (
+	Type = Implementation
+	Language = C#
+	UsedModules = 
+		BTC.CAB.Identity.Authentication.Commons
+		BTC.CAB.Identity.Authentication.LDAP.API
+)
+
+Module BTC.CAB.Identity.Authentication.File.Impl (
+	Type = Implementation
+	Language = C#
+	ImplementedModules = BTC.CAB.Identity.Authentication.API
+	UsedModules = BTC.CAB.Identity.Authentication.Commons
+)
+
+Module BTC.CAB.Identity.Authentication.DB.Impl (
+	Type = Implementation
+	Language = C#
+	ImplementedModules = BTC.CAB.Identity.Authentication.API
+	UsedModules = 
+		BTC.CAB.Identity.Authentication.Commons
+		BTC.CAB.DataAccess.API
+)
+
+Module BTC.CAB.Identity.Authentication.LoginService (
+	Type = Implementation
+	Language = C#
+	ImplementedModules = BTC.CAB.Identity.AuthenticationRemote.API
+)
+
+// TestedModule
+Module BTC.CAB.Identity.Authorisation.API.Test (
+	Type = InterfaceTest
+	Language = C#
+	TestedModule = BTC.CAB.Identity.Authorisation.API
+)
+
+Module BTC.CAB.Identity.Authentication.API.Test (
+	Type = InterfaceTest
+	Language = C#
+	TestedModule = BTC.CAB.Identity.Authentication.API
+)
+
+Module BTC.CAB.Identity.AuthenticationRemote.API.Test (
+	Type = InterfaceTest
+	Language = C#
+	TestedModule = BTC.CAB.Identity.AuthenticationRemote.API
+)
+
+Module BTC.CAB.Identity.Authentication.LDAPImplCore.Test (
+	Type = ImplementationTest
+	Language = C#
+	TestedModule = BTC.CAB.Identity.Authentication.LDAP.ImplCore
+)
+
+Module BTC.CAB.Identity.Authentication.Commons.Test (
+	Type = ImplementationTest // TODO: Framework Test
+	Language = C#
+	TestedModule = BTC.CAB.Identity.Authentication.Commons
+)
+

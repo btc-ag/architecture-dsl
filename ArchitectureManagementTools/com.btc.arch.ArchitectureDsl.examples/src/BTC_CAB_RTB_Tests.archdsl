@@ -1,0 +1,10 @@
+Test BTC.CAB.RTB.Test (
+  TestModule = BTC.CAB.RTB.Test 
+  // Kann man den Pfad der TestExecutionSpecification auch verk�rzen, da er sowieso der Default sein sollte? 
+  // Wenn ja, wie unterscheidet man dann die Module, bei denen das nicht so ist und bei denen der Pfad z.B. relativ zum 
+  // TestModule-Pfad angegeben wird? Ist das dann z.B. die Variante, die genommen wird, sobald ein Slash im 
+  // TestExecutionSpecification-String ist?
+  TestExecutionSpecification = "testsCommon.xml"
+  TestExecutionType = BTCUnitTester
+  TestUnit = BTC.CAB.RTB.Common.CPP
+)

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="overridingGuiceModule" name="overridingGuiceModule" schema="schema/overridingGuiceModule.exsd"/>
+   <extension
+         id="id1"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            cardinality="singleton-global"
+            thread="main"
+            visible="true">
+         <run
+               class="com.btc.arch.generator.commandline.ArchDslCommandLineGenerator">
+         </run>
+      </application>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="com.btc.arch.ArchitectureDsl.generator.commandline.id1"
+            name="ArchDslGenerator">
+         <property
+               name="appName"
+               value="ArchDslGenerator">
+         </property>
+      </product>
+   </extension>
+</plugin>

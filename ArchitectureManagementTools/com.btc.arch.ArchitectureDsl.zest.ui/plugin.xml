@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   
+   <!-- Graph view -->
+   <extension
+         point="org.eclipse.ui.views">
+         <category
+            id="org.eclipse.zest"
+            name="Visualization">
+      </category>
+	   <view
+	            name="Architecture DSL Graph"
+	            icon="resources/icons/graph.gif"
+	            category="org.eclipse.zest"
+	            class="com.btc.arch.zest.ui.ZestGraphView"
+	            id="com.btc.arch.zest.ZestView">
+		</view>
+	</extension>
+ <!--
+<extension point="org.eclipse.ui.console.consoleFactories">
+  <consoleFactory 
+     label="Jython Console"
+     class="com.btc.arch.jython.ui.ConsoleFactory"
+     icon="icons/cmd_console.gif">
+  </consoleFactory>
+</extension>
+-->
+<extension
+      point="org.eclipse.ui.menus">
+   <menuContribution
+         allPopups="false"
+         locationURI="toolbar:com.btc.arch.zest.ZestView">
+      <command
+            commandId="com.btc.arch.ArchitectureDsl.zest.ui.update-mode"
+            icon="resources/icons/update-mode.gif"
+            style="toggle"
+            tooltip="Automatically visualize changed architecture DSL model content in the workspace">
+      </command>
+
+      <command
+            commandId="com.btc.arch.ArchitectureDsl.zest.ui.layout"
+            icon="resources/icons/layout.gif"
+            style="push"
+            tooltip="Layout">
+      </command>
+   </menuContribution>
+   <menuContribution
+         allPopups="false"
+         locationURI="menu:com.btc.arch.zest.ZestView">
+      <command
+            commandId="com.btc.arch.ArchitectureDsl.zest.ui.openFile"
+            icon="resources/icons/open.gif"
+            label="Open File"
+            style="push"
+            tooltip="Load file with architecture DSL model content...">
+      </command>
+
+   </menuContribution>
+</extension>
+<extension
+      point="org.eclipse.ui.handlers">
+   <handler
+         class="com.btc.arch.zest.ui.ZestGraphViewCommandHandler"
+         commandId="com.btc.arch.ArchitectureDsl.zest.ui.update-mode">
+   </handler>
+   <handler
+         class="com.btc.arch.zest.ui.ZestGraphViewCommandHandler"
+         commandId="com.btc.arch.ArchitectureDsl.zest.ui.layout">
+   </handler>
+   <handler
+         class="com.btc.arch.zest.ui.ZestGraphViewCommandHandler"
+         commandId="com.btc.arch.ArchitectureDsl.zest.ui.openFile">
+   </handler>
+</extension>
+<extension
+      point="org.eclipse.ui.commands">
+   <command
+         id="com.btc.arch.ArchitectureDsl.zest.ui.update-mode"
+         name="Update-Mode">
+   </command>
+   <command
+         id="com.btc.arch.ArchitectureDsl.zest.ui.layout"
+         name="Layout">
+   </command>
+   <command
+         id="com.btc.arch.ArchitectureDsl.zest.ui.openFile"
+         name="Open File">
+   </command>
+</extension>
+ 
+</plugin>

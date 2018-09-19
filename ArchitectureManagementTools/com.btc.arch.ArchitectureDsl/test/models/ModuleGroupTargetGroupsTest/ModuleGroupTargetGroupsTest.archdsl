@@ -1,0 +1,32 @@
+ModuleGroup A (
+	Version = 1.0.0
+)
+
+ModuleGroup B (
+	Version = 1.0.0
+)
+
+ModuleGroup B.A (
+)
+
+ModuleGroup C (
+	Version = 1.0.0
+)
+
+Module A.A (
+  Type = Framework
+  Language = C++
+  UsedModules = B.A.A
+)
+
+Module B.A.A (
+  Type = Framework
+  Language = C++
+  UsedModules = 
+)
+
+Module B.A (
+  Type = Framework
+  Language = C++
+  UsedModules = 
+)

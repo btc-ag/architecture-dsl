@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.btc.commons.emf.diagnostics.diagnostics">
+      <diagnostic
+            default-severity="ERROR"
+            description="Unresolved reference in the underlying Ecore model"
+            id="com.btc.arch.ArchitectureDsl.diagnostics.unresolvedReference"
+            subject-type="EObject">
+      </diagnostic>
+   </extension>
+  <extension
+        point="com.btc.commons.emf.diagnostics.diagnostics">
+     <short-prefix
+           value="extracted">
+     </short-prefix>
+     <diagnostic
+           default-severity="WARNING"
+           description="Module specified in Architecture DSL, but no project definition found"
+           id="com.btc.arch.ArchitectureDsl.diagnostics.missing"
+           subject-type="Module">
+     </diagnostic>
+     <diagnostic
+           default-severity="INFO"
+           description="Module not specified in Architecture DSL, but project definition found"
+           id="com.btc.arch.ArchitectureDsl.diagnostics.unspecified"
+           subject-type="Module">
+     </diagnostic>
+     <diagnostic
+           default-severity="INFO"
+           description="Extracted dependency targets that have been ignored during validation"
+           id="com.btc.arch.ArchitectureDsl.diagnostics.ignoredTargets"
+           subject-type="Model">
+     </diagnostic>
+     <diagnostic
+           default-severity="ERROR"
+           description="Actual dependency violates dependency specification"
+           id="com.btc.arch.ArchitectureDsl.diagnostics.extraDependencies"
+           subject-type="Model">
+     </diagnostic>     
+  </extension>
+  <extension
+        point="org.eclipse.core.runtime.preferences">
+  </extension>
+  <extension
+        point="com.btc.arch.ArchitectureDsl.diagnosticProcessingElements">
+     <processingElement
+           class="com.btc.arch.architectureDsl.diagnostics.service.ParseProblemAdapterDiagnosticService"
+           description="Provides diagnostics for dependency parsers that have been used in generating the report"
+           id="com.btc.arch.ArchitectureDsl.diagnostics.dependencyParseProblems">
+     </processingElement>
+     <processingElement
+           class="com.btc.arch.architectureDsl.diagnostics.service.ModelExtractorProcessingElementService"
+           description="Augments the architecture model specified in the DSL by extracted dependencies"
+           id="com.btc.arch.ArchitectureDsl.diagnostics.extractModel">
+     </processingElement>
+     <processingElement
+           class="com.btc.arch.architectureDsl.diagnostics.service.DomainModelModuleDependencyValidatorService"
+           description="Checks if module dependencies are consistent with the domain model"
+           id="com.btc.arch.ArchitectureDsl.diagnostics.domainModelValidation">
+     </processingElement>
+     <processingElement
+           class="com.btc.arch.architectureDsl.diagnostics.service.DefaultTypeBasedModuleDependencyValidatorService"
+           description="Checks whether module dependencies conform to the general module type rules"
+           id="com.btc.arch.ArchitectureDsl.diagnostics.typeCheck">
+     </processingElement>
+     <processingElement
+           class="com.btc.arch.architectureDsl.diagnostics.service.ExtractedModuleDependencyValidatorService"
+           description="Checks extracted module dependencies against specified module dependencies"
+           id="com.btc.arch.ArchitectureDsl.diagnostics.checkExtracted">
+     </processingElement>
+     <processingElement
+           class="com.btc.arch.architectureDsl.diagnostics.service.FixCSharpProcessingElementService"
+           description="Fixes the specified architecture model by adding a System module group which cannot be currently specified in the DSL"
+           id="com.btc.arch.ArchitectureDsl.diagnostics.fixCSharp">
+     </processingElement>
+     <processingElement
+           class="com.btc.arch.architectureDsl.diagnostics.service.UniqueNamedModelElementsProcessingElementService"
+           description="Checks that names of named model elements are unique across all resources of a project"
+           id="com.btc.arch.ArchitectureDsl.diagnostics.uniqueElements">
+     </processingElement>
+  </extension>
+</plugin>

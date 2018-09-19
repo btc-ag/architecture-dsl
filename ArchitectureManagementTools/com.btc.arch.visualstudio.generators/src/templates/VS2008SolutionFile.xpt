@@ -1,0 +1,32 @@
+«IMPORT com::btc::arch::architectureDsl»
+
+«EXTENSION templates::VisualStudioExtensions»
+
+«DEFINE main (String basePath, String limitedTo) FOR Model-»
+	«EXPAND main(basePath, limitedTo) FOR this.modules»
+«ENDDEFINE»
+
+«DEFINE main (String basePath, String limitedTo) FOR List[Module]-»
+«EXPAND main (basePath, limitedTo) FOREACH this»
+«ENDDEFINE»
+
+«DEFINE main (String basePath, String limitedTo) FOR Module»
+«IF this.name.contains(limitedTo)»
+
+«FILE this.name+".sln"-»
+
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+«FOREACH this.getAllTransitiveDependencies() AS module-»
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "«module.name»", "«module.getProjectFile(basePath).toWindowsPath()»", "«module.getProjectFile(basePath).getProjectUUID()»"
+EndProject
+«ENDFOREACH-»
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+EndGlobal
+«ENDFILE-»
+«ENDIF»
+«ENDDEFINE»

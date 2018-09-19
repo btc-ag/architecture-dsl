@@ -1,0 +1,78 @@
+Package cab-commons-rtb (
+	Architecture = "x86 x64"
+	Maintainer = "Handlungsfeld RTB <http://ecfl.e-konzern.de:8080/display/BTCCABRTB/HF+RTB>"
+	Version = 1.3.0_rc
+	Depends = 
+	CoreDeliveryUnits = 
+		BTC.CAB.Commons.Application (1.0.0)
+		BTC.CAB.Commons.CoreYacl (1.0.0)
+		BTC.CAB.Commons.Eventing.API.NET (1.0.0)
+		//BTC.CAB.Commons.Eventing.Impl (1.0.0)
+		//BTC.CAB.Commons.Logging.Log4NET (1.0.0)
+		//BTC.CAB.Commons.Logging.NETWrapper (1.0.0)
+		BTC.CAB.Commons.Sax (1.0.0)
+		BTC.CAB.Commons.Values.NET (1.0.0)
+	Description = "CAB Commons - Library compilation for RTB
+ 			This package contains several libs from BTC.CAB.Commons that are required by
+ 			the RTB.
+			In the long term, this package has to be replaced: instead, the cab-rtb-base
+			package will have a set of dependencies to 'real' CAB Commons components.
+			In the meantime, as soon as CAB Commons components become available, this
+			one here would become a meta package that has an empty file list but depends
+			on the components.
+
+			TODO:
+				* BTC.CAB.Commons.Application.dll is here to pull in other libs
+   					(e.g. Logging.Default) that would be in cab-rtb-tools else.
+   				- This has to be removed once cab-commons has real packages."
+)
+    
+Package cab-rtb-common (
+	Architecture = "x86 x64"
+	Maintainer = "Handlungsfeld RTB <http://ecfl.e-konzern.de:8080/display/BTCCABRTB/HF+RTB>"
+	Version = 0.7.0_a
+	Depends = cab-commons-rtb (>=1.0.0)
+	CoreDeliveryUnits = BTC.CAB.RTB.NETWrapper (1.0.0)
+	Description = "CAB Real Time Bus - Common files
+ 					In Handlungsfeld RTB, the field connection level of the EPM reference architecture
+ 					is concretized, and related components are implemented resp. selected for the
+ 					realization of specialized communication infrastructures for field communication
+ 					in customer projects of the BTC AG that are in the scope of the EPM.
+
+ 					This package contains those RTB libraries that are independent of a
+ 					specific driver or domain, e.g., the general API. It is typically used by the
+ 					drivers.
+
+ 					At the moment, this package depends on a meta package for CAB Commons
+ 					components. In the long term, this package will instead have a set of
+ 					dependencies to 'real' CAB Commons components.
+
+ 					Contains:
+  						* BTC.CAB.RTB.API.dll
+  						* BTC.CAB.RTB.API.NET.dll
+  						* BTC.CAB.RTB.Common.CPP.dll
+  						* BTC.CAB.RTB.Common.NET.dll
+  						* BTC.CAB.RTB.NETWrapper.dll"
+)
+
+Package cab-rtb-extras (
+	Architecture = "x86 x64"
+	Maintainer = "Handlungsfeld RTB <http://ecfl.e-konzern.de:8080/display/BTCCABRTB/HF+RTB>"
+	Version = 0.7.0
+	Depends = cab-rtb-common (0.7.0-1.7.0)
+	CoreDeliveryUnits = BTC.CAB.RTB.Driver.Multiplexer (1.0.0)
+	Description = "CAB Real Time Bus - Extra libraries
+ 					The RTB allows to interact with intelligent grid
+ 					devices (IGD) through a common interface.
+
+ 					This package contains RTB subcomponents that are required
+ 					under certain circumstances.
+  					* Multiplexer: allows to host multiple RTB drivers at the same time.
+     					Depends on Commons, RTB.Common, RTB.API, RTB.Model, RTB.Driver.Base.
+  					* ...
+
+ 					Contains:
+  					* BTC.CAB.RTB.Driver.Base.dll            (used by Multiplexer)
+  					* BTC.CAB.RTB.Driver.Multiplexer.dll
+  					* BTC.CAB.RTB.Model.dll                  (used by Multiplexer)"  						
+)  						

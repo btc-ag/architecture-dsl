@@ -1,0 +1,36 @@
+import com::btc::arch::architectureDsl;
+
+String getProjectFile(Module module, String basePath):
+	basePath + "\\" + module.getWindowsPath() + "\\" + module.name + ".csproj";
+	
+String getProjectUUID(String projectFile):
+	JAVA com.btc.arch.javahelper.XpandHelper.getProjectUUID(java.lang.String);
+	
+// The following extension should be removed if the extensions in com.btc.arch.ArchitectureDsl.generator can be used directly
+String getWindowsPath(Module module):
+	JAVA com.btc.arch.javahelper.XpandHelper.getWindowsPath(com.btc.arch.architectureDsl.Module);
+	
+String getUnderscoreName(Module module):
+	module.name.replaceSubstring(".", "_");
+	
+List[String] getHeaderFilenames (Module module, String basepath):
+	JAVA com.btc.arch.javahelper.XpandHelper.getHeaderFilenames(com.btc.arch.architectureDsl.Module, java.lang.String);
+	
+List[String] getImplementationFilenames (Module module, String basepath):
+	JAVA com.btc.arch.javahelper.XpandHelper.getImplementationFilenames(com.btc.arch.architectureDsl.Module, java.lang.String);
+	
+// TODO Replace by allDependencies/allTransitiveDependencies defined in com.btc.arch.ArchitectureDsl
+create Set[Module] getAllDependencies(Module module):
+	this.addAll(module.usedModules) -> 
+	this.addAll(module.implementedModules) ->
+	this.addAll(module.testedModule);	
+	
+create Set[Module] getAllTransitiveDependencies(Module module):
+	this.addAll(module.getAllDependencies()) ->
+	this.addAll(module.getAllDependencies().getAllTransitiveDependencies());
+	
+String getRelativePathTo(Module sourceModule, Module targetModule, String releaseUnitName):
+	JAVA com.btc.arch.visualstudio.generators.VisualStudioXpandHelper.getRelativePathTo(com.btc.arch.architectureDsl.Module, com.btc.arch.architectureDsl.Module, java.lang.String);
+	
+List[String] getCsFiles (String targetDir, String windowsPath):
+	JAVA com.btc.arch.visualstudio.generators.VisualStudioXpandHelper.getCsFiles(java.lang.String, java.lang.String);

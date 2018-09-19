@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="com.btc.arch.base.DependencySourceServiceFactory" name="Dependency Source Service Factory" schema="schema/com.btc.arch.base.DependencySourceServiceFactory.exsd"/>
+
+</plugin>

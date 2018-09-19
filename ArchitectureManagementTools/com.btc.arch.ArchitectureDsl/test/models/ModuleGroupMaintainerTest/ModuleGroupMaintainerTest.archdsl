@@ -1,0 +1,21 @@
+ModuleGroup A (
+	Maintainer = "A.Maintainer"
+)
+
+ModuleGroup B (
+	Maintainer = "B.Maintainer"
+)
+
+ModuleGroup C (
+	Maintainer = "C.Maintainer"
+)
+
+ModuleGroup A.A ()
+
+ModuleGroup B.A (
+	Maintainer = ""
+)
+
+ModuleGroup C.A (
+	Maintainer = "C.A.Maintainer"
+)

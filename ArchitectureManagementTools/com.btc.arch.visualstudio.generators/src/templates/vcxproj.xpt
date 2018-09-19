@@ -1,0 +1,167 @@
+«IMPORT com::btc::arch::architectureDsl»
+
+«EXTENSION templates::VisualStudioExtensions»
+
+«DEFINE main (String basePath, String limitedTo) FOR Model-»
+	«EXPAND main(basePath, limitedTo) FOR this.modules»
+«ENDDEFINE»
+
+«DEFINE main (String basePath, String limitedTo) FOR List[Module]-»
+«EXPAND main (basePath, limitedTo) FOREACH this»
+«ENDDEFINE»
+
+«DEFINE main (String basePath, String limitedTo) FOR Module»
+«IF this.name.contains(limitedTo)»
+
+«FILE this.getWindowsPath()+"\\build\\"+this.name+".vcxproj"-»
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{2FCA91FD-0D9B-406C-A9E1-F383C47C8ED5}</ProjectGUID>
+    <SccProjectName />
+    <SccLocalPath />
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>«this.name»</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+    <PropertyGroup>
+      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Source\CoreAssetBase\trunk-build\cab_win32_msvs10_vs_debug_full\dst\Debug\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">«this.name».dir\Debug\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">«this.name»</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.dll</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>«basePath»/..;«basePath»;«basePath»/BTC;«basePath»/KEMA;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <CallingConvention>Cdecl</CallingConvention>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnablePREfast>false</EnablePREfast>
+      <ErrorReporting>Queue</ErrorReporting>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <MinimalRebuild>true</MinimalRebuild>
+      <OmitFramePointers>false</OmitFramePointers>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDLL;_MBCS;CMAKE_INTDIR="Debug";«this.getUnderscoreName()»_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>Debug</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>D:/Source/CoreAssetBase/trunk-build/cab_win32_msvs10_vs_debug_full/dst/Debug/«this.name».pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDLL;_MBCS;CMAKE_INTDIR=\"Debug\";«this.getUnderscoreName()»_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectorbasePathctory»/..;«basePath»;«basePath»/BTC;«basePath»/KEMA;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>«basePath»/..;«basePath»;«basePath»/BTC;«basePath»/KEMA;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /TLBID:1 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;
+      «FOREACH this.getAllDependencies() AS includedModule SEPARATOR ";"-»..\..\..\..\dst\Debug\«includedModule.name».lib«ENDFOREACH-»</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <FixedBaseAddress>false</FixedBaseAddress>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>D:/Source/CoreAssetBase/trunk-build/cab_win32_msvs10_vs_debug_full/dst/Debug/«this.name».lib</ImportLibrary>
+      <LinkErrorReporting>QueueForNextLogin</LinkErrorReporting>
+      <LinkIncremental>true</LinkIncremental>
+      <ProgramDataBaseFileName>D:/Source/CoreAssetBase/trunk-build/cab_win32_msvs10_vs_debug_full/dst/Debug/«this.name».pdb</ProgramDataBaseFileName>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX86</TargetMachine>
+      <Version>0.0</Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\..\..\..\BTC\RTB\API\build\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule D:/Source/CoreAssetBase/BTC/RTB/API/build/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Programme\CMake-2.8\bin\cmake.exe -HD:/Source/CoreAssetBase -BD:/Source/CoreAssetBase/trunk-build/cab_win32_msvs10_vs_debug_full --check-stamp-file D:\Source\CoreAssetBase\trunk-build\cab_win32_msvs10_vs_debug_full\BTC\RTB\API\build\CMakeFiles\generate.stamp
+if errorlevel 1 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:/Source/CoreAssetBase/BTC/RTB/API/build/CMakeLists.txt;D:\Source\CoreAssetBase\BTC\RTB\API\build\CMakeLists.txt;D:\Source\CoreAssetBase\BTC\RTB\API\build\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Source\CoreAssetBase\trunk-build\cab_win32_msvs10_vs_debug_full\BTC\RTB\API\build\CMakeFiles\generate.stamp;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  	«FOREACH this.getHeaderFilenames(basePath) AS headerFilename-»
+  	<ClInclude Include="..\..\..\..\..\..\«this.getWindowsPath()»\include\«headerFilename»" /> «REM»TODO: Determine path depth«ENDREM»
+  	«ENDFOREACH-»
+    «FOREACH getImplementationFilenames(this.name) AS implementationFilename-»
+  	<ClCompile Include="..\..\..\..\..\..\«this.getWindowsPath()»\src\«implementationFilename»" /> «REM»TODO: Determine path depth«ENDREM»
+  	«ENDFOREACH-»
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:/Source/CoreAssetBase/trunk-build/cab_win32_msvs10_vs_debug_full/BTC/Commons/Core/build/BTC.CAB.Commons.Core.vcxproj">
+      <Project>9847293B-6E49-4768-A3EB-A4E2BB50EAFC</Project>
+    </ProjectReference>
+    <ProjectReference Include="D:/Source/CoreAssetBase/trunk-build/cab_win32_msvs10_vs_debug_full/BTC/Commons/CoreExtras/build/BTC.CAB.Commons.CoreExtras.vcxproj">
+      <Project>4677D83B-33C0-4713-B845-9AED268253E0</Project>
+    </ProjectReference>
+    <ProjectReference Include="D:/Source/CoreAssetBase/trunk-build/cab_win32_msvs10_vs_debug_full/BTC/Commons/Dom/build/BTC.CAB.Commons.Dom.vcxproj">
+      <Project>1B397119-ACBA-430F-AF99-9EAE75F0FF8E</Project>
+    </ProjectReference>
+    <ProjectReference Include="D:/Source/CoreAssetBase/trunk-build/cab_win32_msvs10_vs_debug_full/BTC/Commons/Eventing/API/build/BTC.CAB.Commons.Eventing.API.vcxproj">
+      <Project>A70F5564-2AEA-461A-A528-695FE70B76C5</Project>
+    </ProjectReference>
+    <ProjectReference Include="D:/Source/CoreAssetBase/trunk-build/cab_win32_msvs10_vs_debug_full/BTC/Commons/Eventing/CallerAPI/build/BTC.CAB.Commons.Eventing.CallerAPI.vcxproj">
+      <Project>F37D22E3-16F1-4AAE-8D9E-C543EA159DF5</Project>
+    </ProjectReference>
+    <ProjectReference Include="D:/Source/CoreAssetBase/trunk-build/cab_win32_msvs10_vs_debug_full/BTC/Commons/Logging/API/build/BTC.CAB.Commons.Logging.API.vcxproj">
+      <Project>1CA7A75C-35D6-4153-A6B9-B1C6A90517DE</Project>
+    </ProjectReference>
+    <ProjectReference Include="D:/Source/CoreAssetBase/trunk-build/cab_win32_msvs10_vs_debug_full/BTC/Commons/Sax/build/BTC.CAB.Commons.Sax.vcxproj">
+      <Project>EE23A797-5700-4EE4-9133-5AC4154EDA09</Project>
+    </ProjectReference>
+    <ProjectReference Include="D:/Source/CoreAssetBase/trunk-build/cab_win32_msvs10_vs_debug_full/BTC/Commons/Values/build/BTC.CAB.Commons.Values.vcxproj">
+      <Project>94616CC2-9518-41A3-9FB4-563440DDDF20</Project>
+    </ProjectReference>
+    <ProjectReference Include="D:/Source/CoreAssetBase/trunk-build/cab_win32_msvs10_vs_debug_full/BTC/RTB/Common/CPP/build/BTC.CAB.RTB.Common.CPP.vcxproj">
+      <Project>7263BC4C-018D-4FEB-A624-8C77A9BF486A</Project>
+    </ProjectReference>
+    <ProjectReference Include="D:/Source/CoreAssetBase/trunk-build/cab_win32_msvs10_vs_debug_full/ZERO_CHECK.vcxproj">
+      <Project>3B8835B6-F6A8-44CE-B308-E923B1C17034</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
+
+«ENDFILE-»
+«ENDIF»
+«ENDDEFINE»

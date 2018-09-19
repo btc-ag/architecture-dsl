@@ -1,0 +1,37 @@
+ModuleGroup BTC.CAB.Encoding ( 
+	Maintainer = "Rüdiger Stevens"
+	Domain = ProductDevelopment
+)
+
+Module BTC.CAB.Encoding.SML.Test (
+  Type = ImplementationTest
+  Language = C++
+  TestedModule = BTC.CAB.Encoding.SML.General
+)
+
+Module BTC.CAB.Encoding.SML.General (
+	Type = Implementation
+	Language = C++
+	UsedModules = 
+  		BTC.CAB.Commons.Core
+	  	BTC.CAB.Commons.Values
+	  	BTC.CAB.Commons.CoreExtras
+)
+
+Module BTC.CAB.Encoding.ASN1.Test (
+  Type = ImplementationTest InterfaceTest
+  Language = C++
+  TestedModule = BTC.CAB.Encoding.ASN1.API BTC.CAB.Encoding.ASN1.SpecParser BTC.CAB.Encoding.ASN1.Specification
+)
+Module BTC.CAB.Encoding.ASN1.API (
+	Type = Interface
+	Language = C++
+)
+Module BTC.CAB.Encoding.ASN1.SpecParser (
+	Type = Implementation
+	Language = C++
+)
+Module BTC.CAB.Encoding.ASN1.Specification (
+	Type = Implementation
+	Language = C++
+)

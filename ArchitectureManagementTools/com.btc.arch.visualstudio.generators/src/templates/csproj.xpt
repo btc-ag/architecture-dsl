@@ -1,0 +1,67 @@
+«IMPORT com::btc::arch::architectureDsl»
+
+«EXTENSION templates::VisualStudioExtensions»
+
+«DEFINE main (String releaseUnitName, String limitedTo, String targetDir) FOR Model-»
+	«EXPAND main(releaseUnitName, limitedTo, targetDir) FOR this.modules-»
+«ENDDEFINE»
+
+«DEFINE main (String releaseUnitName, String limitedTo, String targetDir) FOR List[Module]-»
+«EXPAND main (releaseUnitName, limitedTo, targetDir) FOREACH this-»
+«ENDDEFINE»
+
+«DEFINE main (String releaseUnitName, String limitedTo, String targetDir) FOR Module-»
+«IF this.name.contains(limitedTo)-»
+«FILE this.getWindowsPath()+"\\"+this.name+".csproj"-»
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\build\ProjectSettings" />
+  <PropertyGroup>
+    <ProjectGuid>«this.guid»</ProjectGuid>
+    «IF this.type == ModuleType::CONFIGURATOR-»
+    <OutputType>Exe</OutputType>
+    «ELSE-»
+    <OutputType>Library</OutputType>
+    «ENDIF-»
+    <RootNamespace>«this.name-»</RootNamespace>
+    <AssemblyName>«this.name-»</AssemblyName>
+  </PropertyGroup>
+  	«FOREACH this.usedModules.select(m|!m.name.startsWith("System")&&!m.name.startsWith(releaseUnitName)) AS module-»
+  	<Reference Include="«module.name»">
+      <HintPath>$(SolutionDir)\..\..\..\..\$(PlatformTarget)\$(Configuration)\«module.name-».dll</HintPath>
+    </Reference>
+  	«ENDFOREACH-»
+  <ItemGroup>
+  	«FOREACH this.usedModules.select(m|m.name.startsWith("System")) AS module-»
+  	<Reference Include="«module.name-»" />
+  	«ENDFOREACH-»
+  </ItemGroup>
+  «REM»TODO: Add ability to add further item groups?«ENDREM»
+  <ItemGroup>
+  	«FOREACH this.usedModules.select(m|m.name.startsWith(releaseUnitName)) AS module-»
+  	<ProjectReference Include="«this.getRelativePathTo(module, releaseUnitName)»«module.name-».csproj">
+      <Project>«module.guid-»</Project>
+      <Name>«module.name-»</Name>
+    </ProjectReference>
+  	«ENDFOREACH-»
+  </ItemGroup>
+  <ItemGroup>
+  	<Compile Include="..\build\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    «FOREACH targetDir.getCsFiles(this.getWindowsPath()) AS filename-»
+    <Compile Include="«filename»" />
+    «ENDFOREACH-»
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
+«ENDFILE-»
+«ENDIF»
+«ENDDEFINE»

@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Java-Jython Wrapper around RevEngTools
+Bundle-SymbolicName: com.btc.arch.revengtools
+Bundle-Version: 0.8.0.qualifier
+Bundle-Vendor: BTC
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: jython;bundle-version="2.5.2",
+ org.eclipse.core.runtime
+Export-Package: com.btc.arch.jython

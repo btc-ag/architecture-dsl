@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.btc.arch.ArchitectureDsl.generator.archdsl_generator">
+      <generator
+            class="com.btc.arch.visualstudio.generators.CppProjectGenerator"
+            description="Generates C++ project files"
+            symbolic_name="cpp-project">
+      </generator>
+   </extension>
+   <extension
+         point="com.btc.arch.ArchitectureDsl.generator.archdsl_generator">
+      <generator
+            class="com.btc.arch.visualstudio.generators.VS2008SolutionGenerator"
+            description="Generates VisualStudio2008 Solutions"
+            symbolic_name="vs2008-solution">
+      </generator>
+   </extension>
+   <extension
+         point="com.btc.arch.ArchitectureDsl.generator.archdsl_generator">
+      <generator
+            class="com.btc.arch.visualstudio.generators.CsprojGenerator"
+            description="Generates C# project files"
+            symbolic_name="csproject">
+      </generator>
+   </extension>
+</plugin>

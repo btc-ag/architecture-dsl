@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Revengtoolsbridge
+Bundle-SymbolicName: com.btc.arch.ArchitectureDsl.revengtoolsbridge
+Bundle-Version: 0.9.0.qualifier
+Bundle-Vendor: BTC
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: com.btc.arch.jython.emf
+Require-Bundle: com.btc.arch.ArchitectureDsl,
+ com.btc.arch.revengtools,
+ jython,
+ org.eclipse.emf.ecore,
+ com.google.inject

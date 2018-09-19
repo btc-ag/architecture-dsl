@@ -1,0 +1,70 @@
+«IMPORT com::btc::arch::architectureDsl»
+
+«EXTENSION templates::Queries»
+«EXTENSION templates::Extensions»
+
+«REM»The module groups are required to provide a version. 
+TODO: Change filename when more than one core assset profile has to be generated.«ENDREM»
+«DEFINE main FOR List[ModuleGroup]-»
+		«EXPAND main FOREACH this»
+«ENDDEFINE»
+
+«REM»The module group is required to provide a version.«ENDREM»
+«DEFINE main FOR ModuleGroup»
+«FILE "profile.txt"»
+////////////////////////////////////////////////////////////////////////////
+// COPYRIGHT (C) 2011 BTC Business Technology Consulting AG.              //
+//                                                                        //
+// Alle Rechte vorbehalten.                                               //
+// Diese Software ist nach deutschem und internationalem Recht            //
+// urheberrechtlich geschuetzt.                                           //
+//                                                                        //
+// All rights reserved.                                                   //
+// This Software is protected by German and international copyright laws. //
+////////////////////////////////////////////////////////////////////////////
+
+
+===  Content  ===
+
+* Core Asset Profile
+* Release Notes
+* Support
+* Installation and Usage
+
+
+===  Core Asset Profile  ===
+
+Name:           «this.name»
+Version:        «this.version»
+Maintainer:     «this.getEffectiveMaintainer()»
+Documentation:  «this.documentation»
+Dependencies:   «IF this.getAllVersionedTargetModuleGroups().size == 0»None«ELSE»«FOREACH this.getAllVersionedTargetModuleGroups() AS dependencyTarget SEPARATOR ", "-»«dependencyTarget.name» («dependencyTarget.version»)«ENDFOREACH»«ENDIF»
+Requirements:   «this.requirements»
+
+Description:
+ «this.description.replaceAll("\t", "").replaceAll("\n", "\n\t")»
+
+ 
+===  Release Notes  ===
+
+
+
+===  Support  ===
+
+This release is supported until YYYY-MM-DD.
+
+Please report bugs to the CAB issue tracker:
+http:// ejra.e-konzern.de:8080/browse/BTCCOREASSETBASE
+
+* Please check to see if the bug has already been reported.
+* Please use one issue for each defect you want to report.
+* Please provide information on
+  - the steps to reproduce the problem,
+  - the expected output,
+  - what you see instead.
+
+
+===  Installation and Usage  ===
+
+«ENDFILE»
+«ENDDEFINE»

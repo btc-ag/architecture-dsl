@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Commandline Generator
+Bundle-SymbolicName: com.btc.arch.ArchitectureDsl.generator.commandline;singleton:=true
+Bundle-Version: 0.12.0
+Bundle-Vendor: BTC
+Require-Bundle: com.btc.arch.ArchitectureDsl.generator;bundle-version="0.8.0",
+ com.btc.arch.ArchitectureDsl.xtext.utils;bundle-version="0.8.0",
+ org.eclipse.core.resources,
+ org.eclipse.equinox.app,
+ org.eclipse.core.runtime,
+ com.btc.arch.ArchitectureDsl,
+ org.eclipse.emf.common,
+ org.eclipse.emf.ecore,
+ com.google.inject,
+ org.eclipse.xtext,
+ com.btc.arch.base,
+ com.btc.commons.java,
+ com.btc.commons.eclipse.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Import-Package: org.apache.commons.cli;version="1.2.0",org.apache.log4j

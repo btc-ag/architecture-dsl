@@ -1,0 +1,25 @@
+Domain ProductDevelopment (
+	Subdomains = 
+		RealTimeBus
+		Identity
+)
+
+StandardInterface AsyncCommunication_API (
+	Domain = ProductDevelopment
+	Modules = BTC.CAB.AsyncCommunication.API
+)
+
+StandardInterface Logging_API (
+	Domain = ProductDevelopment
+	Modules = BTC.CAB.Commons.Logging.API
+)  
+
+StandardInterface Eventing_API (
+	Domain = ProductDevelopment
+	Modules = BTC.CAB.Commons.Eventing.API
+)
+
+StandardInterface Eventing_Caller_API (
+	Domain = ProductDevelopment
+	Modules = BTC.CAB.Commons.Eventing.CallerAPI
+)

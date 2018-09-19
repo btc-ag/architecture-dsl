@@ -1,0 +1,4 @@
+Module A.B (
+	Type = Framework
+	Language = C++
+)

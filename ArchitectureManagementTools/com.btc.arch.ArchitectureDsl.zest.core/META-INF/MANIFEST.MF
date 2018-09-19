@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: com.btc.arch.ArchitectureDsl.zest.core
+Bundle-SymbolicName: com.btc.arch.ArchitectureDsl.zest.core;singleton:=true
+Bundle-Version: 0.11.0
+Require-Bundle: com.btc.arch.ArchitectureDsl,
+ org.eclipse.core.resources,
+ org.eclipse.xtext,
+ org.eclipse.xtext.generator;resolution:=optional,
+ org.eclipse.zest.core;bundle-version="1.2.0",
+ org.eclipse.zest.layouts;bundle-version="1.1.0",
+ org.eclipse.core.runtime;bundle-version="3.6.0"
+Export-Package: com.btc.arch.zest
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: BTC AG

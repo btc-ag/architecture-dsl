@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="archdsl_generator" name="Generator based on an Architecture DSL model" schema="schema/archdsl_generator.exsd"/>
+   <extension
+         point="com.btc.arch.ArchitectureDsl.generator.archdsl_generator">
+      <generator
+            class="com.btc.arch.generator.generators.CoreAssetProfileGenerator"
+            description="Generates a Core Asset Profile"
+            symbolic_name="core-asset-profile">
+      </generator>
+   </extension>
+   <extension
+         point="com.btc.arch.ArchitectureDsl.generator.archdsl_generator">
+      <generator
+            class="com.btc.arch.generator.generators.CMakeGenerator"
+            description="Generates CMake Artefacts"
+            symbolic_name="cmake">
+      </generator>
+   </extension>
+   <extension
+         point="com.btc.arch.ArchitectureDsl.generator.archdsl_generator">
+      <generator
+            class="com.btc.arch.generator.generators.JenkinsTestConfigurationGenerator"
+            description="Generates Jenkins Test Configurations"
+            symbolic_name="jenkins-test-config">
+      </generator>
+   </extension>
+   <extension
+         point="com.btc.arch.ArchitectureDsl.generator.archdsl_generator">
+      <generator
+            class="com.btc.arch.generator.generators.ModuleGraphGenerator"
+            description="Generates Module Graphs"
+            symbolic_name="module-graph">
+      </generator>
+   </extension>
+   <extension
+         point="com.btc.arch.ArchitectureDsl.generator.archdsl_generator">
+      <generator
+            class="com.btc.arch.generator.generators.TestScriptGenerator"
+            description="Generates Test Scripts"
+            symbolic_name="test-script">
+      </generator>
+   </extension>
+   <extension
+         point="com.btc.arch.ArchitectureDsl.generator.archdsl_generator">
+      <generator
+            class="com.btc.arch.generator.generators.CgxmlGenerator"
+            description="Generates a cgxml file"
+            symbolic_name="cgxml">
+      </generator>
+   </extension>
+</plugin>

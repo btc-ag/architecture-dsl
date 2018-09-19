@@ -1,0 +1,422 @@
+Domain Software_Development ()
+
+ModuleGroup Extern (
+	Domain = Software_Development
+)
+
+Module org.eclipse.xtext (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.xtext.generator (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.apache.commons.logging (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.emf.codegen.ecore (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.emf.mwe.utils (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.emf.mwe2.launch (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module com.ibm.icu (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.xtext.xtend (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.xtext.util (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.emf.ecore (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.emf.common (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.antlr.runtime (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.core.runtime (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.emf.query (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.core.resources (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.emf.query.ocl (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.ocl.ecore (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.xtend (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.junit4 (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+
+Module org.eclipse.xpand (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.xtend.typesystem.emf (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.equinox.app (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module com.google.inject (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.jface (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.ui (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.xtext.ui (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.birt.report.engine (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.birt.report.engine.script.javascript (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.birt.report.engine.emitter.ppt (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.birt.report.engine.emitter.ppt.config (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.birt.report.engine.emitter.html (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.birt.report.engine.emitter.html.config (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.birt.report.engine.emitter.pdf (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.birt.report.engine.emitter.pdf.config (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.birt.chart.engine (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.birt.chart.engine.extension (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.birt.chart.reportitem (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.birt.chart.device.svg (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.birt.chart.device.pdf (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.zest.core (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.core.commands (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.swt (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.ui.editors (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.ui.ide (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.xtext.ui.shared (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.xtext.builder (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.core.filesystem (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.apache.commons.io (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.ui.navigator.resources (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.ui.navigator (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.zest.layouts (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)
+
+Module org.eclipse.core.expressions (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = Extern
+ 	//Maintainer = ""
+ 	Description = ""
+)	

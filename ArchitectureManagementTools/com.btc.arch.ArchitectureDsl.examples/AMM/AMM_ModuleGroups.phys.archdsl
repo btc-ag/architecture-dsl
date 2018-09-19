@@ -1,0 +1,105 @@
+ModuleGroup BTC.AMM (
+	Maintainer = ""
+	Domain = AMM
+	AllowedTargetDomains = 
+		AMMDevelopment
+)
+
+ModuleGroup BTC.AMM.Common (
+	Maintainer = ""
+	Domain = AMMDevelopment
+)
+
+ModuleGroup BTC.AMM.Server (
+	Maintainer = ""
+	AllowedTargetDomains = AMMServerDevelopment
+)
+
+ModuleGroup BTC.AMM.Server.Base (
+	Maintainer = ""
+	Domain = AMMServerDevelopment
+)
+
+ModuleGroup BTC.AMM.Server.Administration (
+	Maintainer = ""
+	Domain = UserManagement
+)
+
+ModuleGroup BTC.AMM.Server.Analysis (
+	Maintainer = ""
+	Domain = ReportingAnalysis
+	AllowedTargetDomains = 
+		SystemConfigurationManagement
+) 
+
+ModuleGroup BTC.AMM.Server.Billing (
+	Maintainer = ""
+	Domain = CRMBillingCommunication
+	AllowedTargetDomains = 
+		InputOutputManagement
+		SystemConfigurationManagement
+) 
+
+ModuleGroup BTC.AMM.Server.Configuration (
+	Maintainer = ""
+	Domain = SystemConfigurationManagement
+) 
+
+ModuleGroup BTC.AMM.Server.DeviceManagement (
+	Maintainer = ""
+	Domain = DeviceManagement
+	AllowedTargetDomains =
+		TariffManagement
+		SystemConfigurationManagement
+) 
+
+ModuleGroup BTC.AMM.Server.MeterDataManagement (
+	Maintainer = ""
+	Domain = MeterDataManagement
+	AllowedTargetDomains = 
+		TimeSeriesManagement
+) 
+
+ModuleGroup BTC.AMM.Server.OutboxController (
+	Maintainer = ""
+	Domain = InputOutputManagement
+	AllowedTargetDomains =
+		CRMBillingCommunication
+		SystemConfigurationManagement
+)
+
+ModuleGroup BTC.AMM.Server.RuleEngine (
+	Maintainer = ""
+	Domain = MeterDataDispatcher
+	AllowedTargetDomains =
+		MeterDataPreparation
+		MeterDataVerification
+		RealTimeBus
+		MeterDataEnrichment
+		RawDataManagement
+		MeterDataManagement
+		SystemConfigurationManagement
+)
+
+ModuleGroup BTC.AMM.Server.TariffManagement (
+	Maintainer = ""
+	Domain = TariffManagement
+)
+
+ModuleGroup BTC.AMM.Server.TaskController (
+	Maintainer = ""
+	Domain = MeterControl
+	AllowedTargetDomains =
+		RealTimeBus
+		SystemConfigurationManagement
+)
+
+ModuleGroup BTC.AMM.Server.Tasks (
+	Maintainer = ""
+	Domain = ProcessManagement
+)
+
+ModuleGroup BTC.AMM.Server.WorkflowController (
+	Maintainer = ""
+	Domain = ProcessManagement
+)

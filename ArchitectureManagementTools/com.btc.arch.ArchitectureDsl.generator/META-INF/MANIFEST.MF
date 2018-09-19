@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: com.btc.arch.ArchitectureDsl.generator
+Bundle-Vendor: BTC AG
+Bundle-Version: 0.12.0
+Bundle-SymbolicName: com.btc.arch.ArchitectureDsl.generator;singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: com.btc.arch.ArchitectureDsl,
+ org.eclipse.xpand;bundle-version="1.0.1",
+ org.eclipse.xtend,
+ org.eclipse.xtext,
+ org.eclipse.emf.mwe2.launch;resolution:=optional,
+ org.eclipse.emf.mwe.utils,
+ org.eclipse.xtend.typesystem.emf,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ com.btc.commons.java,
+ com.btc.arch.base,
+ com.btc.arch.ArchitectureDsl.xtext.utils,
+ com.btc.commons.eclipse.core
+Import-Package: org.apache.log4j
+Export-Package: com.btc.arch.generator;uses:="org.eclipse.core.runtime,org.osgi.framework,com.btc.arch.architectureDsl",
+ com.btc.arch.generator.generators
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Activator: com.btc.arch.generator.GeneratorBundle

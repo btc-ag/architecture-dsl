@@ -1,0 +1,1311 @@
+<project name="buildlib" default="help" basedir="..">
+
+  <!-- ***************************************************************************************** -->
+  <!--                                       PREAMBLE                                            -->
+  <!-- ***************************************************************************************** -->
+
+  <description>
+    ! DO NOT CHANGE THIS FILE   unless you plan to roll it out everywhere !
+
+    This build script is based on the "Ant Interface" described at
+    http://wiki.e-konzern.de/display/BTCCABMGMT/Ant+Interface .
+    It prepares a CAB component for build using cab-get, compiles it using msbuild, nmake, cmake,
+    and/or make, and arranges the results to be packed and published. Its main purpose is to be
+    used on Jenkins, but it should run elsewhere.
+    The "basedir" property shall be the component's base directory.
+
+    If depending on binaries only (currently some of our .NET components) then the individual
+    calling script (build.xml) is expected to set the property "deps.bin" to signal that
+    dependencies have to be installed to another location (i.e., ./lib).
+
+    If you are doing a build locally (not on Jenkins) and auto-detection fails then you might try
+    to run it in a Visual Studio-prepared environment (vcvarsall.bat).
+  </description>
+
+  <!-- ========================================================================================= -->
+  <target name="help">
+    <echo message="  Run 'ant -p' to get an overview of the public targets."/>
+    <echo message="  Run 'ant -h' to print Ant help."/>
+    <echo message="  Append '-v' to increase Ant verbosity."/>
+  </target>
+
+  <!-- ========================================================================================= -->
+  <target name="cab-get" description="Runs cab-get. Mimics the direct calling of cab-get by passing all contents of a property specified by '-Dargs=&quot;&lt;arguments&gt;&quot;' as command line arguments to an instance of cab-get. Presumes that the target 'install-cab-get' has recently been run.">
+    <condition property="cab-get.jar.exists">
+      <available file="${cab-get.jar}"/>
+    </condition>
+    <fail message="File not found: ${cab-get.jar}. This target assumes that the target 'install-cab-get' has been run recently." unless="cab-get.jar.exists"/>
+    <fail message="Arguments missing. Specify with '-Dargs=&quot;&lt;arguments&gt;&quot;', e.g., '-Dargs=-h' for help." unless="args"/>
+    <echo message="Running cab-get ${args}"/>
+    <java jar="${cab-get.jar}" fork="true" failonerror="true">
+      <arg line="${args}"/>
+    </java>
+  </target>
+
+
+  <!-- ***************************************************************************************** -->
+  <!--                                 GLOBAL PROPERTIES                                         -->
+  <!-- ***************************************************************************************** -->
+
+
+  <!-- load properties from optional user-specific file before loading the defaults -->
+  <!-- (note that properties are immutable) -->
+  <property file="${user.dir}/user.properties"/>
+
+  <!-- determine the name of this file and load the corresponding default properties -->
+  <basename property="current.build.filename" file="${ant.file.buildlib}" suffix="lib.xml"/>
+  <property file="${user.dir}/${current.build.filename}.properties"/>
+
+  <!-- make environment variables available -->
+  <property environment="env"/>
+
+  <!-- use "release" (in contrast to "debug") by default -->
+  <property name="compile.config"              value="release"/>
+
+  <!-- versions of tools and internal dependencies -->
+  <property name="cab-get.version"             value="0.14/stable"/>
+  <property name="assemblyinfomgr.version"     value="2.1/testing"/>
+
+  <!-- internal settings -->
+  <property name="cab-get.url"                 value="http://olga0822.e-konzern.de/cab-get.jar"/>
+  <property name="assemblyinfomgr.name"        value="BTC.CAB.AssemblyInfoManager.NET.exe"/>
+  <property name="assemblyinfomgr.failonerror" value="true"/>
+  <property name="commons-testfw-runner.name"  value="BTC.CAB.Commons.TestFW.Runner.exe"/>
+  <property name="commons-testfw-runner.path"  value="${architecture}/Release"/>
+  <property name="commons-testfw-runner.args"  value=""/>
+  <property name="test-testfw-runner.name"     value="BTC.CAB.Test.CppUnit.ConsoleTestRunner.exe"/>
+  <property name="test-testfw-runner.path"     value="${architecture}/Release"/>
+
+  <!-- path configuration -->
+  <condition property="tmp.subdir" value="${env.EXECUTOR_NUMBER}/rm-tools" else="rm-tools">
+    <isset property="env.EXECUTOR_NUMBER"/>
+  </condition>
+  <condition property="results.dir" value="${env.WORKSPACE}" else="${basedir}">
+    <isset property="env.WORKSPACE"/>
+  </condition>
+  <property name="tmp.dir"                    location="${java.io.tmpdir}/${tmp.subdir}"/>
+  <property name="cab-get.bootstrap.jar"      location="${tmp.dir}/bootstrap/cab-get.jar"/>
+  <property name="cab-get.jar"                location="${tmp.dir}/AnyCPU/Release/cab-get.jar"/>
+  <property name="assemblyinfomgr.exe"        location="${tmp.dir}/AnyCPU/Release/${assemblyinfomgr.name}"/>
+  <property name="commons-testfw-runner.exe"  location="${commons-testfw-runner.path}/${commons-testfw-runner.name}"/>
+  <property name="test-testfw-runner.exe"     location="${test-testfw-runner.path}/${test-testfw-runner.name}"/>
+
+
+  <!-- ***************************************************************************************** -->
+
+
+  <!-- workspace.btc.dir usually points to the "BTC" directory that is located in the trunk; -->
+  <!-- also on Jenkins typically equals "env.WORKSPACE/BTC" -->
+  <property name="workspace.btc.dir"     location="../.."/>
+
+  <!-- conditional settings -->
+  <condition property="running-on-jenkins" value="true">
+    <and>
+      <isset property="env.BUILD_ID"/>
+      <isset property="env.EXECUTOR_NUMBER"/>
+      <isset property="env.JENKINS_URL"/>
+      <isset property="env.JOB_NAME"/>
+      <isset property="env.WORKSPACE"/>
+    </and>
+  </condition>
+  <condition property="cab-get.args" value="--force --refresh" else="">
+    <isset property="running-on-jenkins"/>
+  </condition>
+  <condition property="cab.short.dir" value="cab" else="CoreAssetBase">
+    <isset property="running-on-jenkins"/>
+  </condition>
+  <condition property="platform" value="win_${test.runtime}" else="win_${architecture}_${test.runtime}">
+    <equals arg1="${architecture}" arg2="AnyCPU"/>
+  </condition>
+
+  <!-- set and configure *.cov file for bullseye coverage -->
+  <condition property="build_id" value="${env.BUILD_ID}" else="local">
+    <isset property="env.BUILD_ID"/>
+  </condition>
+  <property name="COVFILE" value="${results.dir}/${component.name}_${build_id}.cov"/>
+  <property name="COVBUILDZONE" value="${component.name}_${build_id}"/>
+
+
+  <!-- ***************************************************************************************** -->
+  <!-- diagnostics                                                                               -->
+  <!-- ***************************************************************************************** -->
+  <tstamp>
+    <format property="time.start" pattern="yyyy-MM-dd HH:mm:ss.SSS"/>
+  </tstamp>
+  <length property="workspace.btc.length" string="${workspace.btc.dir}"/>
+  <length property="basedir.length" string="${basedir}"/>
+  <condition property="cmd.args" value="${env.ANT_CMD_LINE_ARGS}" else="(not set)">
+    <isset property="env.ANT_CMD_LINE_ARGS"/>
+  </condition>
+  <echo message="             Timestamp: ${time.start}"/>
+  <echo message="                    OS: ${os.name} ${os.version} ${os.arch}"/>
+  <echo message="          Java version: ${java.version} ${java.vendor}"/>
+  <echo message="           Ant version: ${ant.version}"/>
+  <echo message="       cab-get version: ${cab-get.version}"/>
+  <echo message="   Temporary directory: ${tmp.dir}"/>
+  <echo message="   Workspace directory: ${workspace.btc.dir} (${workspace.btc.length} characters)"/>
+  <echo message="        Base directory: ${basedir} (${basedir.length} characters)"/>
+  <echo message="     Current directory: ${user.dir}"/>
+  <echo message="     ANT_CMD_LINE_ARGS: ${cmd.args}"/>
+
+
+  <!-- ***************************************************************************************** -->
+  <!--                                    MACRO DEFINITIONS                                      -->
+  <!-- ***************************************************************************************** -->
+
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-cab-get-install" description="Generic wrapper for 'cab-get install' that takes a list of CGXML files to have packages of.">
+    <attribute name="items" description="the packages to install; space-separated list"/>
+    <attribute name="destination" description="location to extract the packages to"/>
+    <attribute name="options" default="${cab-get.args}" description="additional arguments; space-separated list"/>
+    <sequential>
+      <echo message="Running cab-get install @{items} --target=@{destination} @{options}"/>
+      <echo message="Hint: The arguments are specified by '-Dcab-get.args=&quot;&lt;arguments&gt;&quot;'."/>
+      <java jar="${cab-get.jar}" fork="true" failonerror="true">
+        <arg value="install"/>
+        <arg line="@{items}"/>
+        <arg value="--target=@{destination}"/>
+        <arg line="@{options}"/>
+      </java>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-cab-get-pack" description="Generic wrapper for 'cab-get pack' that takes a list of CGXML files to have packages of.">
+    <attribute name="items" description="the CGXML files to use; space-separated list"/>
+    <attribute name="destination" default="${results.dir}" description="location to store the packages"/>
+    <sequential>
+      <echo message="Running cab-get pack @{items} --target=@{destination}"/>
+      <java jar="${cab-get.jar}" fork="true" failonerror="true">
+        <arg value="pack"/>
+        <arg line="@{items}"/>
+        <arg value="--target=@{destination}"/>
+      </java>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-assemblyinfomgr">
+    <attribute name="command" description="main task for the tool to run"/>
+    <attribute name="filter" default="" description="optional filter"/>
+    <sequential>
+      <exec executable="${assemblyinfomgr.exe}" failonerror="${assemblyinfomgr.failonerror}">
+        <arg value="--dir=${basedir}"/>
+        <arg value="--@{command}"/>
+        <arg value="@{filter}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-locate-msbuild-net" description="Tries to locate an MSBuild installation that is part of the .NET framework. Respects optional MY_MSNET*_PATH environment variable.">
+    <attribute name="shortversion" description="major and minor version number of .NET; currently supported are 35, 40"/>
+    <attribute name="longversion" description="full version number of .NET; currently supported are 3.5, 4.0.30319; note that .NET 4.5 overwrites 4.0"/>
+    <sequential>
+      <condition property="msbuild.dir" value="${env.MY_MSNET@{shortversion}_PATH}">
+        <isset property="env.MY_MSNET@{shortversion}_PATH"/>
+      </condition>
+      <condition property="msbuild.dir" value="${env.SystemRoot}/Microsoft.NET/Framework/v@{longversion}" else="${env.SystemRoot}/Microsoft.NET/Framework64/v@{longversion}">
+        <equals arg1="${env.PROCESSOR_ARCHITECTURE}" arg2="x86"/>
+      </condition>
+      <echo message="Detected MSBuild location from environment: ${msbuild.dir}"/>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-locate-msbuild" description="Tries to locate a stand-alone MSBuild installation. Respects optional MY_MSBUILD*_PATH environment variable.">
+    <attribute name="shortversion" description="major version number of MSBuild; currently supported is 12"/>
+    <sequential>
+      <condition property="msbuild.dir" value="${env.MY_MSBUILD@{shortversion}_PATH}">
+        <isset property="env.MY_MSBUILD@{shortversion}_PATH"/>
+      </condition>
+      <condition property="msbuild.dir" value="${env.ProgramFiles}/MSBuild/@{shortversion}.0/bin" else="${env.ProgramFiles(x86)}/MSBuild/@{shortversion}.0/bin/amd64">
+        <equals arg1="${env.PROCESSOR_ARCHITECTURE}" arg2="x86"/>
+      </condition>
+      <echo message="Detected MSBuild location from environment: ${msbuild.dir}"/>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-locate-visualstudio">
+    <attribute name="version" description="internal major version number of visual studio; currently supported are 9, 10, 11, 12"/>
+    <sequential>
+      <condition property="msvs@{version}.dir" value="${env.MY_MSVS@{version}_PATH}">
+        <isset property="env.MY_MSVS@{version}_PATH"/>
+      </condition>
+      <condition property="msvs@{version}.dir" value="${env.ProgramFiles}/Microsoft Visual Studio @{version}.0" else="${env.ProgramFiles(x86)}/Microsoft Visual Studio @{version}.0">
+        <equals arg1="${env.PROCESSOR_ARCHITECTURE}" arg2="x86"/>
+      </condition>
+      <echo message="Detected VS@{version} location from environment: ${msvs@{version}.dir}"/>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-commons-testfw-runner">
+    <attribute name="items" description="List of test libraries or configurations separated by spaces."/>
+    <attribute name="results" description="Name of xml result file."/>
+    <sequential>
+      <echo message="${line.separator}Running ${commons-testfw-runner.exe}."/>
+      <echo message="architecture: ${architecture}"/>
+      <echo message="test.runtime: ${test.runtime}"/>
+      <echo message="Using test items: @{items}"/>
+      <echo message="${commons-testfw-runner.exe} @{items} --test-run-name=ROOT --nunitresult ${results.dir}/@{results} ${commons-testfw-runner.args}"/>
+
+      <exec executable="${commons-testfw-runner.exe}" resolveexecutable="true" dir="${commons-testfw-runner.path}" failonerror="false" resultproperty="cabtestrunner.exitcode.@{results}">
+        <arg line="@{items}"/>
+        <arg value="--exit-code=fatal-only"/>
+        <arg value="--test-run-name=ROOT"/>
+        <arg value="--nunitresult"/>
+        <arg value="${results.dir}/@{results}"/>
+        <arg line="${commons-testfw-runner.args}"/>
+      </exec>
+
+      <echo message="Exit code: ${cabtestrunner.exitcode.@{results}}"/>
+      <condition property="fatalError" value="true">
+        <not>
+          <equals arg1="${cabtestrunner.exitcode.@{results}}" arg2="0"/>
+        </not>
+      </condition>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-test-testfw-runner">
+    <attribute name="parameters" description="Parameters for the testframework."/>
+    <attribute name="results" description="Name of xml result file."/>
+    <sequential>
+      <echo message="${line.separator}Running ${test-testfw-runner.exe}."/>
+      <echo message="architecture: ${architecture}"/>
+      <echo message="test.runtime: ${test.runtime}"/>
+      <echo message="${test-testfw-runner.name} @{parameters}"/>
+
+      <exec executable="${test-testfw-runner.name}" resolveexecutable="true" dir="${test-testfw-runner.path}" failonerror="false" resultproperty="testtestfwrunner.exitcode.@{results}">
+        <arg line="@{parameters}"/>
+      </exec>
+
+      <echo message="Exit code: ${testtestfwrunner.exitcode.@{results}}"/>
+      <condition property="fatalError" value="true">
+        <not>
+          <or>
+            <equals arg1="${testtestfwrunner.exitcode.@{results}}" arg2="0"/>
+            <equals arg1="${testtestfwrunner.exitcode.@{results}}" arg2="1"/>
+          </or>  
+        </not>
+      </condition>
+
+      <move file="${test-testfw-runner.path}/test_output.xml" tofile="@{results}" overwrite="true"/>
+      <macro-check-file file.name="@{results}"/>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-nunit">
+    <attribute name="items" description="List of test assemblies separated by spaces."/>
+    <attribute name="results" description="Name of xml result file."/>
+    <sequential>
+      <echo message="${line.separator}Running NUnit."/>
+      <echo message="architecture: ${architecture}"/>
+      <echo message="test.runtime: ${test.runtime}"/>
+      <echo message="Using test items: @{items}"/>
+      <echo message="NUnit call: ${nunit.location}/${nunit.exe} @{items} /labels /xml=${results.dir}/@{results}"/>
+
+      <exec executable="${nunit.location}/${nunit.exe}" resolveexecutable="true" dir="${nunit-execution.dir}" failonerror="false" resultproperty="nunit.exitcode.@{results}">
+        <arg line="@{items}"/>
+        <arg value="/labels"/>
+        <arg value="/xml=${results.dir}/@{results}"/>
+      </exec>
+      <echo message="Exit code: ${nunit.exitcode.@{results}}"/>
+      <condition property="fatalError" value="true">
+        <contains string="${nunit.exitcode.@{results}}" substring="-"/>  <!-- negative value indicates fatal error -->
+      </condition>
+
+      <macro-check-file file.name="@{results}"/>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-ncover">
+    <attribute name="items" description="List of test assemblies separated by spaces."/>
+    <attribute name="results" description="Name of xml result file."/>
+    <attribute name="project.name" description="Name of coverage project." default="${component.name}${subname}"/>
+    <sequential>
+      <condition property="ncover.location" value="${env.MY_NCOVER_x86}" else="${env.MY_NCOVER_x64}">
+        <equals arg1="${architecture}" arg2="x86"/>
+      </condition>
+
+      <echo message="${line.separator}Running NCover."/>
+      <echo message="Using test items: @{items} (can be overridden by -Dnunit.items=...)"/>
+
+      <property name="subname" value=""/> <!-- if not defined yet, use empty subname -->
+      <property name="coverage.file.location" value="${basedir}"/>
+
+      <echo message="NCover call: ${ncover.location}/ncover.console.exe ${nunit.location}/${nunit.exe} ${nunit-execution.dir}/@{items} /labels /xml:${results.dir}/@{results} //l ncover.log //ll Verbose //ct &quot;Symbol, Branch, MethodVisits, CyclomaticComplexity&quot; //onlywithsource //p @{project.name} //x ${coverage.file.location}/@{project.name}.nccov"/>
+
+      <exec executable="${ncover.location}/ncover.console.exe" resolveexecutable="true" dir="${nunit-execution.dir}"  failonerror="false" resultproperty="ncover.exitcode.@{results}">
+        <arg line="${nunit.location}/${nunit.exe} @{items} /labels /xml:${results.dir}/@{results}"/>
+        <arg line="//l ncover.log"/>    <!-- logfile; write coverage messages to the given log file -->
+        <arg line="//ll Verbose"/>      <!-- loglevel; Values: "None"[default], "Normal", "Verbose" -->
+        <arg line="//ct &quot;Symbol, Branch, MethodVisits, CyclomaticComplexity&quot;"/> <!-- Specify desired coverage metrics in a comma delimited list. -->
+        <arg line="//onlywithsource"/>
+        <arg line="//p @{project.name}"/>  <!-- name of project -->
+        <arg line="//x ${coverage.file.location}/@{project.name}.nccov"/>  <!-- Write a coverage data file to the given filename; Default: .\coverage.xml -->
+        <arg line="//ias ${cover.items}"/>  <!-- <regex list>; Assemblies matching the regular expressions will be included into coverage (the assembly name does not include the extension) -->
+        <!-- <arg line="//at coverage.trend"/> -->
+      </exec>
+      <echo message="Exit code: ${ncover.exitcode.@{results}}"/>
+      <condition property="fatalError" value="true">
+        <not>
+          <or>
+            <equals arg1="${ncover.exitcode.@{results}}" arg2="0"/>
+            <equals arg1="${ncover.exitcode.@{results}}" arg2="3"/>
+          </or>  
+        </not>
+      </condition>
+
+      <!-- create reports -->
+      <macro-create-ncover-report reportName="summary" reportParam="Summary:Html" project.name="@{project.name}"/>
+      <macro-create-ncover-report reportName="class"   reportParam="SymbolModuleNamespaceClass:Html" project.name="@{project.name}"/>
+      <macro-create-ncover-report reportName="method"  reportParam="SymbolModuleNamespaceClassMethod:Html" project.name="@{project.name}"/>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-create-ncover-report">
+    <attribute name="reportName"/> <!-- Value is used for output messages (e.g.: summary, class, method).       -->
+    <attribute name="reportParam"/> <!-- Name of parameter to creat report (e.g.: Summary:Html, SymbolModuleNamespaceClass:Html, SymbolModuleNamespaceClassMethod:Html) -->
+    <attribute name="project.name" description="Name of coverage project." default="${component.name}${subname}"/>
+    <sequential>
+      <echo message=""/>
+      <echo message="Create @{reportName} report."/>
+      <echo message="NCover.Reporting call: NCover.Reporting.exe ${coverage.file.location}/@{project.name}.nccov //or @{reportParam} //op ${basedir}/coverage-report/@{project.name}-coverage-@{reportName}.html //p @{project.name}"/>
+      <exec executable="NCover.Reporting.exe" resolveexecutable="true" dir="${nunit-execution.dir}" failonerror="false" resultproperty="ncover.report.exitcode.@{reportName}@{project.name}">
+        <arg line="${coverage.file.location}/@{project.name}.nccov"/>
+        <arg line="//or @{reportParam}"/>
+        <arg line="//op ${basedir}/coverage-report/@{project.name}-coverage-@{reportName}.html"/>
+        <arg line="//p @{project.name}"/>
+      </exec>
+      
+      <echo message="Exit code: ${ncover.report.exitcode.@{reportName}@{project.name}}"/>
+      <condition property="fatalError" value="true">
+        <not>
+          <or>
+            <equals arg1="${ncover.report.exitcode.@{reportName}@{project.name}}" arg2="0"/>
+            <equals arg1="${ncover.report.exitcode.@{reportName}@{project.name}}" arg2="3"/>
+          </or>  
+        </not>
+      </condition>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-kill-all-processes" description="Kills a number of given process if they are running.">
+    <attribute name="index" description="idividual ID to seperate different calls of the macro (makes name of used properties individual)."/>
+    <sequential>
+      <macro-get-filters process="TSMServer" processDef="BTC.CAB.TimeSeries.NET.PoC.TSMServer*" index="@{index}"/>
+      <macro-check-process process="TSMServer" processDef="BTC.CAB.TimeSeries.NET.PoC.TSMServer*" index="@{index}"/>
+      <macro-kill-process process="TSMServer" processDef="BTC.CAB.TimeSeries.NET.PoC.TSMServer*" index="@{index}"/>
+
+      <macro-get-filters process="EMSServer" processDef="BTC.CAB.EMSServices.Server*" index="@{index}"/>
+      <macro-check-process process="EMSServer" processDef="BTC.CAB.EMSServices.Server*" index="@{index}"/>
+      <macro-kill-process process="EMSServer" processDef="BTC.CAB.EMSServices.Server*" index="@{index}"/>
+
+      <macro-get-filters process="Window with error message" processDef="WerFault.exe" windowTitle="r14*" index="@{index}"/>
+      <macro-check-process process="Window with error message" processDef="WerFault.exe" windowTitle="r14*" index="@{index}"/>
+      <macro-kill-process process="Window with error message" processDef="WerFault.exe" windowTitle="r14*" index="@{index}"/>
+
+      <macro-get-filters process="Window with error message" processDef="WerFault.exe32" windowTitle="r14*" index="@{index}"/>
+      <macro-check-process process="Window with error message" processDef="WerFault.exe32" windowTitle="r14*" index="@{index}"/>
+      <macro-kill-process process="Window with error message" processDef="WerFault.exe32" windowTitle="r14*" index="@{index}"/>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-check-process" description="Checks whether a given process is running.">
+    <attribute name="process" description="Value is used for printing output messages (e.g.:  TSMServer, EMSServer)."/>
+    <attribute name="processDef" description="Name of process to check (e.g.: BTC.CAB.TimeSeries.NET.PoC.TSMServer*, BTC.CAB.EMSServices.Server*)."/>
+    <attribute name="index" description="idividual ID to seperate different calls of the macro (makes name of used properties individual)."/>
+    <attribute name="windowTitle" default="" description="Value to filter for the window title (additionally to the process definition). Default Value: empty string"/>
+    <sequential>
+      <echo message="checking tasklist for running @{process} ..."/>
+
+      <exec executable="tasklist" outputproperty="tasklist_output_@{processDef}_@{index}">
+        <arg line="${filters_@{processDef}_@{index}}"/>
+      </exec>
+
+      <!-- evaluate output string of tasklist to compute the result -->
+      <condition property="tasklist_output_message_@{processDef}_@{index}" value="No running @{process} found in tasklist." else="${tasklist_output_@{processDef}_@{index}}">
+        <!-- attention: "INFO" is language-independent and occurs in German and English output of tasklist command -->
+        <contains string="${tasklist_output_@{processDef}_@{index}}" substring="INFO" casesensitive="false"/>
+      </condition>
+
+      <echo message="${tasklist_output_message_@{processDef}_@{index}}"/>
+      <echo message=""/>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-fail-if-not-running" description="Fails if the given process is not running.">
+    <attribute name="process" description="Value is used for printing output messages (e.g.:  TSMServer, EMSServer)."/>
+    <attribute name="processDef" description="Name of process to check (e.g.: BTC.CAB.TimeSeries.NET.PoC.TSMServer*, BTC.CAB.EMSServices.Server*)."/>
+    <attribute name="index" description="idividual ID to seperate different calls of the macro (makes name of used properties individual)."/>
+    <attribute name="windowTitle" default="" description="Value to filter for the window title (additionally to the process definition). Default Value: empty string"/>
+    <sequential>
+      <macro-get-filters process="@{process}" processDef="@{processDef}" index="@{index}"/>
+      <macro-check-process process="@{process}" processDef="@{processDef}" index="@{index}"/>
+
+      <fail message="@{process} is not running.">
+        <condition>
+          <contains string="${tasklist_output_@{processDef}_@{index}}" substring="INFO" casesensitive="false"/>
+        </condition>
+      </fail>
+
+      <echo message="@{process} is running."/>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-kill-process" description="Kills a given process. If the process is not running, the execution of the macro has no effect. For a comfortable message output, macro-check-process schould be executed before.">
+    <attribute name="process" description="Value is used for printing output messages (e.g.:  TSMServer, EMSServer)"/>
+    <attribute name="processDef" description="Name of process to kill (e.g.: BTC.CAB.TimeSeries.NET.PoC.TSMServer*, BTC.CAB.EMSServices.Server*)."/>
+    <attribute name="index" description="idividual ID to seperate different calls of the macro (makes name of used properties individual)."/>
+    <attribute name="windowTitle" default="" description="Value to filter for the window title (additionally to the process definition). Default Value: empty string"/>
+    <sequential>
+      <condition property="kill_message_@{processDef}_@{index}" value="" else="kill running @{process} ...">
+        <contains string="${tasklist_output_@{processDef}_@{index}}" substring="INFO"/>
+      </condition>
+
+      <echo message="${kill_message_@{processDef}_@{index}}"/>
+
+      <!-- <echo message="call: taskkill /F /T ${filters_@{processDef}_@{index}}"/> -->
+      <exec executable="taskkill" outputproperty="kill_output_@{processDef}_@{index}">
+        <arg line="/F /T  ${filters_@{processDef}_@{index}}"/>
+      </exec>
+
+      <condition property="kill_output_message_@{processDef}_@{index}" value="" else="${kill_output_@{processDef}_@{index}}${line.separator}">
+        <contains string="${kill_output_@{processDef}_@{index}}" substring="INFO" casesensitive="false"/>
+      </condition>
+
+      <echo message="${kill_output_message_@{processDef}_@{index}}"/>
+
+      <condition property="process_killed_@{index}" value="true">
+        <not>
+          <contains string="${kill_output_@{processDef}_@{index}}" substring="INFO" casesensitive="false"/>
+        </not>
+      </condition>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-get-filters" description="Assembles filters used to check or kills a given process. Value are stored in property filters_@{process}_@{index}">
+    <attribute name="process" description="Value is used for printing output messages (e.g.:  TSMServer, EMSServer)"/>
+    <attribute name="processDef" description="Name of process to kill (e.g.: BTC.CAB.TimeSeries.NET.PoC.TSMServer*, BTC.CAB.EMSServices.Server*)."/>
+    <attribute name="index" description="idividual ID to seperate different calls of the macro (makes name of used properties individual)."/>
+    <attribute name="windowTitle" default="" description="Value to filter for the window title (additionally to the process definition). Default Value: empty string"/>
+    <sequential>
+      <script language="javascript"> <![CDATA[
+        var parameters = "/FI \"IMAGENAME eq @{processDef}\"";
+        if ("@{windowTitle}" != ""){
+          parameters += " /FI \"WINDOWTITLE eq @{windowTitle}\"";
+        }
+        project.setProperty("filters_@{processDef}_@{index}", parameters);
+        ]]>
+      </script>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-check-file" description="Checks whether a file is available.">
+    <attribute name="file.name" description="Name of file including the path."/>
+    <sequential>
+      <available file="@{file.name}" property="@{file.name}_avaible"/>
+      <fail unless="@{file.name}_avaible" message="File @{file.name} not found."/>
+      <echo message="File @{file.name} found."/>
+    </sequential>
+  </macrodef>
+
+  <!-- ========================================================================================= -->
+  <macrodef name="macro-sonar-runner" description="Calls the macro-sonar-runner">
+    <attribute name="sonar.profile" description="defines the sonar profile (cpp or net)"/>
+    <sequential>
+      <copy file="${user.dir}/sonar-project-@{sonar.profile}.properties" tofile="${user.dir}/sonar-project.properties" overwrite="true"/>
+      <echo message="Running ${env.MY_SONAR_RUNNER}/sonar-runner ..."/>
+      <exec executable="cmd" dir="${user.dir}" failonerror="true">
+        <arg value="/c"/>
+        <arg value="${env.MY_SONAR_RUNNER}/sonar-runner"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
+
+  <!-- ***************************************************************************************** -->
+  <!--                                        TARGETS                                            -->
+  <!-- ***************************************************************************************** -->
+
+
+  <!-- ***************************************************************************************** -->
+  <!-- cab-get related targets                                                                   -->
+  <!-- ***************************************************************************************** -->
+
+  <!-- ========================================================================================= -->
+  <target name="install-cab-get" depends="-bootstrap-cab-get" unless="offline" description="Uses a bootstrap instance of cab-get to install a full cab-get itself.">
+    <echo message="Running cab-get update"/>
+    <java jar="${cab-get.bootstrap.jar}" fork="true" failonerror="true">
+      <arg value="update"/>
+    </java>
+    <echo message="Running cab-get install cab-get_bin=${cab-get.version} to ${tmp.dir}"/>
+    <java jar="${cab-get.bootstrap.jar}" fork="true" failonerror="true">
+      <arg value="install"/>
+      <arg value="cab-get_bin=${cab-get.version}"/>
+      <arg value="--target=${tmp.dir}"/>
+      <arg line="--force"/>
+      <arg value="--refresh"/>
+    </java>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-bootstrap-cab-get" unless="offline">
+    <dirname property="bootstrap.dir" file="${cab-get.bootstrap.jar}"/>
+    <echo message="Getting bootstrap version of cab-get to ${bootstrap.dir}"/>
+    <mkdir dir="${bootstrap.dir}"/>
+    <get src="${cab-get.url}" dest="${cab-get.bootstrap.jar}" usetimestamp="true"/>
+    <java jar="${cab-get.bootstrap.jar}" fork="true" failonerror="true" outputproperty="cab-get.latest">
+      <arg value="--version"/>
+    </java>
+    <echo message="Bootstrapping from ${cab-get.bootstrap.jar} with version ${cab-get.latest}"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-cab-get-update" unless="offline">
+    <echo message="Running cab-get update"/>
+    <java jar="${cab-get.jar}" fork="true" failonerror="true">
+      <arg value="update"/>
+    </java>
+  </target>
+
+
+  <!-- ***************************************************************************************** -->
+  <!-- dependency installation related targets                                                   -->
+  <!-- ***************************************************************************************** -->
+
+  <!-- ========================================================================================= -->
+  <target name="install-cab-builder" depends="-cab-get-update" unless="deps.bin">
+    <fail unless="cab-builder.version" message="'cab-builder.version' has to be specified in custom build.xml"/>
+    <macro-cab-get-install items="cab-builder_bin=${cab-builder.version}" destination="${workspace.btc.dir}/build"/>
+  </target>
+
+  <!-- ========================================================================================= -->
+  <target name="install-deps-build" depends="install-cab-builder, -install-dependencies, -shorten-cab-dir" description="Installs the dependencies to build this component from source code."/>
+
+  <!-- ========================================================================================= -->
+  <target name="install-deps-test" unless="offline" description="Installs the binary files of the dependencies to test this component.">
+    <echo message="Installing '${deps-bin.cgxml}'..."/>
+    <pathconvert property="deps.cgxml" pathsep=" ">
+      <fileset dir="pkg" includes="${deps-bin.cgxml}"/>
+    </pathconvert>
+    <macro-cab-get-install items="${deps.cgxml}" destination="${basedir}" options="--force --refresh"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-init">
+    <pathconvert property="my.src.cgxml">
+      <first>
+        <fileset dir="pkg" includes="*_src.cgxml"/>
+      </first>
+    </pathconvert>
+    <echo message="Using SRC cgxml: ${my.src.cgxml}"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-install-dependencies" depends="-init">
+    <condition property="deps.targetdir" value="lib" else="${workspace.btc.dir}/..">
+      <isset property="deps.bin"/>
+    </condition>
+    <macro-cab-get-install items="${my.src.cgxml}" destination="${deps.targetdir}"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- DEPRECATED: required for backwards-compatibility with Commons 1.6 -->
+  <target name="-shorten-cab-dir" unless="deps.bin">
+    <move file="${workspace.btc.dir}/../CoreAssetBase" tofile="${workspace.btc.dir}/../${cab.short.dir}" preservelastmodified="true" failonerror="false"/>
+  </target>
+
+
+  <!-- ***************************************************************************************** -->
+  <!-- assembly info manager related targets                                                     -->
+  <!-- ***************************************************************************************** -->
+
+  <!-- ========================================================================================= -->
+  <target name="check-assembly-infos" depends="-install-assemblyinfomgr, -check-assembly-company, -check-assembly-copyright, -check-assembly-stability, -check-assembly-version"/>
+
+  <!-- ========================================================================================= -->
+  <target name="set-assembly-infos" depends="-install-assemblyinfomgr, -set-assembly-revision"/>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-prepare-assembly-filter">
+    <condition property="assemblyinfomgr.filter" value="--filter=${filter}" else="">
+      <isset property="filter"/>
+    </condition>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-install-assemblyinfomgr" depends="-cab-get-update">
+    <macro-cab-get-install items="BTC.CAB.AssemblyInfoManager.NET_bin=${assemblyinfomgr.version}" destination="${tmp.dir}" options="--force"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-check-assembly-company" depends="-prepare-assembly-filter">
+    <macro-assemblyinfomgr command="checkcompany" filter="${assemblyinfomgr.filter}"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-check-assembly-copyright" depends="-prepare-assembly-filter">
+    <macro-assemblyinfomgr command="checkcopyright" filter="${assemblyinfomgr.filter}"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-check-assembly-stability" depends="-deduce-publish-channel">
+    <macro-assemblyinfomgr command="checkstability=${publish.channel}"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-check-assembly-version" depends="-prepare-assembly-filter, -init">
+    <macro-assemblyinfomgr command="checkversion=${my.src.cgxml}" filter="${assemblyinfomgr.filter}"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-set-assembly-revision">
+    <macro-assemblyinfomgr command="setrevision=${env.SVN_REVISION}"/>
+  </target>
+
+
+  <!-- ***************************************************************************************** -->
+  <!-- compilation targets                                                                       -->
+  <!-- ***************************************************************************************** -->
+
+  <!-- ========================================================================================= -->
+  <target name="compile-msbuild35" depends="-prepare-msvs9, -compile-msbuild" description="Compiles using MSBuild from .NET 3.5."/>
+
+  <!-- ========================================================================================= -->
+  <target name="compile-msbuild40" depends="-prepare-msvs10, -compile-msbuild" description="Compiles using MSBuild from .NET 4.0."/>
+
+  <!-- ========================================================================================= -->
+  <target name="compile-msbuild45" depends="-prepare-msvs11, -compile-msbuild" description="Compiles using MSBuild from .NET 4.5. (Note: .NET 4.5 is an in-place upgrade of .NET 4.0)"/>
+
+  <!-- ========================================================================================= -->
+  <target name="compile-msbuild12" depends="-prepare-msvs12, -compile-msbuild" description="Compiles using MSBuild 12 from Visual Studio 12 (2013)."/>
+
+  <!-- ========================================================================================= -->
+  <target name="compile-msbuild40-cs" depends="-prepare-msvs10-cs, -compile-msbuild" description="Compiles pure C# code using MSBuild from .NET 4.0 (requires less prerequisites than mixed-language code)."/>
+
+  <!-- ========================================================================================= -->
+  <target name="compile-cmake-msbuild35" depends="-prepare-cmake-msbuild, -cmake, -prepare-msvs9, -compile-msbuild" description="Compiles using CMake and MSBuild from .NET 3.5."/>
+
+  <!-- ========================================================================================= -->
+  <target name="compile-cmake-msbuild40" depends="-prepare-cmake-msbuild, -cmake, -prepare-msvs10-cs, -compile-msbuild" description="Compiles using CMake and MSBuild from .NET 4.0."/>
+
+  <!-- ========================================================================================= -->
+  <target name="compile-cmake-msbuild45" depends="-prepare-cmake-msbuild, -cmake, -prepare-msvs11-cs, -compile-msbuild" description="Compiles using CMake and MSBuild from .NET 4.5. (Note: .NET 4.5 is an in-place upgrade of .NET 4.0)"/>
+
+  <!-- ========================================================================================= -->
+  <target name="compile-cmake-msbuild12" depends="-prepare-cmake-msbuild, -cmake, -prepare-msvs12-cs, -compile-msbuild" description="Compiles using CMake and MSBuild 12 from Visual Studio 12 (2013)."/>
+
+  <!-- ========================================================================================= -->
+  <target name="compile-cmake-nmake" depends="-prepare-nmake-msvs9, -cmake" description="Compiles using CMake and NMake.">
+    <echo message="Running VCVARS &amp;&amp; NMAKE..."/>
+    <exec executable="cmd.exe" dir="${dst.dir}" failonerror="true">
+      <env key="BUILD_ID" value="dontKillMe"/>
+      <arg line="/c call &quot;${vcvars.bat}&quot; &amp;&amp; ${make.cmd}"/>
+    </exec>
+  </target>
+
+  <!-- ========================================================================================= -->
+  <target name="compile-cmake-make" depends="-prepare-cmake-make, -cmake" description="Compiles using CMake and Make.">
+    <echo message="Running MAKE..."/>
+    <!-- cannot call make directly because Posix requires /usr/bin/make which cannot be used on Cygwin without shell -->
+    <exec executable="sh" dir="${dst.dir}" failonerror="true">
+      <arg line="-c ${make.cmd}"/>
+    </exec>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-locate-msbuild-net35" unless="msbuild.dir">
+    <macro-locate-msbuild-net shortversion="35" longversion="3.5"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-locate-msbuild-net40" unless="msbuild.dir">
+    <macro-locate-msbuild-net shortversion="40" longversion="4.0.30319"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-locate-msbuild-vs12" unless="msbuild.dir">
+    <macro-locate-msbuild shortversion="12"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-locate-msvs9" unless="msvs9.dir">
+    <macro-locate-visualstudio version="9"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-locate-msvs10" unless="msvs10.dir">
+    <macro-locate-visualstudio version="10"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-locate-msvs11" unless="msvs11.dir">
+    <macro-locate-visualstudio version="11"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-locate-msvs12" unless="msvs12.dir">
+    <macro-locate-visualstudio version="12"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-prepare-msvs9" depends="-locate-msbuild-net35, -locate-msvs9">
+    <!-- workaround MSB3411 and MSB3428 to build 32-bit project on 64-bit system -->
+    <condition property="path.add" value="${msvs9.dir}/VC/vcpackages;${msvs9.dir}/VC/bin/amd64">
+      <available file="${msvs9.dir}"/>
+    </condition>
+    <property name="work.dir" location="build"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-prepare-msvs10" depends="-locate-msbuild-net40, -locate-msvs10">
+    <!-- workaround cl.exe not finding mspdb100.dll or the like -->
+    <condition property="path.add" value="${msvs10.dir}/Common7/IDE">
+      <available file="${msvs10.dir}"/>
+    </condition>
+    <property name="work.dir" location="build/VS10"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-prepare-msvs11" depends="-locate-msbuild-net40, -locate-msvs11">
+    <!-- note: .NET 4.5 is an in-place upgrade of .NET 4.0 -->
+    <property name="work.dir" location="build/VS11"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-prepare-msvs12" depends="-locate-msbuild-vs12, -locate-msvs12">
+    <property name="work.dir" location="build/VS12"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-prepare-msvs10-cs" depends="-locate-msbuild-net40">
+    <property name="work.dir" location="build"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-prepare-msvs11-cs" depends="-locate-msbuild-net40">
+    <!-- note: .NET 4.5 is an in-place upgrade of .NET 4.0 -->
+    <property name="work.dir" location="build"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-prepare-msvs12-cs" depends="-locate-msbuild-vs12">
+    <property name="work.dir" location="build"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-prepare-cmake-msbuild">
+    <property name="compile.tool" value="vs"/>
+    <property name="dst.dir" location="dst"/>
+    <property name="work.dir" location="${dst.dir}"/>
+    <property name="vs.sln" value="${compile.cmakeset}.sln"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-prepare-nmake-msvs9" depends="-locate-msvs9">
+    <condition property="vcvars.bat" value="${msvs9.dir}/VC/vcvarsall.bat" else="vcvarsall.bat">
+      <available file="${msvs9.dir}/VC/vcvarsall.bat"/>
+    </condition>
+    <property name="compile.tool" value="nmake"/>
+    <property name="make.cmd" value="nmake"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-prepare-cmake-make">
+    <property name="compile.tool" value="gnumake"/>
+    <property name="make.cmd" value="make -j2"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-deduce-compile-architecture" unless="compile.architecture">
+    <condition property="compile.architecture" value="x86">
+      <contains string="${env.JOB_NAME}" substring="-x86"/>
+    </condition>
+    <condition property="compile.architecture" value="x64">
+      <contains string="${env.JOB_NAME}" substring="-x64"/>
+    </condition>
+    <condition property="compile.architecture" value="Any CPU">
+      <!-- if JOB_NAME exists but is not specific then use ANY -->
+      <isset property="env.JOB_NAME"/>
+    </condition>
+    <condition property="compile.architecture" value="x86">
+      <os arch="i386"/>
+    </condition>
+    <condition property="compile.architecture" value="x64">
+      <os arch="amd64"/>
+    </condition>
+    <condition property="compile.architecture" value="x86" else="x64">
+      <equals arg1="${env.PROCESSOR_ARCHITECTURE}" arg2="x86"/>   <!-- Windows-specific -->
+    </condition>
+    <echo message="Deduced architecture from job name or local environment: ${compile.architecture}  (can be overridden by -Dcompile.architecture=...)"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-check-cmake" depends="-deduce-compile-architecture">
+    <condition property="compile.system" value="win">
+      <os family="windows"/>
+    </condition>
+    <condition property="compile.system" value="posix">
+      <os family="unix"/>
+    </condition>
+    <condition property="compile.bitness" value="32">
+      <equals arg1="${compile.architecture}" arg2="x86"/>
+    </condition>
+    <condition property="compile.bitness" value="64">
+      <equals arg1="${compile.architecture}" arg2="x64"/>
+    </condition>
+    <condition property="compile.compiler" value="gcc">
+      <os family="unix"/>
+    </condition>
+    <condition property="root.dir" value="${workspace.btc.dir}/../${cab.short.dir}" else="${workspace.btc.dir}">
+      <or>
+        <contains string="${basedir}" substring="/${cab.short.dir}/BTC/"/>
+        <contains string="${basedir}" substring="\${cab.short.dir}\BTC\"/>
+      </or>
+    </condition>
+    <fail unless="compile.system"   message="compile.system=posix|win|? required"/>
+    <fail unless="compile.bitness"  message="compile.bitness=32|64 required (deduction from compile.architecture=${compile.architecture} did not work)"/>
+
+    <!-- TODO: resolve question marks -->
+    <fail unless="compile.compiler" message="compile.compiler=gcc|vc9|vc10|vc11|? required"/>
+    <fail unless="compile.cmakeset" message="compile.cmakeset=make|make-test|? required"/>
+    <property name="cmake.dir"    location="${root.dir}/build/cmake"/>
+    <property name="builder.jar"  location="${cmake.dir}/cab-builder.jar"/>
+    <property name="cmakeset.loc" location="build/${compile.cmakeset}.cmakeset"/>
+    <property name="dst.dir"      location="${workspace.btc.dir}/../dst"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-cmake" depends="-check-cmake">
+    <echo message="Using ${builder.jar} on ${cmakeset.loc}"/>
+    <echo message="Configuring ${compile.tool} with ${compile.compiler} on ${compile.system}-${compile.bitness}-${compile.config}"/>
+    <echo message="Running in ${cmake.dir}: ${builder.jar} --sourcerootfolder=&quot;${root.dir}&quot; --fixedbuildfolder=&quot;${dst.dir}&quot; --target=${compile.system} --targetbits=${compile.bitness} --compiler=${compile.compiler} --buildtool=${compile.tool} --buildtype=${compile.config} --cmakeset=${cmakeset.loc}"/>
+    <java jar="${builder.jar}" dir="${cmake.dir}" fork="true" failonerror="true">
+      <arg value="--sourcerootfolder=&quot;${root.dir}&quot;"/>
+      <arg value="--fixedbuildfolder=&quot;${dst.dir}&quot;"/>
+      <arg value="--target=${compile.system}"/>
+      <arg value="--targetbits=${compile.bitness}"/>
+      <arg value="--compiler=${compile.compiler}"/>
+      <arg value="--buildtool=${compile.tool}"/>
+      <arg value="--buildtype=${compile.config}"/>
+      <arg value="--cmakeset=${cmakeset.loc}"/>
+    </java>
+    <mkdir dir="${dst.dir}"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-check-msbuild" depends="-deduce-compile-architecture">
+    <condition property="msbuild.exe" value="${msbuild.dir}/MSBuild.exe" else="MSBuild.exe">
+      <available file="${msbuild.dir}/MSBuild.exe"/>
+    </condition>
+    <condition property="msbuild.platform" value="win32">
+      <equals arg1="${compile.architecture}" arg2="x86"/>
+    </condition>
+    <condition property="msbuild.platform" value="x64">
+      <equals arg1="${compile.architecture}" arg2="x64"/>
+    </condition>
+    <condition property="msbuild.platform" value="Any CPU">
+      <contains string="${compile.architecture}" substring="any" casesensitive="false"/>
+    </condition>
+    <condition property="path" value="${path.add};${env.Path}" else="${env.Path}">
+      <isset property="path.add"/>
+    </condition>
+    <property name="vs.sln" value="make.sln"/>
+    <condition property="msbuild.verbosity" value="detailed" else="normal">
+      <isset property="running-on-jenkins"/>
+    </condition>
+    <fail unless="msbuild.platform" message="compile.architecture=x86|x64|Any CPU required"/>
+    <echo message="Using msbuild = ${msbuild.exe}"/>
+    <echo message="Using path = ${path}"/>
+    <echo message="Using solution = ${vs.sln}  (can be overridden by -Dvs.sln=...)"/>
+    <echo message="Using verbosity = ${msbuild.verbosity}  (can be overridden by -Dmsbuild.verbosity=...)"/>
+    <echo message="Working directory = ${work.dir}"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-compile-msbuild" depends="-check-msbuild">
+    <echo message="Running MSBuild on ${vs.sln} for ${msbuild.platform}/${compile.config}"/>
+    <exec executable="${msbuild.exe}" dir="${work.dir}" failonerror="true">
+      <env key="BUILD_ID" value="dontKillMe"/>
+      <env key="Path" value="${path}"/>
+      <arg value="/v:${msbuild.verbosity}"/>
+      <arg value="/p:Configuration=${compile.config}"/>
+      <arg value="/p:Platform=${msbuild.platform}"/>
+      <arg value="${vs.sln}"/>
+    </exec>
+  </target>
+
+
+  <!-- ***************************************************************************************** -->
+  <!-- Packaging and Publish                                                                     -->
+  <!-- ***************************************************************************************** -->
+
+  <!-- ========================================================================================= -->
+  <target name="pack-src" depends="-init" description="Creates source code package archives.">
+    <macro-cab-get-pack items="${my.src.cgxml}"/>
+  </target>
+
+  <!-- ========================================================================================= -->
+  <target name="pack-bin" description="Creates non-source package archives.">
+    <echo message="Packing '${pack-bin.cgxml}'..."/>
+    <pathconvert property="pack.cgxml" pathsep=" ">
+      <fileset dir="pkg" includes="${pack-bin.cgxml}"/>
+    </pathconvert>
+    <macro-cab-get-pack items="${pack.cgxml}"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-deduce-publish-channel">
+    <echo message="Trying to deduce channel from SVN_URL=${env.SVN_URL} or SVN_URL_1=${env.SVN_URL_1}"/>
+    <condition property="svn.url" value="${env.SVN_URL}">
+      <isset property="env.SVN_URL"/>
+    </condition>
+    <condition property="svn.url" value="${env.SVN_URL_1}">
+      <isset property="env.SVN_URL_1"/>
+    </condition>
+    <condition property="publish.channel" value="unstable">
+      <contains string="${svn.url}" substring="/trunk/"/>
+    </condition>
+    <condition property="publish.channel" value="testing">
+      <contains string="${svn.url}" substring="/releases/branches/"/>
+    </condition>
+    <condition property="publish.channel" value="stable">
+      <contains string="${svn.url}" substring="/releases/tags/"/>
+    </condition>
+  </target>
+
+  <!-- ========================================================================================= -->
+  <target name="publish" depends="-deduce-publish-channel" description="Notifies the Artifact Server that new package archives can be retrieved from this build's job.">
+    <fail unless="publish.channel" message="The publish command requires 'publish.channel' to be set"/>
+    <condition property="delay" value="--delay=${publish.delay}" else="">
+      <isset property="publish.delay"/>
+    </condition>
+    <pathconvert property="packages" pathsep=" ">
+      <fileset dir="${results.dir}" includes="*.tar.gz"/>
+    </pathconvert>
+    <echo message="Running cab-get publish ${publish.channel} ${results.dir}/*.tar.gz"/>
+    <java jar="${cab-get.jar}" fork="true" failonerror="true">
+      <arg value="publish"/>
+      <arg value="${publish.channel}"/>
+      <arg line="${packages}"/>
+      <arg value="${delay}"/>
+    </java>
+  </target>
+
+
+  <!-- ***************************************************************************************** -->
+  <!-- Testing related targets                                                                   -->
+  <!-- ***************************************************************************************** -->
+
+  <!-- ========================================================================================= -->
+  <target name="run-nunit" depends="-set-testresult-filename, -install-nunit" description="Executes tests by calling NUnit.">
+    <macro-nunit items="${nunit.items}" results="${testResults.file}"/>
+    <fail if="fatalError" message="Fatal error. Value: ${fatalError}"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-set-testresult-filename" depends="-get-version-from-cgxml">
+    <property name="subname" value=""/>
+    <property name="testResults.file" value="TestResults_${component.name}${subname}_${component.version}_${platform}.xml"/>
+    <echo message="Name of file with test results:  ${testResults.file}"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-get-version-from-cgxml">
+    <pathconvert property="cgxml.bin">
+      <first>
+        <fileset dir="pkg" includes="${component.name}*_bin*.cgxml"/>
+      </first>
+    </pathconvert>
+
+    <loadfile srcfile="${cgxml.bin}" property="component.version">
+      <filterchain>
+        <striplinebreaks/>
+        <tokenfilter>
+          <replaceregex pattern=".*&lt;version&gt;(.*)&lt;/version&gt;.*" replace="\1" flags="i"/>
+        </tokenfilter>
+      </filterchain>
+    </loadfile>
+    <echo message="Found version '${component.version}' in ${cgxml.bin}."/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-install-nunit" depends="-set-nunit-properties, -install-testFramework">
+    <echo message="Done."/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-set-nunit-properties">
+      <condition property="nunit.exe" value="nunit-console-x86.exe" else="nunit-console.exe">
+        <equals arg1="${architecture}" arg2="x86"/>
+      </condition>
+      <property name="nunit.location" value="${basedir}/extern/AnyCPU/Release"/>
+      <property name="nunit-execution.dir" value="${basedir}/AnyCPU/Release"/>
+      <property name="test.framework" value="NUnit_bin=2.6.1"/>
+
+      <echo message="Current TestFramework (cab-get syntax): ${test.framework}"/>
+      <echo message="Current TestFramework: ${nunit.location}/${nunit.exe}"/>
+      <echo message="Execution directory: ${nunit-execution.dir} (can be overridden by -Dnunit-execution.dir=...)"/>
+    </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-install-testFramework" unless="offline" description="Installs a test framework using cab-get. Assumes that 'test.framework' specifies the desired test framework in cab-get's package notation.">
+    <fail unless="test.framework" message="Requires 'test.framework' to be set in cab-get's package notation, e.g. &quot;NUnit_bin:64=2.6&quot; (might have to use quoting if using '=')."/>
+    <macro-cab-get-install items="${test.framework}" destination="extern" options="--force"/>
+    <echo message="${test.framework} installed."/>
+  </target>
+
+  <!-- ========================================================================================= -->
+  <target name="run-cabtestrunner" depends="-set-testresult-filename" description="Executes tests by calling Commons.TestFW.Runner.">
+    <macro-commons-testfw-runner items="${test.items}" results="${testResults.file}"/>
+    <fail if="fatalError" message="Fatal error."/>
+  </target>
+
+  <!-- ========================================================================================= -->
+  <target name="upload-testresults" depends="-check-upload-testresults" if="uploadTestresults" description="Uploads the test protocols to the archive server.">
+    <pathconvert property="testreports" pathsep=" ">
+      <fileset dir="${basedir}" includes="TestResults_*.xml"/>
+    </pathconvert>
+    <java jar="${cab-get.jar}" fork="true" failonerror="true">
+      <arg value="put"/>
+      <arg line="${testreports}"/>
+    </java>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-check-upload-testresults" >
+    <condition property="uploadTestresults" value="true">
+      <isset property="running-on-jenkins"/>
+    </condition>
+  </target>
+
+
+  <!-- ***************************************************************************************** -->
+  <!-- Coverage related targets                                                                  -->
+  <!-- ***************************************************************************************** -->
+
+  <!-- ========================================================================================= -->
+  <target name="run-ncover-nunit" depends="-set-testresult-filename, -install-nunit" description="Mesures code coverage of NUnit tests using NCover.">
+    <macro-ncover items="${nunit.items}" results="${testResults.file}"/>
+    <fail if="fatalError" message="Fatal error."/>
+  </target>
+
+  <!-- ========================================================================================= -->
+  <target name="compile-cmake-msbuild40-coverage" depends="-prepare-cmake-msbuild, -cmake, -prepare-msvs10-cs, -compile-msbuild-coverage" description="Compiles using CMake and MSBuild from .NET 4.0. via Bullseye"/>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-compile-msbuild-coverage" depends="-check-msbuild, -prepare-bullseye, -compile-msbuild-bullseye, -close-bullseye">
+    <echo message="Done."/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-prepare-bullseye">
+    <loadresource property="component.relative.path">
+      <propertyresource name="basedir"/>
+      <filterchain>
+        <tokenfilter>
+          <replacestring from="${env.WORKSPACE}\" to=""/>
+          <replacestring from="\" to="/"/>
+        </tokenfilter>
+      </filterchain>
+    </loadresource>
+
+    <echo message="Component:     ${component.relative.path}"/>
+    <echo message="Bullseye:      ${env.MY_BULLSEYE}"/>
+
+    <echo message="COVFILE:       ${COVFILE}"/>
+    <echo message="COVBUILDZONE:  ${COVBUILDZONE}"/>
+
+    <property name="arg.create.covfile" value="--create --file ${COVFILE} --deleteAll --no-banner --quiet"/>
+    <echo message="Running:       ${env.MY_BULLSEYE}/covselect ${arg.create.covfile}"/>
+    <exec executable="${env.MY_BULLSEYE}/covselect" searchpath="true">
+      <env key="COVBUILDZONE" value="${COVBUILDZONE}"/>
+      <arg line="${arg.create.covfile}"/>
+    </exec>
+
+    <property name="arg.include.component" value="--quiet --file ${COVFILE} --add ${component.relative.path}/"/>
+    <echo message="Running:       ${env.MY_BULLSEYE}/covselect ${arg.include.component}"/>
+    <exec executable="${env.MY_BULLSEYE}/covselect">
+      <env key="COVBUILDZONE" value="${COVBUILDZONE}"/>
+      <arg line="${arg.include.component}"/>
+    </exec>
+
+    <property name="arg.exclude.cmakefiles" value="--quiet --file ${COVFILE} --add !${component.relative.path}/dst/CMakeFiles/"/>
+    <echo message="Running:       ${env.MY_BULLSEYE}/covselect ${arg.exclude.cmakefiles}"/>
+    <exec executable="${env.MY_BULLSEYE}/covselect">
+      <env key="COVBUILDZONE" value="${COVBUILDZONE}"/>
+      <arg line="${arg.exclude.cmakefiles}"/>
+    </exec>
+
+    <property name="cppcoverage.exclude.dirs" value="!${component.relative.path}/Test/"/>
+    <property name="arg.exclude.test" value="--quiet --file ${COVFILE} --add ${cppcoverage.exclude.dirs}"/>
+    <echo message="Running:       ${env.MY_BULLSEYE}/covselect ${arg.exclude.test}"/>
+    <exec executable="${env.MY_BULLSEYE}/covselect">
+      <env key="COVBUILDZONE" value="${COVBUILDZONE}"/>
+      <arg line="${arg.exclude.test}"/>
+    </exec>
+
+    <macro-check-file file.name="${COVFILE}"/>
+
+    <!-- enable bullseye -->
+    <exec executable="${env.MY_BULLSEYE}/cov01">
+      <env key="COVBUILDZONE" value="${COVBUILDZONE}"/>
+      <arg line="--on --no-banner"/>
+    </exec>
+    <exec executable="${env.MY_BULLSEYE}/cov01">
+      <env key="COVBUILDZONE" value="${COVBUILDZONE}"/>
+      <arg line="--status --no-banner"/>
+    </exec>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-compile-msbuild-bullseye">
+    <echo message="work.dir = ${work.dir}"/>
+    <echo message="Running MSBuild on ${vs.sln} for ${msbuild.platform}/${compile.config}"/>
+    <echo message="${msbuild.exe} /v:${msbuild.verbosity} /p:Configuration=${compile.config} /p:Platform=${msbuild.platform} ${vs.sln}"/>
+    <exec executable="${msbuild.exe}" dir="${work.dir}" failonerror="true" resultproperty="msbuild.exitcode">
+      <env key="BUILD_ID" value="dontKillMe"/>
+      <env key="Path" value="${env.MY_BULLSEYE};${path}"/>
+      <env key="COVFILE" value="${COVFILE}"/>
+      <env key="COVBUILDZONE" value="${COVBUILDZONE}"/>
+      <arg value="/v:${msbuild.verbosity}"/>
+      <arg value="/p:Configuration=${compile.config}"/>
+      <arg value="/p:Platform=${msbuild.platform}"/>
+      <arg value="${vs.sln}"/>
+    </exec>
+    <echo message="Exit code: ${msbuild.exitcode}"/>
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-close-bullseye">
+    <!-- disable bullseye -->
+    <exec executable="${env.MY_BULLSEYE}/cov01">
+      <env key="COVBUILDZONE" value="${COVBUILDZONE}"/>
+      <arg line="--off --no-banner"/>
+    </exec>
+    <exec executable="${env.MY_BULLSEYE}/cov01">
+      <env key="COVBUILDZONE" value="${COVBUILDZONE}"/>
+      <arg line="--status --no-banner"/>
+    </exec>
+  </target>
+
+  <!-- ========================================================================================= -->
+  <target name="test-coverage-cpp" depends="-set-testresult-filename">
+
+    <property name="result-coverage.dir" location="${workspace.btc.dir}/.."/>
+    <property name="execution.dir" location="${workspace.btc.dir}"/>
+    <property name="commons-testfw-runner-coverage.path" location="dst/dst/Release"/>
+    <property name="coverage.test.items" value="${test.items}"/>
+
+    <fail unless="coverage.test.items" message="Requires that test files are specified in the property 'test.items' or coverage.test.items (can be set by -Dtest.items=... or -Dcoverage.test.items=...)"/>
+
+    <echo message="Running TestRunner."/>
+    <echo message="Using test items: ${test.items} (can be overridden by -Dtest.items=...)"/>
+    <echo message="Looking for test item in directory ${execution.dir}"/>
+    <echo message="${commons-testfw-runner-coverage.path}/${commons-testfw-runner.name} ${test.items}"/>
+
+    <echo message="COVFILE:       ${COVFILE}"/>
+    <macro-check-file file.name="${COVFILE}"/>
+
+    <exec executable="${commons-testfw-runner-coverage.path}/${commons-testfw-runner.name}" resolveexecutable="true" dir="${commons-testfw-runner-coverage.path}" resultproperty="commons-testfw-runner-coverage.exitcode">
+      <env key="COVFILE" value="${COVFILE}"/>
+      <arg line="${coverage.test.items}"/>
+      <arg value="--exit-code=fatal-only"/>
+      <arg value="--test-run-name=ROOT"/>
+      <arg value="--nunitresult"/>
+      <arg value="${result-coverage.dir}/${testResults.file}"/>
+    </exec>
+    <echo message="Exit code: ${commons-testfw-runner-coverage.exitcode}"/>
+
+    <echo message="Create coverage reports ..."/>
+    <property name="clover_report.dir" value="${result-coverage.dir}/report_clover"/>
+    <exec executable="${env.MY_BULLSHTML}/bullshtml.exe" resultproperty="bullshtml.exitcode">
+      <env key="Path" value="${env.MY_BULLSEYE};${path}"/>
+      <arg line="-f ${COVFILE} ${clover_report.dir}"/>
+    </exec>
+    <echo message="Exit code: ${bullshtml.exitcode}"/>
+
+    <property name="bullseye_report.dir" value="${result-coverage.dir}/report_bullseye"/>
+    <exec executable="${env.MY_BULLSEYE}/covhtml" resultproperty="covhtml.exitcode">
+      <env key="Path" value="${env.MY_BULLSEYE};${path}"/>
+      <arg line="-f ${COVFILE} ${bullseye_report.dir}"/>
+    </exec>
+    <echo message="Exit code: ${covhtml.exitcode}"/>
+    
+    <fail message="Fatal error.">
+      <condition>
+        <not>
+          <and>
+            <equals arg1="${commons-testfw-runner-coverage.exitcode}" arg2="0"/>
+            <equals arg1="${bullshtml.exitcode}" arg2="0"/>
+            <equals arg1="${covhtml.exitcode}" arg2="0"/>
+          </and>
+        </not>
+      </condition>
+    </fail>
+  </target>
+
+  <!-- ========================================================================================= -->
+  <target name="kill-running-processes">
+    <macro-kill-all-processes index="0"/>
+    <fail if="process_killed_0" message="A process started during job execution did not end correctly."/>
+  </target>
+
+  <!-- ========================================================================================= -->
+  <target name="kill-running-processes-without-errormessage">
+    <macro-kill-all-processes index="1"/>
+  </target>
+
+  <!-- ***************************************************************************************** -->
+  <!-- Sonar                                                                                     -->
+  <!-- ***************************************************************************************** -->
+
+  <!-- ========================================================================================= -->
+  <target name="sonar-net" description="Executes static analysis for C# code">
+    <macro-sonar-runner sonar.profile="net"/>
+  </target>
+
+  <!-- ========================================================================================= -->
+  <target name="sonar-cpp" depends="-cppcheck" description="Executes static analysis for C++ code">
+    <macro-sonar-runner sonar.profile="cpp"/>
+  </target>
+
+  <!-- ========================================================================================= -->
+  <target name="sonar-mixed" depends="sonar-cpp, sonar-net" description="Executes static analysis for C# and C++ code"/>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <target name="-cppcheck">
+    <!-- NOTE: the naming schema is defined by cppcheck and sonar. -->
+    <property name="cppcheck.report.file"   location="${user.dir}/cppcheck-reports/cppcheck-result-cab.xml"/>
+
+    <touch file="${cppcheck.report.file}" mkdirs="true"/>
+
+    <property name="cppcheck.exe" value="cppcheck.exe"/>
+    <property name="cppcheck.include.dirs" value="-I ../.."/> <!-- Give path to search for include files. Give several -I parameters to give several paths. -->
+    <property name="cppcheck.exclude.dirs" value=""/> <!-- Give a source file or source file directory to exclude from the check. Give several -i parameters to give several files/directories.-->
+    <property name="cppcheck.parameters" value="--enable=all --xml-version=1 ${cppcheck.exclude.dirs} ${cppcheck.include.dirs} --force .. 2>${cppcheck.report.file}"/>
+    <echo message="Running ${cppcheck.exe} ${cppcheck.parameters}"/>
+
+    <exec executable="cmd" dir="${user.dir}" failonerror="true">
+      <arg value="/c"/>
+      <arg value="${cppcheck.exe}"/>
+      <arg line="${cppcheck.parameters}"/>
+    </exec>
+  </target>
+
+</project>

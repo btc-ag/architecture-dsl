@@ -1,0 +1,231 @@
+«IMPORT com::btc::arch::architectureDsl»
+
+«EXTENSION templates::Extensions»
+
+«DEFINE main FOR Model-»
+	«EXPAND main FOREACH this.tests»
+«ENDDEFINE»
+
+«DEFINE main FOR Test-»
+
+«REM»TODO: Wo muss das Skript abgelegt werden?«ENDREM»
+«FILE this.name+"-config.xml"-»
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>This job runs the «this.name» test using the «this.testExecutionType»&#xd;
+and collects test code coverage</description>
+  <logRotator>
+    <daysToKeep>14</daysToKeep>
+    <numToKeep>-1</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>-1</artifactNumToKeep>
+  </logRotator>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.plugins.disk__usage.DiskUsageProperty/>
+  </properties>
+  <scm class="hudson.scm.SubversionSCM">
+    <locations>
+      <hudson.scm.SubversionSCM_-ModuleLocation>
+        <remote>http://esvn.e-konzern.de/repo/svn/btc/epm/Source/trunk/CoreAssetBase/build/cmake/hudson</remote>
+        <local>CoreAssetBase/build/cmake/hudson</local>
+      </hudson.scm.SubversionSCM_-ModuleLocation>
+    </locations>
+    <excludedRegions></excludedRegions>
+    <includedRegions></includedRegions>
+    <excludedUsers></excludedUsers>
+    <excludedRevprop></excludedRevprop>
+    <excludedCommitMessages></excludedCommitMessages>
+    <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
+  </scm>
+  <scmCheckoutRetryCount>2</scmCheckoutRetryCount>
+  <assignedNode>master</assignedNode>
+  <canRoam>false</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers class="vector"/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.BatchFile>
+      <command>@echo off
+
+echo.
+echo &quot;Building job %JOB_NAME% in directory %WORKSPACE%...&quot;
+echo.
+
+rem -----------------------------------------------------------------------------
+
+rem rm -rf test_output.xml
+
+echo &quot;deleting old import dir...&quot;
+rm -rf import
+mkdir import
+cd import
+
+rem -----------------------------------------------------------------------------
+
+rem current dir is: &quot;jobs\jobname\workspace\import&quot;
+
+echo &quot;downloading binaries from upstream build...&quot;
+wget --no-verbose http://10.4.148.79:8080/job/BTC.CAB.Commons-cpp-nmake_coverage/lastSuccessfulBuild/artifact/cab_win32_msvs9_nmake_coverage_Commons/BTC.CAB.Commons_cpp_nmake_coverage_latest-bin.tar.gz
+
+rem -----------------------------------------------------------------------------
+
+echo &quot;unpacking imported binaries...&quot;
+tar -xf *.tar.gz
+
+ls -la
+
+exit /b 0
+</command>
+    </hudson.tasks.BatchFile>
+    <hudson.tasks.BatchFile>
+      <command>@echo off
+
+rem current dir is: &quot;jobs\jobname\workspace&quot;
+
+if /i EXIST CoreAssetBase\build\cmake\hudson\%computername%.user.config (
+  echo &quot;copying user config file for machine %computername%...&quot;
+  copy CoreAssetBase\build\cmake\hudson\%computername%.user.config CoreAssetBase\build\cmake\path.config
+  echo.
+  echo &quot;adding relevant paths to PATH variable for machine %computername%...&quot;
+  call CoreAssetBase\build\cmake\hudson\%computername%.paths.bat
+) else (
+  echo &quot;copying user config file for UNKNOWN machine %computername%...&quot;
+  copy CoreAssetBase\build\cmake\hudson\local.user.config CoreAssetBase\build\cmake\path.config
+  echo.
+  echo &quot;adding relevant paths to PATH variable for UNKNOWN machine %computername%...&quot;
+  call CoreAssetBase\build\cmake\hudson\local.paths.bat
+)
+
+rem -----------------------------------------------------------------------------
+
+echo &quot;changing to import\dst...&quot;
+cd import\dst
+
+echo.
+pwd
+ls -la
+
+echo &quot;set BTCResourcePath=%WORKSPACE%\import&quot;
+set BTCResourcePath=%WORKSPACE%\import
+
+rem -----------------------------------------------------------------------------
+
+echo Executing unit tests...
+«IF testExecutionType.equals(TestExecutionType::BTC_UNIT_TESTER)-»
+	«IF (this.testModule.directory.length > 0)-»
+		BTC.CAB.Test.UnitTester ..\..\«this.testModule.directory.replaceSubstring("/", "\\")»\etc\«testExecutionSpecification» --nunitresult ../test_output.xml
+	«ELSE-»	
+		BTC.CAB.Test.UnitTester ..\..\«this.testModule.getWindowsPath()»\etc\«testExecutionSpecification» --nunitresult ../test_output.xml
+	«ENDIF-»
+«ENDIF-»
+
+set tests_errorlevel=%ERRORLEVEL%
+echo &quot;Unit tester returned with exit code: %tests_errorlevel%&quot;
+
+rem -----------------------------------------------------------------------------
+
+echo &quot;merging template instantiations from Unit tester...&quot;
+
+rename «this.testUnit.name».dll.csmes «this.testUnit.name».dll.orig.csmes
+&quot;%TESTCOCOON%\cmmerge&quot; -o «this.testUnit.name».dll.csmes -i «this.testUnit.name».dll.orig.csmes «this.testUnit.name».dll.orig.csmes «this.testModule.name».dll.csmes
+
+rem -----------------------------------------------------------------------------
+
+echo &quot;generating TestCocoon report for «this.testUnit.name»...&quot;
+
+&quot;%TESTCOCOON%\cmcsexeimport&quot; -m «this.testUnit.name».dll.csmes -e coverage.csexe -t "«this.testExecutionSpecification.replaceSubstring(".xml", "")»" -P
+&quot;%TESTCOCOON%\cmreport&quot; -m «this.testUnit.name».dll.csmes --html=«this.getHTMLCoverageReportName()» --emma=«this.testUnit.name».«this.testExecutionSpecification.replaceSubstring(".xml", "")».coverage.emma.xml --select=".*" --unexecuted --bargraph --global=selected --method=selected --source=selected --source-sort=coverage --toc --title="Unit test code coverage for «this.testUnit.name»"
+
+rem -----------------------------------------------------------------------------
+
+exit /b %tests_errorlevel%
+</command>
+    </hudson.tasks.BatchFile>
+  </builders>
+  <publishers>
+    <hudson.tasks.Fingerprinter>
+      <targets>import/*.tar.gz</targets>
+      <recordBuildArtifacts>false</recordBuildArtifacts>
+    </hudson.tasks.Fingerprinter>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>import/test_output.xml, import/dst/*.html, import/dst/*.emma.xml</artifacts>
+      <latestOnly>false</latestOnly>
+    </hudson.tasks.ArtifactArchiver>
+    <hudson.plugins.doclinks.DocLinksPublisher>
+      <documents>
+        <hudson.plugins.doclinks.Document>
+          <title>Code Coverage Report for «this.testUnit.name»</title>
+          <directory>import/dst</directory>
+          <recursive>false</recursive>
+          <file>«this.getHTMLCoverageReportName()»</file>
+          <id>1</id>
+        </hudson.plugins.doclinks.Document>
+      </documents>
+    </hudson.plugins.doclinks.DocLinksPublisher>
+    <hudson.plugins.emma.EmmaPublisher>
+      <includes>import/dst/*.emma.xml</includes>
+      <healthReports>
+        <minClass>0</minClass>
+        <maxClass>0</maxClass>
+        <minMethod>0</minMethod>
+        <maxMethod>0</maxMethod>
+        <minBlock>0</minBlock>
+        <maxBlock>0</maxBlock>
+        <minLine>0</minLine>
+        <maxLine>0</maxLine>
+      </healthReports>
+    </hudson.plugins.emma.EmmaPublisher>
+    <hudson.plugins.nunit.NUnitPublisher>
+      <testResultsPattern>import/test_output.xml</testResultsPattern>
+      <debug>false</debug>
+      <keepJUnitReports>false</keepJUnitReports>
+      <skipJUnitArchiver>false</skipJUnitArchiver>
+    </hudson.plugins.nunit.NUnitPublisher>
+    <hudson.plugins.emailext.ExtendedEmailPublisher>
+      <recipientList>peter.massuthe@btc-ag.com ruediger.stevens@btc-ag.com</recipientList>
+      <configuredTriggers>
+        <hudson.plugins.emailext.plugins.trigger.FailureTrigger>
+          <email>
+            <recipientList>peter.massuthe@btc-ag.com joerg.friebe@btc-ag.com</recipientList>
+            <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+            <body>$PROJECT_DEFAULT_CONTENT</body>
+            <sendToDevelopers>true</sendToDevelopers>
+            <includeCulprits>true</includeCulprits>
+            <sendToRecipientList>true</sendToRecipientList>
+          </email>
+        </hudson.plugins.emailext.plugins.trigger.FailureTrigger>
+        <hudson.plugins.emailext.plugins.trigger.StillFailingTrigger>
+          <email>
+            <recipientList></recipientList>
+            <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+            <body>$PROJECT_DEFAULT_CONTENT</body>
+            <sendToDevelopers>false</sendToDevelopers>
+            <includeCulprits>false</includeCulprits>
+            <sendToRecipientList>false</sendToRecipientList>
+          </email>
+        </hudson.plugins.emailext.plugins.trigger.StillFailingTrigger>
+        <hudson.plugins.emailext.plugins.trigger.FixedTrigger>
+          <email>
+            <recipientList>peter.massuthe@btc-ag.com joerg.friebe@btc-ag.com</recipientList>
+            <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+            <body>$PROJECT_DEFAULT_CONTENT</body>
+            <sendToDevelopers>true</sendToDevelopers>
+            <includeCulprits>true</includeCulprits>
+            <sendToRecipientList>true</sendToRecipientList>
+          </email>
+        </hudson.plugins.emailext.plugins.trigger.FixedTrigger>
+      </configuredTriggers>
+      <contentType>default</contentType>
+      <defaultSubject>$DEFAULT_SUBJECT</defaultSubject>
+      <defaultContent>$DEFAULT_CONTENT</defaultContent>
+    </hudson.plugins.emailext.ExtendedEmailPublisher>
+  </publishers>
+  <buildWrappers/>
+  <customWorkspace>jobs/${JOB_NAME}/ws</customWorkspace>
+</project>
+«ENDFILE-»
+«ENDDEFINE»

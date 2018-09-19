@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Java
+Bundle-SymbolicName: com.btc.commons.java
+Bundle-Version: 0.12.0
+Bundle-Vendor: BTC AG
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit4;bundle-version="4.8.1";resolution:=optional
+Import-Package: org.apache.commons.collections,
+ org.apache.commons.collections.functors,
+ org.apache.commons.collections.iterators
+Export-Package: com.btc.commons.java,com.btc.commons.java.functional

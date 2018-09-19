@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Xtext Utils
+Bundle-SymbolicName: com.btc.arch.ArchitectureDsl.xtext.utils
+Bundle-Version: 0.11.0.qualifier
+Bundle-Vendor: BTC
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.core.resources,
+ org.eclipse.core.runtime;bundle-version="3.6.0",
+ org.eclipse.emf.common,
+ org.eclipse.emf.ecore,
+ com.btc.commons.java,
+ com.btc.commons.eclipse.core,
+ org.eclipse.xtext
+Import-Package: org.apache.log4j
+Export-Package: com.btc.arch.xtext.util;
+  uses:="org.eclipse.emf.ecore.resource,
+   org.eclipse.emf.common.util,
+   com.btc.commons.java,
+   org.eclipse.core.resources",com.btc.commons.eclipse.ecore

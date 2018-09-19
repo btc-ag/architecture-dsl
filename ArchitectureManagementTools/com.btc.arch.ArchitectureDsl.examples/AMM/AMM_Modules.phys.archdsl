@@ -1,0 +1,846 @@
+Module BTC.AMM.Common (
+	 	Type = Framework
+	 	Language = C#
+	 	Group = BTC.AMM.Common
+)
+	
+Module BTC.AMM.Client.Configuration.Base (
+	 	Type = Framework
+	 	Language = C#
+	)
+	
+	Module BTC.AMM.AppFrame.SlUtilities (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.AppFrame.SlInternationalization (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.AppFrame.SlEnvironment (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.Client.Configuration.Base
+	 	BTC.AMM.AppFrame.SlInternationalization
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.AppFrame.SlControls (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Client.Configuration.Base
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.AppFrame.SlInternationalization
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.Client.Configuration.Documents (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.Client.Configuration.Base
+	 	BTC.AMM.Common
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.AppFrame.SlUtilities
+	)
+	Module BTC.AMM.AppFrame.AppFrame (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.Client.Configuration.Base
+	 	BTC.AMM.AppFrame.SlInternationalization
+	 	BTC.AMM.Common
+	 	BTC.AMM.Client.Configuration.Documents
+	)
+	Module BTC.AMM.AmmClient.Local (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Client.Configuration.Base
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.AppFrame.AppFrame
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.AppFrame.SlInternationalization
+	 	BTC.AMM.Common
+	 	BTC.AMM.AppFrame.SlControls
+	)
+	Module BTC.AMM.AppFrame.AppFrame.Web (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Client.Configuration.Base.NET (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.AppFrame.SlUtilities.NET (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common
+	)
+	
+	Module BTC.AMM.AppFrame.SlEnvironment.NET (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlUtilities.NET
+	 	BTC.AMM.Client.Configuration.Base.NET
+	 	BTC.CAB.Internationalization
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.AppFrame.SlControls.NET (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Client.Configuration.Base.NET
+	 	BTC.AMM.AppFrame.SlEnvironment.NET
+	 	BTC.AMM.AppFrame.SlUtilities.NET
+	 	BTC.CAB.Internationalization
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.Client.Administration.Documents (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.Client.Configuration.Documents
+	 	BTC.AMM.Client.Configuration.Base
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.Common
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.AppFrame.SlInternationalization
+	)
+	Module BTC.AMM.Client.Administration.Views (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.Client.Administration.Documents
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.Client.Configuration.Base
+	 	BTC.AMM.Client.Configuration.Documents
+	 	BTC.AMM.Common
+	 	BTC.AMM.AppFrame.SlInternationalization
+	)
+	Module BTC.AMM.Client.Analysis.Documents (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.AppFrame.SlControls
+	)
+	Module BTC.AMM.Client.Analysis.Views (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.Client.Analysis.Documents
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.AppFrame.SlInternationalization
+	)
+	Module BTC.AMM.Client.AppFrame.FrameWorkTest (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.Client.Configuration.Base
+	 	BTC.AMM.AppFrame.AppFrame
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.AppFrame.SlInternationalization
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.Client.AppFrame.FrameWorkTest.Web (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Client.DeviceManagement.Documents (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.Client.Configuration.Base
+	 	BTC.AMM.Common
+	 	BTC.AMM.AppFrame.SlInternationalization
+	)
+	Module BTC.AMM.Client.DeviceManagement.Documents.NET (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlControls.NET
+	 	BTC.AMM.AppFrame.SlEnvironment.NET
+	 	BTC.AMM.Common
+	 	BTC.CAB.Internationalization
+	)
+	Module BTC.AMM.Client.TariffManagement.Documents (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.Common
+	 	BTC.AMM.AppFrame.SlInternationalization
+	 	BTC.AMM.AppFrame.SlUtilities
+	)
+	Module BTC.AMM.Client.Wizards (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Client.TariffManagement.Documents
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.Client.DeviceManagement.Documents
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.Client.Configuration.Base
+	 	BTC.AMM.Common
+	 	BTC.AMM.AppFrame.SlInternationalization
+	)
+	Module BTC.AMM.Common.Views (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.Common
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.AppFrame.SlInternationalization
+	 	BTC.AMM.Client.Configuration.Base
+	 	BTC.AMM.AppFrame.SlUtilities
+	)
+	Module BTC.AMM.Client.DeviceManagement.Views (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.Client.DeviceManagement.Documents
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.Client.TariffManagement.Documents
+	 	BTC.AMM.Client.Configuration.Base
+	 	BTC.AMM.Client.Configuration.Documents
+	 	BTC.AMM.AppFrame.AppFrame
+	 	BTC.AMM.Client.Wizards
+	 	BTC.AMM.AppFrame.SlInternationalization
+	 	BTC.AMM.Common
+	 	BTC.AMM.Common.Views
+	)
+	Module BTC.AMM.Client.Processes.Documents (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.Common
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.AppFrame.SlControls
+	)
+	Module BTC.AMM.Client.Processes.Views (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.Client.Processes.Documents
+	 	BTC.AMM.Client.Configuration.Base
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.AppFrame.SlInternationalization
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.Client.RuleEngine.Documents (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.Common
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.AppFrame.SlInternationalization
+	)
+	Module BTC.AMM.Client.RuleEngine.Views (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.Client.RuleEngine.Documents
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.Client.Configuration.Documents
+	 	BTC.AMM.Client.Configuration.Base
+	 	BTC.AMM.AppFrame.SlInternationalization
+	)
+	Module BTC.AMM.Client.TariffManagement.Views (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.Client.TariffManagement.Documents
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.Client.Configuration.Base
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.AppFrame.SlInternationalization
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.Client.Tasks.Documents (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.AppFrame.SlInternationalization
+	)
+	Module BTC.AMM.Client.Tasks.Views (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.SlControls
+	 	BTC.AMM.Client.Tasks.Documents
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.AppFrame.SlInternationalization
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.Common.Moles (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common
+	)
+	
+	Module BTC.AMM.Server.Base (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.CAB.Env
+	 	BTC.CAB.Utilities
+	 	BTC.CAB.DataBase
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.Common.TestUtils (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.I18NRes.SlGui (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Server.Administration.BO (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.Administration.DTO (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Server.Administration.DAL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.Administration.BO
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.Administration.DTO
+	 	BTC.CAB.DataBase
+	 	BTC.CAB.Utilities
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.Server.Administration.BLL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Administration.BO
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.Administration.DAL
+	 	BTC.AMM.Server.Administration.DTO
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.Administration.WebS (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.Administration.DTO
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.Administration.BLL
+	 	BTC.AMM.Server.Administration.BO
+	)
+	Module BTC.AMM.Server.Analysis.BO (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.Analysis.BLL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Analysis.BO
+	)
+	Module BTC.AMM.Server.Analysis.DTO (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Server.Analysis.DAL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.Analysis.BO
+	 	BTC.AMM.Server.Analysis.DTO
+	)
+	Module BTC.AMM.Server.Analysis.WebS (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.Analysis.DTO
+	 	BTC.AMM.Server.Analysis.BLL
+	 	BTC.AMM.Server.Analysis.BO
+	)
+	Module BTC.AMM.Server.Billing.MDUSInputAdapter.DTO (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Server.Billing.MDUSInputAdapter.BLL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Billing.MDUSInputAdapter.DTO
+	 	BTC.CAB.Env
+	)
+	Module BTC.AMM.Server.Billing.MDUSInputAdapter.WebS (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Billing.MDUSInputAdapter.DTO
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.Billing.MDUSInputAdapter.BLL
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.Billing.MDUSOutputAdapter.BO (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Server.OutboxController.BO (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Server.Billing.MDUSOutputAdapter.BLL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Billing.MDUSOutputAdapter.BO
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.OutboxController.BO
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.ComServer.DTO (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Server.ComServer.BO (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.ComServer.DAL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.ComServer.BO
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.ComServer.DTO
+	 	BTC.CAB.DataBase
+	 	BTC.CAB.Utilities
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.Server.ComServer.BLL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.ComServer.DTO
+	 	BTC.AMM.Server.ComServer.DAL
+	)
+	
+	Module BTC.AMM.Server.ComServer.Common (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.CAB.Commons.Values.NET
+	 	BTC.AMM.Server.ComServer.DTO
+	)
+	
+	Module BTC.AMM.Server.DeviceManagement.DTO (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Server.ComServer.DeviceFunctions (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.CAB.Commons.Values.NET
+	 	BTC.AMM.Server.DeviceManagement.DTO
+	 	BTC.AMM.Server.ComServer.DTO
+	)
+	
+	Module BTC.AMM.Server.RuleEngine.DTO (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Server.MeterDataManagement.BO (
+	 	Type = Framework
+	 	Language = C#
+	)
+	
+	Module BTC.AMM.Server.MeterDataManagement.BLL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.MeterDataManagement.BO
+	 	BTC.CAB.Env
+	 	BTC.CAB.TimeSeries.API
+	)
+	Module BTC.AMM.Server.DeviceManagement.BO (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.DeviceManagement.DAL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.DeviceManagement.BO
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.DeviceManagement.DTO
+	 	BTC.CAB.Utilities
+	 	BTC.CAB.DataBase
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.Server.DeviceManagement.BLL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.DeviceManagement.BO
+	 	BTC.AMM.Server.DeviceManagement.DAL
+	 	BTC.AMM.Server.DeviceManagement.DTO
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.RuleEngine.BO (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.RuleEngine.DAL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.RuleEngine.BO
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.RuleEngine.DTO
+	 	BTC.CAB.DataBase
+	 	BTC.CAB.Utilities
+	)
+	Module BTC.AMM.Server.ComServer.ProcessingPipeline (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.ComServer.Common
+	 	BTC.AMM.Server.RuleEngine.DTO
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.MeterDataManagement.BLL
+	 	BTC.AMM.Server.ComServer.DTO
+	 	BTC.AMM.Server.DeviceManagement.DTO
+	 	BTC.AMM.Server.DeviceManagement.BLL
+	 	BTC.CAB.Utilities
+	 	BTC.CAB.Commons.Values.NET
+	 	BTC.AMM.Server.RuleEngine.DAL
+	 	BTC.AMM.Server.MeterDataManagement.BO
+	)
+	
+	Module BTC.AMM.Server.ComServer.ComServices (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.CAB.RTB.Common.NET
+	 	BTC.AMM.Server.ComServer.Common
+	 	BTC.AMM.Server.ComServer.DeviceFunctions
+	 	BTC.CAB.RTB.Domains.SmartMeter.APINET
+	 	BTC.AMM.Server.ComServer.DTO
+	 	BTC.AMM.Server.ComServer.ProcessingPipeline
+	 	BTC.CAB.Env
+	 	BTC.CAB.Utilities
+	 	BTC.AMM.Server.DeviceManagement.DTO
+	 	BTC.AMM.Common
+	 	BTC.AMM.Server.ComServer.DAL
+	 	BTC.CAB.Commons.Eventing.API.NET
+	 	BTC.AMM.Server.DeviceManagement.BLL
+	 	BTC.CAB.Commons.Values.NET
+	 	BTC.CAB.Commons.Log4NETAdapter
+	 	BTC.CAB.RTB.NETWrapper
+	 	BTC.CAB.Commons.Core.NET.WD
+	 	BTC.CAB.RTB.Domains.SmartMeter.FromRTB.NET
+	 	BTC.CAB.RTB.API.NET
+	 	BTC.AMM.Server.RuleEngine.DTO
+	)
+	Module BTC.AMM.Server.Configuration.BO (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.Configuration.DTO (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Server.Configuration.DAL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.Configuration.BO
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.Configuration.DTO
+	 	BTC.AMM.Common
+	 	BTC.CAB.DataBase
+	 	BTC.CAB.Utilities
+	)
+	Module BTC.AMM.Server.Configuration.BLL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Configuration.BO
+	 	BTC.AMM.Server.Configuration.DAL
+	 	BTC.AMM.Server.Configuration.DTO
+	 	BTC.AMM.Common
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.Configuration.WebS (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.Configuration.DTO
+	 	BTC.AMM.Common
+	 	BTC.AMM.Server.Configuration.BLL
+	 	BTC.AMM.Server.Configuration.BO
+	)
+	Module BTC.AMM.Server.DeviceManagement.WebS (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.DeviceManagement.DTO
+	 	BTC.AMM.Server.DeviceManagement.BLL
+	 	BTC.AMM.Server.DeviceManagement.BO
+	)
+	Module BTC.AMM.Server.MeterDataManagement.DTO (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Server.MeterDataManagement.WebS (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.MeterDataManagement.DTO
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.MeterDataManagement.BLL
+	 	BTC.AMM.Server.MeterDataManagement.BO
+	)
+	Module BTC.AMM.Server.OutboxController.BLL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.OutboxController.BO
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.Billing.MDUSOutputAdapter.BLL
+	)
+	Module BTC.AMM.Server.OutboxController.DTO (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Server.OutboxController.WebS (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.OutboxController.DTO
+	 	BTC.AMM.Server.OutboxController.BLL
+	 	BTC.AMM.Server.OutboxController.BO
+	)
+	Module BTC.AMM.Server.RuleEngine.BLL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.RuleEngine.DTO
+	 	BTC.AMM.Server.RuleEngine.BO
+	 	BTC.AMM.Server.RuleEngine.DAL
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.RuleEngine.WebS (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.RuleEngine.DTO
+	 	BTC.AMM.Server.RuleEngine.BLL
+	 	BTC.AMM.Server.RuleEngine.BO
+	)
+	Module BTC.AMM.Server.TariffManagement.BO (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.TariffManagement.DTO (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Server.TariffManagement.DAL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.TariffManagement.BO
+	 	BTC.AMM.Server.Base
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.TariffManagement.DTO
+	 	BTC.CAB.DataBase
+	 	BTC.CAB.Utilities
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.Server.TariffManagement.BLL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.TariffManagement.BO
+	 	BTC.AMM.Server.TariffManagement.DAL
+	 	BTC.AMM.Server.TariffManagement.DTO
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.TariffManagement.WebS (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.TariffManagement.DTO
+	 	BTC.AMM.Server.TariffManagement.BLL
+	 	BTC.AMM.Server.TariffManagement.BO
+	)
+	Module BTC.AMM.Server.TaskController.BLL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.Base
+	 	BTC.CAB.Utilities
+	)
+	Module BTC.AMM.Server.TaskController.WebS (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.TaskController.BLL
+	)
+	Module BTC.AMM.Server.Tasks.BO (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.Tasks.DTO (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Server.Tasks.DAL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.Tasks.BO
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.Tasks.DTO
+	 	BTC.CAB.DataBase
+	 	BTC.CAB.Utilities
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.Server.Tasks.BLL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Tasks.BO
+	 	BTC.AMM.Server.Tasks.DAL
+	 	BTC.AMM.Server.Tasks.DTO
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Server.Tasks.WebS (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.Tasks.DTO
+	 	BTC.AMM.Server.Tasks.BLL
+	 	BTC.AMM.Server.Tasks.BO
+	)
+	Module BTC.AMM.Server.WorkflowController.DTO (
+	 	Type = Framework
+	 	Language = C#
+	)
+	Module BTC.AMM.Server.WorkflowController.BO (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.CAB.Utilities
+	)
+	Module BTC.AMM.Server.WorkflowController.DAL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.WorkflowController.BO
+	)
+	Module BTC.AMM.Server.WorkflowController.BLL (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.WorkflowController.DTO
+	 	BTC.AMM.Server.WorkflowController.BO
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.WorkflowController.DAL
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.MeterDataManagement.BLL
+	 	BTC.AMM.Server.MeterDataManagement.BO
+	 	BTC.CAB.Utilities
+	)
+	Module BTC.AMM.Server.WorkflowController.WebS (
+	 	Type = Framework
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.WorkflowController.DTO
+	 	BTC.CAB.Env
+	 	BTC.AMM.Server.WorkflowController.BLL
+	 	BTC.AMM.Server.WorkflowController.BO
+	 	BTC.CAB.Utilities
+	)

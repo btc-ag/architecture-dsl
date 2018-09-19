@@ -1,0 +1,23 @@
+ModuleGroup A (
+	Maintainer = "A.Maintainer"
+)
+
+Module A.A (
+  Type = Framework
+  Language = C++
+  UsedModules = 
+)
+
+Module A.B (
+  Type = Framework
+  Language = C++
+  Maintainer = ""
+  UsedModules = 
+)
+
+Module A.C (
+  Type = Framework
+  Language = C++
+  Maintainer = "A.C.Maintainer"
+  UsedModules = 
+)

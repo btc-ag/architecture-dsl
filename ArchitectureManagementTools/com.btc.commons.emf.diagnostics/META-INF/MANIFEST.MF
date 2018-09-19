@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Diagnostics
+Bundle-SymbolicName: com.btc.commons.emf.diagnostics;singleton:=true
+Bundle-Version: 0.12.0
+Bundle-Activator: com.btc.commons.emf.diagnostics.DiagnosticsBundle
+Bundle-Vendor: BTC AG
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Import-Package: com.btc.commons.java,com.btc.commons.java.functional,
+ org.apache.log4j;version="1.2.15"
+Export-Package: com.btc.commons.emf.diagnostics,com.btc.commons.emf.diagnostics.ecore

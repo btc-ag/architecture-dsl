@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+<extension
+      point="org.eclipse.ui.commands">
+   <command
+         id="com.btc.arch.ArchitectureDsl.jython.zest.ui.showLinkDependencies"
+         name="Show Link Dependencies">
+   </command>
+   <command
+         id="com.btc.arch.ArchitectureDsl.jython.zest.ui.activaterevengtools"
+         name="Activate RevEngTools">
+   </command>
+</extension>
+<extension
+      point="org.eclipse.ui.menus">
+   <menuContribution
+         allPopups="false"
+         locationURI="toolbar:com.btc.arch.zest.ZestView">
+      <command
+            commandId="com.btc.arch.ArchitectureDsl.jython.zest.ui.activaterevengtools"
+            icon="resources/icons/python.gif"
+            style="toggle">
+      </command>
+   </menuContribution>
+   <menuContribution
+         allPopups="false"
+         locationURI="menu:com.btc.arch.zest.ZestView">
+      <command
+            commandId="com.btc.arch.ArchitectureDsl.jython.zest.ui.showLinkDependencies"
+            label="Show link dependencies (via RevEngTools)"
+            style="push"
+            tooltip="Show link dependencies (via RevEngTools)">
+      </command>
+   </menuContribution>
+</extension>
+<extension
+      point="org.eclipse.ui.handlers">
+   <handler
+         class="com.btc.arch.jython.zest.ui.RevEngToolsCommandHandler"
+         commandId="com.btc.arch.ArchitectureDsl.jython.zest.ui.showLinkDependencies">
+   </handler>
+   <handler
+         class="com.btc.arch.jython.zest.ui.RevEngToolsCommandHandler"
+         commandId="com.btc.arch.ArchitectureDsl.jython.zest.ui.activaterevengtools">
+   </handler>
+</extension>
+ 
+
+</plugin>

@@ -1,0 +1,4 @@
+import com::btc::arch::architectureDsl;
+
+String getWindowsPath(Module module):
+	JAVA com.btc.arch.javahelper.XpandHelper.getWindowsPath(com.btc.arch.architectureDsl.Module);

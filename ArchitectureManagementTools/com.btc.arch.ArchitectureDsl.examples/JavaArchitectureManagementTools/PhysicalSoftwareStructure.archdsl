@@ -1,0 +1,367 @@
+Domain ArchitectureManagement ()
+
+ModuleGroup com.btc.arch (
+	Domain = ArchitectureManagement
+	AllowedTargetDomains = Software_Development
+)
+
+Module com.btc.arch.ArchitectureDsl (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		org.eclipse.xtext
+ 		org.eclipse.xtext.generator
+ 		org.apache.commons.logging
+ 		org.eclipse.emf.codegen.ecore
+ 		org.eclipse.emf.mwe.utils
+ 		org.eclipse.emf.mwe2.launch
+ 		com.ibm.icu
+ 		org.eclipse.xtext.xtend
+ 		org.eclipse.xtext.util
+ 		org.eclipse.emf.ecore
+ 		org.eclipse.emf.common
+ 		org.antlr.runtime
+ 		org.eclipse.core.runtime
+ 		org.eclipse.emf.query
+ 		org.eclipse.core.resources
+ 		org.eclipse.emf.query.ocl
+ 		org.eclipse.ocl.ecore
+ 		org.eclipse.xtend
+ 		org.junit4
+ 		com.btc.commons.java
+ 		com.btc.commons.eclipse.core
+ 		com.btc.arch.base
+ 		com.btc.arch.visualstudio
+ 		com.btc.commons.emf.diagnostics
+)
+
+Module com.btc.arch.base (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		com.btc.commons.java
+ 		   org.junit4
+)
+
+Module com.btc.arch.visualstudio (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		com.btc.commons.java
+ 		org.junit4
+ 		com.btc.arch.base
+)
+
+Module com.btc.arch.ArchitectureDsl.generator (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		com.btc.arch.ArchitectureDsl
+ 		org.eclipse.xpand
+ 		org.eclipse.xtend
+ 		org.eclipse.xtext
+ 		org.eclipse.emf.mwe2.launch
+ 		org.eclipse.emf.mwe.utils
+ 		org.eclipse.xtend.typesystem.emf
+ 		org.eclipse.core.resources
+ 		org.eclipse.core.runtime
+ 		com.btc.arch.visualstudio
+ 		com.btc.commons.java
+ 		com.btc.arch.base
+)
+
+Module com.btc.arch.ArchitectureDsl.generator.commandline (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		com.btc.arch.ArchitectureDsl.generator
+ 		com.btc.arch.ArchitectureDsl.xtext.utils
+ 		org.eclipse.core.resources
+ 		org.eclipse.equinox.app
+ 		org.eclipse.core.runtime
+ 		com.btc.arch.ArchitectureDsl
+ 		org.eclipse.emf.common
+ 		org.eclipse.emf.ecore
+ 		com.google.inject
+ 		org.eclipse.xtext
+ 		com.btc.arch.base
+ 		com.btc.commons.java
+ 		com.btc.commons.eclipse.core
+)
+
+Module com.btc.arch.ArchitectureDsl.xtext.utils (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		org.eclipse.core.resources
+ 		org.eclipse.core.runtime
+ 		org.eclipse.emf.common
+ 		org.eclipse.emf.ecore
+ 		com.btc.commons.java
+ 		com.btc.commons.eclipse.core
+ 		org.junit4
+ 		com.btc.arch.ArchitectureDsl
+ 		org.eclipse.xtext
+)
+
+Module com.btc.arch.ArchitectureDsl.generator.ui (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		org.eclipse.core.runtime
+ 		org.eclipse.core.resources
+ 		org.eclipse.jface
+ 		org.eclipse.ui
+ 		org.eclipse.xpand
+ 		org.eclipse.xtend
+ 		com.btc.arch.ArchitectureDsl.generator
+ 		com.btc.arch.ArchitectureDsl
+ 		com.google.inject
+ 		org.eclipse.xtext.ui
+ 		com.btc.arch.ArchitectureDsl.xtext.utils
+ 		com.btc.arch.base
+)
+
+Module com.btc.arch.ArchitectureDsl.imports (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		com.btc.arch.ArchitectureDsl
+ 		com.btc.arch.ArchitectureDsl.generator
+ 		org.eclipse.emf.common
+ 		org.eclipse.emf.ecore
+ 		com.btc.commons.java
+ 		com.btc.commons.eclipse.core
+ 		org.eclipse.core.resources
+ 		org.eclipse.core.runtime
+ 		com.btc.arch.visualstudio
+ 		com.btc.arch.base
+)
+
+Module com.btc.arch.ArchitectureDsl.report (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		org.eclipse.core.runtime
+ 		org.eclipse.birt.report.engine
+ 		org.eclipse.birt.report.engine.script.javascript
+ 		com.btc.arch.ArchitectureDsl.generator
+ 		com.btc.arch.ArchitectureDsl
+ 		org.eclipse.core.resources
+ 		org.eclipse.emf.common
+ 		org.eclipse.emf.ecore
+ 		org.eclipse.birt.report.engine.emitter.ppt
+ 		org.eclipse.birt.report.engine.emitter.ppt.config
+ 		org.eclipse.birt.report.engine.emitter.html
+ 		org.eclipse.birt.report.engine.emitter.html.config
+ 		org.eclipse.birt.report.engine.emitter.pdf
+ 		org.eclipse.birt.report.engine.emitter.pdf.config
+ 		org.eclipse.birt.chart.engine
+ 		org.eclipse.birt.chart.engine.extension
+ 		org.eclipse.birt.chart.reportitem
+ 		org.eclipse.birt.chart.device.svg
+ 		org.eclipse.birt.chart.device.pdf
+ 		com.btc.commons.java
+ 		com.btc.arch.base
+ 		com.btc.arch.visualstudio
+)
+
+Module com.btc.arch.ArchitectureDsl.revengtools.ui (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		com.btc.arch.ArchitectureDsl
+ 		com.btc.arch.ArchitectureDsl.revengtoolsbridge
+ 		com.btc.arch.ArchitectureDsl.zest.ui
+ 		com.btc.arch.ArchitectureDsl.zest.core
+ 		com.btc.arch.revengtools
+ 		org.eclipse.core.resources
+ 		org.eclipse.core.runtime
+ 		org.eclipse.ui
+ 		org.eclipse.zest.core
+ 		org.eclipse.core.commands
+ 		org.eclipse.emf.ecore
+ 		org.eclipse.swt
+ 		jython
+ 		com.btc.commons.eclipse.core
+)
+
+Module com.btc.arch.ArchitectureDsl.revengtoolsbridge (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		com.btc.arch.ArchitectureDsl
+ 		com.btc.arch.revengtools
+ 		jython
+ 		org.eclipse.emf.ecore
+ 		com.google.inject
+)
+
+Module com.btc.arch.ArchitectureDsl.zest.ui (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		com.btc.arch.ArchitectureDsl
+ 		com.btc.arch.ArchitectureDsl.zest.core
+ 		org.eclipse.core.expressions
+ 		org.eclipse.core.resources
+ 		org.eclipse.core.runtime
+ 		org.eclipse.ui
+ 		org.eclipse.ui.ide
+ 		org.eclipse.zest.core
+ 		org.eclipse.zest.layouts
+ 		org.eclipse.xtext.ui
+ 		com.btc.commons.eclipse.core
+)
+
+Module com.btc.arch.ArchitectureDsl.zest.core (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		com.btc.arch.ArchitectureDsl
+ 		org.eclipse.core.resources
+ 		org.eclipse.xtext
+ 		org.eclipse.xtext.generator
+ 		org.eclipse.zest.core
+ 		org.eclipse.zest.layouts
+ 		org.eclipse.core.runtime
+)
+
+Module com.btc.arch.revengtools (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		jython
+ 		org.eclipse.core.runtime
+)
+
+Module com.btc.arch.ArchitectureDsl.ui (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		com.btc.arch.ArchitectureDsl
+ 		org.eclipse.xtext.ui
+ 		org.eclipse.ui.editors
+ 		org.eclipse.ui.ide
+ 		org.eclipse.xtext.ui.shared
+ 		org.eclipse.ui
+ 		org.eclipse.xtext.builder
+ 		org.antlr.runtime
+ 		org.eclipse.core.runtime
+ 		org.eclipse.core.resources
+ 		org.eclipse.xtend
+ 		org.eclipse.xpand
+ 		org.eclipse.core.filesystem
+)
+
+Module com.btc.arch.ArchitectureDsl.ui.perspective (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		org.eclipse.ui
+ 		org.eclipse.core.runtime
+ 		com.btc.arch.ArchitectureDsl.zest.ui
+ 		org.apache.commons.io
+ 		org.eclipse.core.filesystem
+ 		org.eclipse.ui.ide
+ 		org.eclipse.ui.navigator.resources
+ 		org.eclipse.ui.navigator
+ 		org.eclipse.core.resources
+ 		org.eclipse.xtext.ui
+)
+
+Module com.btc.commons.java (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		org.junit4
+)
+
+Module com.btc.commons.eclipse.core (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		org.eclipse.core.resources
+ 		org.eclipse.core.runtime
+ 		com.btc.commons.java
+)
+
+Module com.btc.commons.emf.diagnostics (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		org.eclipse.core.runtime
+ 		org.eclipse.emf.ecore
+)
+
+Module jython (
+ 	Type = Framework
+ 	Language = Java
+ 	Group = com.btc.arch
+ 	//Maintainer = ""
+ 	Description = ""
+ 	UsedModules =
+ 		org.eclipse.core.runtime
+)
+	
+	
+
+
+	

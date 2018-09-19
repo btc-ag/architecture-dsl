@@ -1,0 +1,462 @@
+ModuleGroup BTC.CAB.RTB (
+  Maintainer = "Rüdiger Stevens"
+  Domain = RealTimeBus
+)
+
+/*
+ModuleGroup BTC.CAB.RTB.Domains.SmartMeter (
+  Modules = BTC.CAB.RTB.Domains.SmartMeter.*
+  Owner = "Rüdiger Stevens"
+)
+
+ModuleGroup EWEBox (
+  Modules = BTC.CAB.RTB.Domains.SmartMeter.* BTC.CAB.RTB.Driver.EWEBox
+  Owner = "Rüdiger Stevens"
+)
+*/
+
+Module BTC.CAB.RTB.API (
+  Type = Interface
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Values
+  	BTC.CAB.Commons.CoreExtras 
+  	BTC.CAB.Commons.Logging.API 
+  	BTC.CAB.Commons.Dom 
+  	BTC.CAB.Commons.Sax 
+  	BTC.CAB.Commons.Eventing.API 
+  	BTC.CAB.Commons.Eventing.CallerAPI 
+  	BTC.CAB.RTB.Common.CPP
+)
+
+Module BTC.CAB.RTB.API.NET (
+ 	Type = Interface
+ 	Language = C#
+ 	UsedModules =
+	 	BTC.CAB.RTB.Common.NET
+	 	BTC.CAB.Commons.Values.NET
+)
+
+Module BTC.CAB.RTB.Common.CPP (
+  Type = Framework
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Dom 
+  	BTC.CAB.Commons.Eventing.API 
+)
+
+Module BTC.CAB.RTB.Common.NET (
+ 	Type = Framework
+ 	Language = C#
+ 	UsedModules =
+	 	BTC.CAB.Commons.Eventing.API.NET
+	 	BTC.CAB.Commons.Core.NET.WD
+)
+
+Module BTC.CAB.RTB.DemoApp (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core 
+  	BTC.CAB.Commons.Values 
+  	BTC.CAB.Commons.Logging.API
+  	BTC.CAB.Commons.Logging.Default 
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.CoreYacl 
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Eventing.API 
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API 
+)
+Module BTC.CAB.RTB.Depends (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core 
+  	BTC.CAB.Commons.CoreExtras 
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Expander
+  	BTC.CAB.Commons.DomConfig
+  	BTC.CAB.Commons.Sax 
+  	BTC.CAB.Commons.Logging.API 
+  	//BTC.CAB.Depends.Artifact.API 
+)
+
+Module BTC.CAB.RTB.Domains.SmartMeter.API (
+  Type = Interface
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Values
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Eventing.API  
+  	BTC.CAB.RTB.Common.CPP
+)
+
+Module BTC.CAB.RTB.Domains.SmartMeter.APINET (
+ 	Type = Interface
+ 	Language = C#
+ 	UsedModules =
+	 	BTC.CAB.RTB.Common.NET
+	 	BTC.CAB.Commons.Values.NET
+)
+
+Module BTC.CAB.RTB.Domains.SmartMeter.EWEBox (
+  Type = Interface
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Logging.API
+  	BTC.CAB.Commons.Values
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Eventing.API  
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.Encoding.SML.General
+  	BTC.CAB.AsyncCommunication.API
+  	BTC.CAB.RTB.Domains.SmartMeter.API
+)
+
+Module BTC.CAB.RTB.Domains.SmartMeter.FromRTB (
+  Type = Interface
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Values
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Eventing.API  
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API
+  	BTC.CAB.RTB.Domains.SmartMeter.API
+)
+
+Module BTC.CAB.RTB.Domains.SmartMeter.FromRTB.NET (
+ 	Type = Framework
+ 	Language = C#
+ 	UsedModules =
+	 	BTC.CAB.RTB.Domains.SmartMeter.APINET
+	 	BTC.CAB.Commons.Values.NET
+	 	BTC.CAB.RTB.API.NET
+	 	BTC.CAB.RTB.Common.NET
+	 	BTC.CAB.Commons.Core.NET.WD
+	 	BTC.CAB.Commons.Eventing.API.NET
+)
+
+Module BTC.CAB.RTB.Domains.SmartMeter.QNEMSpyDER (
+  Type = Interface
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Logging.API
+  	BTC.CAB.Commons.Values
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Eventing.API  
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.Encoding.SML.General
+  	BTC.CAB.AsyncCommunication.API
+  	BTC.CAB.RTB.Domains.SmartMeter.API
+)
+Module BTC.CAB.RTB.Domains.SmartMeter.ToRTB (
+  Type = Interface
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Values
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Eventing.API  
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API
+  	BTC.CAB.RTB.Domains.SmartMeter.API
+)
+
+Module BTC.CAB.RTB.Driver.Ads (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Values
+  	BTC.CAB.Commons.Eventing.API
+  	BTC.CAB.Commons.Eventing.CallerAPI
+  	BTC.CAB.Commons.Eventing.Impl
+  	BTC.CAB.Commons.CoreExtras  
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API
+  	BTC.CAB.RTB.Driver.Base
+  	//BTC.CAB.FieldBus.TwinCatAds.Api
+  	//BTC.CAB.FieldBus.TwinCatAds.TcImpl
+)
+
+Module BTC.CAB.RTB.Driver.Base (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Values
+  	BTC.CAB.Commons.CoreExtras  
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API
+)
+
+Module BTC.CAB.RTB.Driver.EWEBox (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Values
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Eventing.API
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API
+  	BTC.CAB.RTB.Driver.Base
+  	BTC.CAB.AsyncCommunication.API
+  	BTC.CAB.RTB.Domains.SmartMeter.API
+  	BTC.CAB.RTB.Domains.SmartMeter.ToRTB
+  	BTC.CAB.RTB.Domains.SmartMeter.EWEBox
+)
+
+Module BTC.CAB.RTB.Driver.IEC61850 (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Values
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Eventing.API
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API
+  	//BTC.CAB.IEC61850.Client.API
+  	//BTC.CAB.IEC61850.General
+  	//BTC.CAB.IEC61850.Model
+  	BTC.CAB.RTB.Driver.Base
+)
+
+Module BTC.CAB.RTB.Driver.MMS (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Values
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Eventing.API
+  	BTC.CAB.Encoding.ASN1.API
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API
+  	BTC.CAB.RTB.Driver.Base
+  	//BTC.CAB.Fieldbus.MMS.API
+)
+
+Module BTC.CAB.RTB.Driver.Mock (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Logging.API
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Sax
+  	BTC.CAB.Commons.Values
+  	BTC.CAB.Commons.CoreExtras 
+  	BTC.CAB.Commons.Eventing.API 
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API
+  	BTC.CAB.RTB.Model
+)
+
+Module BTC.CAB.RTB.Driver.Multiplexer (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Values
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Eventing.API
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API
+  	BTC.CAB.RTB.Model
+  	BTC.CAB.RTB.Driver.Base
+)
+
+Module BTC.CAB.RTB.Driver.QNEMSpyDER (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Values
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Eventing.API
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API
+  	BTC.CAB.RTB.Driver.Base
+  	BTC.CAB.AsyncCommunication.API
+  	BTC.CAB.RTB.Domains.SmartMeter.API
+  	BTC.CAB.RTB.Domains.SmartMeter.ToRTB
+  	BTC.CAB.RTB.Domains.SmartMeter.QNEMSpyDER
+)
+
+Module BTC.CAB.RTB.Driver.Remoting (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Logging.API
+  	BTC.CAB.Commons.Values
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Eventing.API
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.AsyncCommunication.API
+  	BTC.CAB.RTB.API
+)
+
+Module BTC.CAB.RTB.ExtractSpec (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core 
+  	BTC.CAB.Commons.Values 
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Application
+  	BTC.CAB.Commons.CoreYacl
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Sax
+  	BTC.CAB.Commons.Logging.API
+  	BTC.CAB.Commons.Logging.Default 
+	BTC.CAB.Commons.Eventing.API 
+	BTC.CAB.Commons.Eventing.CallerAPI 
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API 
+  	BTC.CAB.RTB.Model 
+)
+
+Module BTC.CAB.RTB.Model (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.Values 
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Logging.API 
+	BTC.CAB.Commons.Eventing.API  
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API
+)
+
+Module BTC.CAB.RTB.NETWrapper (
+ 	Type = Framework
+ 	Language = C#
+	UsedModules =
+	 	BTC.CAB.Commons.CoreExtras
+	 	BTC.CAB.Commons.Eventing.Impl
+	 	BTC.CAB.RTB.Common.CPP
+	 	BTC.CAB.RTB.API
+	 	BTC.CAB.Commons.Core.NET.Bridge
+	 	BTC.CAB.Commons.Values
+	 	BTC.CAB.Commons.Eventing.API
+	 	BTC.CAB.Commons.Eventing.CallerAPI
+	 	BTC.CAB.Commons.Core.NET.WD
+	 	BTC.CAB.Commons.Eventing.API.NET
+	 	BTC.CAB.Commons.Values.NET
+ 		BTC.CAB.RTB.API.NET
+ 		BTC.CAB.RTB.Common.NET
+)
+
+Module BTC.CAB.RTB.PoC.TCS.Base (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core 
+  	BTC.CAB.Commons.Values 
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Logging.API
+  	BTC.CAB.Commons.Logging.Default
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Eventing.API 
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API 
+)
+
+Module BTC.CAB.RTB.ServerDemoApp (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core 
+  	BTC.CAB.Commons.Values 
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Application
+  	BTC.CAB.Commons.CoreYacl 
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Logging.API
+  	BTC.CAB.Commons.Logging.Default 
+  	BTC.CAB.Commons.Eventing.API 
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API 
+)
+
+Module BTC.CAB.RTB.Service (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core 
+  	BTC.CAB.Commons.Values 
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Sax
+  	//BtcEMSServicesAPI 
+  	BTC.CAB.Commons.Eventing.API
+  	BTC.CAB.Commons.Eventing.CallerAPI
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API 
+)
+
+Module BTC.CAB.RTB.SimpleRTB (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core 
+  	BTC.CAB.Commons.Values 
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Eventing.API
+  	BTC.CAB.Commons.Eventing.CallerAPI
+  	BTC.CAB.Commons.Eventing.Impl
+  	BTC.CAB.RTB.Common.CPP
+  	BTC.CAB.RTB.API 
+  	BTC.CAB.Commons.CoreYacl
+)
+
+Module BTC.CAB.RTB.Test (
+  Type = InterfaceTest ImplementationTest
+  Language = C++
+  TestedModule = BTC.CAB.RTB.API BTC.CAB.RTB.Common.CPP
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.CoreExtras
+  	BTC.CAB.Commons.Values 
+  	BTC.CAB.Commons.Dom
+  	BTC.CAB.Commons.Logging.API
+  	BTC.CAB.Commons.Expander
+  	BTC.CAB.Commons.DomConfig
+  	//BtcEMSServicesAPI 
+  	//BtcEMSServicesProvider
+  	BTC.CAB.RTB.Service
+  	BTC.CAB.Commons.Eventing.API 
+	BTC.CAB.Commons.Eventing.CallerAPI 
+  	//BtcEMSServicesEventingService
+  	//BtcUnitTests
+  	//BtcTestFW
+  	BTC.CAB.RTB.Driver.Mock 
+)

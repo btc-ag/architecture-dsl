@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+   <extension-point id="diagnosticProcessingElements" name="Diagnostic Processing Elements" schema="schema/diagnosticProcessingElements.exsd"/>
+
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package 
+       uri = "http://www.btc.com/arch/ArchitectureDsl" 
+       class = "com.btc.arch.architectureDsl.ArchitectureDslPackage"
+       genModel = "com/btc/arch/ArchitectureDsl.genmodel" /> 
+	
+  </extension>
+
+  <extension
+        point="com.btc.commons.emf.diagnostics.diagnostics">
+     <diagnostic
+           default-severity="ERROR"
+           description="Specified dependency violates domain model constraints"
+           documentation-link="http://wiki.e-konzern.de/x/5xswAg"
+           id="com.btc.arch.ArchitectureDsl.domain"
+           subject-type="Module,Module">
+     </diagnostic>
+     <diagnostic
+           default-severity="ERROR"
+           description="Specified dependency violates module type dependency rules"
+           id="com.btc.arch.ArchitectureDsl.moduletype"
+           subject-type="Module,Module">
+     </diagnostic>
+
+  </extension>
+
+
+
+
+</plugin>

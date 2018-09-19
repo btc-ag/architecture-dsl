@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="gen" name="com.btc.arch.ArchitectureDsl">
+	<property name="my.basepath" location="${eclipse.pdebuild.home}/../.."/>
+
+	<path id="gen.classpath">	
+		<pathelement location="${my.basepath}/dropins/org.antlr.runtime_3.0.0.v200803061811.jar"/>
+		<!--<pathelement location="${my.basepath}/dropins/org.apache.commons.cli_1.0.0.v20080604-1500.jar"/>-->
+		<pathelement location="${my.basepath}/dropins/org.apache.commons-cli-1.2.jar"/>
+		<pathelement location="${my.basepath}/dropins/de.itemis.xtext.antlr_1.0.1.v201008261834.jar"/>
+		<pathelement location="${my.basepath}/dropins/org.antlr.gen_3.0.1.v201008261834/antlr-3.0.1.jar"/>
+		<pathelement location="${my.basepath}/dropins/org.antlr.gen_3.0.1.v201008261834/antlr-2.7.7.jar"/>
+		<pathelement location="${my.basepath}/dropins/org.antlr.gen_3.0.1.v201008261834/stringtemplate-3.1b1.jar"/>
+		<pathelement location="${my.basepath}/dropins/org.antlr.gen_3.0.1.v201008261834"/>
+		<pathelement location="${my.basepath}/plugins/org.eclipse.emf.mwe2.launch_1.0.2.v201102151014.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.xtext_1.0.2.v201102150722.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.emf.ecore.xmi_2.5.0.v20100521-1846.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.emf.ecore_2.6.1.v20100914-1218.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.emf.common_2.6.0.v20100914-1218.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.xtext.util_1.0.2.v201102150722.jar"/>
+        <pathelement location="${my.basepath}/plugins/com.google.collect_0.8.0.v201102150722.jar"/>
+        <pathelement location="${my.basepath}/plugins/com.google.inject_2.0.0.v201003051000.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.emf.mwe.core_1.0.2.v201102150556.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.emf.mwe2.runtime_1.0.2.v201102150556.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.emf.mwe.utils_1.0.2.v201102150556.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.xtext.generator_1.0.2.v201102150722.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.xtend_1.0.1.v201008251147.jar"/>
+        <pathelement location="${my.basepath}/plugins/com.ibm.icu_4.2.1.v20100412.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.xpand_1.0.1.v201008251147.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.xtend.typesystem.emf_1.0.1.v201008251147.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.emf.codegen.ecore_2.6.1.v20100914-1218.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.emf.codegen_2.6.0.v20100914-1218.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.apache.commons.logging_1.1.1.v201005080502.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.emf.mwe2. _1.0.2.v201102151014.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.emf.mwe2.language_1.0.2.v201102151014.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.xtext.common.types_1.0.2.v201102150722.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.xtext.xtend_1.0.2.v201102150722.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.core.runtime_3.6.0.v20100505.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.osgi_3.6.2.R36x_v20110210.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.equinox.common_3.6.0.v20100503.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.core.jobs_3.5.1.R36x_v20100824.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.core.runtime.compatibility.registry_3.3.0.v20100520/runtime_registry_compatibility.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.equinox.registry_3.5.0.v20100503.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.equinox.preferences_3.3.0.v20100503.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.core.contenttype_3.4.100.v20100505-1235.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.equinox.app_1.3.1.R36x_v20100803.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.eclipse.core.resources_3.6.1.R36x_v20110131-1630.jar"/>
+        <pathelement location="${my.basepath}/plugins/org.apache.log4j_1.2.15.v201005080500.jar"/>
+		<pathelement location="src"/>
+	</path>
+	<target name="gen">
+		<!--
+		<pathconvert refid="gen.classpath" property="win_classpath"/>
+		<echo message="${win_classpath}"/>
+		-->
+		<java classname="org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher" classpathref="gen.classpath" fork="true" failonerror="true">
+			<arg value="src/com/btc/arch/GenerateArchitectureDsl.mwe2"/>
+		</java>
+	</target>
+</project>

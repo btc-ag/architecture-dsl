@@ -1,0 +1,90 @@
+import com::btc::arch::architectureDsl;
+
+String getWindowsPath(Module module):
+	JAVA com.btc.arch.javahelper.XpandHelper.getWindowsPath(com.btc.arch.architectureDsl.Module);
+
+String getUnixPathWithoutBtcCabPrefix(Module module):
+	JAVA com.btc.arch.javahelper.XpandHelper.getUnixPathWithoutBtcCabPrefix(com.btc.arch.architectureDsl.Module);
+
+String toWindowsPath(String path):
+	JAVA com.btc.arch.javahelper.XpandHelper.toWindowsPath(java.lang.String);
+
+String getUnderscoreName(Module module):
+	module.name.replaceSubstring(".", "_");
+
+String replaceSubstring (String string, String substring, String replacement):
+	JAVA com.btc.arch.javahelper.XpandHelper.replaceSubstring(java.lang.String, java.lang.String, java.lang.String);
+	
+String removeCABPrefix (String string):
+	JAVA com.btc.arch.javahelper.XpandHelper.removeCABPrefix(java.lang.String);
+	
+String addSlashAtCamelCase (String string):
+	JAVA com.btc.arch.javahelper.XpandHelper.addSlashAtCamelCase(java.lang.String);	
+	
+List[String] getHeaderFilenames (Module module, String basepath):
+	JAVA com.btc.arch.javahelper.XpandHelper.getHeaderFilenames(com.btc.arch.architectureDsl.Module, java.lang.String);
+	
+List[String] getImplementationFilenames (Module module, String basepath):
+	JAVA com.btc.arch.javahelper.XpandHelper.getImplementationFilenames(com.btc.arch.architectureDsl.Module, java.lang.String);
+	
+String getHTMLCoverageReportName(Test test):
+	test.testUnit.name + "." + test.testExecutionSpecification.replaceSubstring(".xml", "") + ".coverage.html";
+	
+String getModuleName(TestExecutionType type):
+	switch {
+	  case type.equals(TestExecutionType::BTC_UNIT_TESTER):
+	    "BTC.CAB.Test.UnitTester"	   
+	  case type.equals(TestExecutionType::BTC_TEST_FW):
+		"BTC.CAB.Test.CppUnit.ConsoleTestRunner"
+	  default:
+	    ""
+	};
+
+String getExecutableName(TestExecutionType type):
+	switch {
+	  case type.equals(TestExecutionType::BTC_UNIT_TESTER):
+	    type.getModuleName()	   
+	  case type.equals(TestExecutionType::BTC_TEST_FW):
+	    type.getModuleName()	   
+	  case type.equals(TestExecutionType::NUNIT):
+	    "NUnit"
+	  default:
+	    ""
+	};
+	
+// TODO Replace by allDependencies/allTransitiveDependencies defined in com.btc.arch.ArchitectureDsl
+create Set[Module] getAllDependencies(Module module):
+	this.addAll(module.usedModules) -> 
+	this.addAll(module.implementedModules) ->
+	this.addAll(module.testedModule);	
+	
+create Set[Module] getAllTransitiveDependencies(Module module):
+	this.addAll(module.getAllDependencies()) ->
+	this.addAll(module.getAllDependencies().getAllTransitiveDependencies());
+
+String getDriveLetter(String path):
+	JAVA com.btc.arch.javahelper.XpandHelper.getDriveLetter(java.lang.String);
+
+String getPathWithoutDriveLetter(String path):
+	JAVA com.btc.arch.javahelper.XpandHelper.getPathWithoutDriveLetter(java.lang.String);	
+	
+boolean containsFramework(List[Framework] frameworks, String frameworkName):
+	JAVA com.btc.arch.javahelper.XpandHelper.containsFramework(java.util.List, java.lang.String);
+	
+String getCgxmlFilename(ReleaseUnit releaseUnit, Package package, String type, Platform platform):
+	if (type == "src") then
+		releaseUnit.name+"\\"+package.name+"_"+type+".cgxml"
+	else
+		releaseUnit.name+"\\"+package.name+"_"+type+"_"+platform.name+".cgxml";
+		
+boolean containsPlatformEntry(List[DirectoryReference] directoryReferences, String platformName):
+	JAVA com.btc.arch.javahelper.XpandHelper.containsPlatformEntry(java.util.List, java.lang.String);
+	
+boolean containsPlatformEntry(DirectoryReference directoryReference, String platformName):
+	JAVA com.btc.arch.javahelper.XpandHelper.containsPlatformEntry(com.btc.arch.architectureDsl.DirectoryReference, java.lang.String);
+	
+String getDirectory(List[DirectoryReference] directoryReferences, String platformName):
+	JAVA com.btc.arch.javahelper.XpandHelper.getDirectory(java.util.List, java.lang.String);
+	
+String getPrefix(List[DirectoryReference] directoryReferences, String platformName):
+	JAVA com.btc.arch.javahelper.XpandHelper.getPrefix(java.util.List, java.lang.String);

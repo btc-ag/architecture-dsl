@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="org.eclipse.ui.popupMenus"> 
+	<objectContribution 
+		id="org.eclipse.ui.articles.action.contribution.popup.object"
+  		objectClass="org.eclipse.core.resources.IFile"
+  		nameFilter="*.archdsl">
+  		<filter
+        	name="projectNature"
+        	value="org.eclipse.xtext.ui.shared.xtextNature">
+      	</filter>
+      	<menu
+        	id="com.btc.arch.generator.subMenu"
+         	label="Generate"
+         	path="additions">
+      		<separator name="group1"/>
+      	</menu>
+      	<action
+             class="com.btc.arch.generator.ui.TestSkriptGeneratorDelegate"
+             id="com.btc.arch.javahelper.testscriptAction"
+             label="Test Script"
+             menubarPath="com.btc.arch.generator.subMenu/group1"> 
+      	</action>
+      	<action
+             class="com.btc.arch.generator.ui.JenkinsConfigGeneratorDelegate"
+             id="com.btc.arch.javahelper.jenkinsconfigAction"
+             label="Jenkins Config"
+             menubarPath="com.btc.arch.generator.subMenu/group1"> 
+      	</action>
+      	<action
+             class="com.btc.arch.generator.ui.VS2008SolutionGeneratorDelegate"
+             id="com.btc.arch.javahelper.vs2008slnAction"
+             label="Visual Studio 2008 Solution"
+             menubarPath="com.btc.arch.generator.subMenu/group1"> 
+      	</action>
+      	<action
+             class="com.btc.arch.generator.ui.CMakeGeneratorDelegate"
+             id="com.btc.arch.javahelper.cmakeAction"
+             label="CMakeFiles"
+             menubarPath="com.btc.arch.generator.subMenu/group1"> 
+      	</action>
+      	<action
+             class="com.btc.arch.generator.ui.VcxprojGeneratorDelegate"
+             id="com.btc.arch.javahelper.vcxprojAction"
+             label="C++ Project Files"
+             menubarPath="com.btc.arch.generator.subMenu/group1"> 
+      	</action>
+      	<action
+             class="com.btc.arch.generator.ui.CsprojGeneratorDelegate"
+             id="com.btc.arch.javahelper.csprojAction"
+             label="C# Project Files"
+             menubarPath="com.btc.arch.generator.subMenu/group1"> 
+      	</action>
+       <action
+             class="com.btc.arch.generator.ui.CgxmlGeneratorDelegate"
+             id="com.btc.arch.javahelper.cgxmlAction"
+             label="Cgxml Files"
+             menubarPath="com.btc.arch.generator.subMenu/group1">
+       </action>
+      	<menu
+        	id="com.btc.arch.generator.subsubMenu"
+         	label="Graphs"
+         	path="com.btc.arch.generator.subMenu/additions">
+      		<separator name="group1"/>
+      	</menu>
+      	<action
+             class="com.btc.arch.generator.ui.ModuleGraphGeneratorDelegate"
+             id="com.btc.arch.javahelper.modulegraphAction"
+             label="Module Graph"
+             menubarPath="com.btc.arch.generator.subMenu/com.btc.arch.generator.subsubMenu/group1"> 
+      	</action>
+      	<action
+             class="com.btc.arch.generator.ui.SystemGraphGeneratorDelegate"
+             id="com.btc.arch.javahelper.moduleAction"
+             label="System Graph"
+             menubarPath="com.btc.arch.generator.subMenu/com.btc.arch.generator.subsubMenu/group1"> 
+      	</action>  
+   	</objectContribution> 
+</extension>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="com.btc.arch.architecturedsl.generator.ui.properties.ArchDslGeneratorProperties"
+            id="com.btc.arch.architecturedsl.generator.ui.properties.ArchDslGeneratorProperties"
+            name="Architecture DSL generator properties"
+            nameFilter="*">
+         <enabledWhen>
+            <instanceof
+                  value="org.eclipse.core.resources.IProject">
+            </instanceof>
+         </enabledWhen>
+      </page>
+   </extension>
+
+</plugin>

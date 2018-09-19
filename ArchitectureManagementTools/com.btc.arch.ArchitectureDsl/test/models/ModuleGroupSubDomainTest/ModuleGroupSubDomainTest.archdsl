@@ -1,0 +1,31 @@
+Domain DomainWithSubdomain1 (
+	Subdomains = Subdomain1 Subdomain2
+)
+Domain Subdomain1 (
+)
+Domain Subdomain2 (
+    Subdomains = Subdomain2Subdomain
+)
+Domain Subdomain2Subdomain ()
+Domain DomainWithSubdomain2 (
+	Subdomains = Subdomain3 Subdomain4
+)
+Domain Subdomain3 (
+)
+Domain Subdomain4 (
+    Subdomains = Subdomain4Subdomain
+)
+Domain Subdomain4Subdomain ()
+
+ModuleGroup A (
+    Domain = DomainWithSubdomain1
+    AllowedTargetDomains = DomainWithSubdomain2
+)
+ModuleGroup A.B (
+    Domain = Subdomain1
+    AllowedTargetDomains = Subdomain4Subdomain
+)
+ModuleGroup A.C (
+    AllowedTargetDomains = Subdomain3
+)
+

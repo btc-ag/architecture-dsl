@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="id1"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            cardinality="singleton-global"
+            thread="main"
+            visible="true">
+         <run
+               class="com.btc.arch.ArchitectureDsl.imports.generator.ArchitectureDslImporter">
+         </run>
+      </application>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="com.btc.arch.ArchitectureDsl.imports.id1"
+            name="ArchDslImporter">
+         <property
+               name="appName"
+               value="ArchDslImporter">
+         </property>
+      </product>
+   </extension>
+</plugin>

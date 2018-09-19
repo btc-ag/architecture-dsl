@@ -1,0 +1,42 @@
+Domain Domain.A (
+	Subdomains = 
+		Domain.A.A
+		Domain.A.B
+)
+
+Domain Domain.A.A (
+)
+
+Domain Domain.A.B (
+	Subdomains = Domain.A.B.A
+)
+
+Domain Domain.A.B.A (
+)
+
+Domain Domain.B (
+)
+
+ModuleGroup ModuleGroup.A (
+	Domain = Domain.A
+	AllowedTargetDomains = Domain.A.B
+)
+
+ModuleGroup ModuleGroup.A.A (
+	Domain = Domain.A.A
+)
+
+ModuleGroup ModuleGroup.A.B (
+)
+
+ModuleGroup ModuleGroup.A.B.A (
+	Domain = Domain.A.B.A
+)
+
+ModuleGroup ModuleGroup.A.B.B (
+	Domain = Domain.B
+)
+
+ModuleGroup ModuleGroup.A.C (
+	Domain = Domain.B
+)

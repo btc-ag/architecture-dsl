@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="com.btc.arch.architecturedsl.ui.perspective.ArchitectureManagementPerspective"
+            id="com.btc.arch.ArchitectureDsl.ui.perspective.perspective1"
+            name="Architecture Management">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="com.btc.arch.architecturedsl.ui.perspective.ArchDslProjectExplorerView"
+            id="com.btc.arch.architecturedsl.ui.perspective.ArchDslExplorerView"
+            name="Architecture Management Explorer"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="com.btc.arch.ArchitectureDsl.ui.perspective.wizards"
+            name="Architecture Management">
+      </category>
+      <wizard
+            category="com.btc.arch.ArchitectureDsl.ui.perspective.wizards"
+            class="com.btc.arch.architecturedsl.ui.wizards.ProjectWizard"
+            finalPerspective="com.btc.arch.ArchitectureDsl.ui.perspective.perspective1"
+            id="com.btc.arch.ArchitectureDsl.ui.perspective.projectWizard"
+            name="Architecture Management Project"
+            project="true">
+      </wizard>
+   </extension>
+
+</plugin>

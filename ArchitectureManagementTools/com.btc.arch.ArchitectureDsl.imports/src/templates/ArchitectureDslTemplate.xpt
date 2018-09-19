@@ -1,0 +1,45 @@
+«IMPORT com::btc::arch::architectureDsl»
+
+«EXTENSION templates::Extensions»
+
+«REM»public DEFINITION generateOneModuleDescriptionForModel«ENDREM»
+«DEFINE generateOneModuleDescriptionForAllModules (String fileName, List moduleNames) FOR List[Module]-»
+	«FILE fileName»
+	«EXPAND modulesFromModuleNameList (moduleNames) FOREACH this-»
+	«ENDFILE»
+«ENDDEFINE»
+
+«DEFINE modulesFromModuleNameList (List moduleNames) FOR Module-»
+«IF moduleNames.contains(this.name)-»
+«EXPAND moduleDescription FOR this»
+«ENDIF-»
+«ENDDEFINE»
+
+«REM»public DEFINITION generateOneModuleDescriptionForEachModule«ENDREM»
+«DEFINE generateOneModuleDescriptionForEachModule (List moduleNames) FOR List[Module]-»
+	«EXPAND generateFileForModule (moduleNames) FOREACH this»
+«ENDDEFINE»
+
+«DEFINE generateFileForModule (List moduleNames) FOR Module-»
+«IF moduleNames.contains(this.name)-»
+«FILE this.getWindowsPath()+"\\build\\"+this.name+".phys.archdsl"-»
+«EXPAND moduleDescription FOR this-»
+«ENDFILE-»
+«ENDIF-»
+«ENDDEFINE»
+
+«DEFINE moduleDescription FOR Module-»
+Module «this.name» (
+ 	Type = «FOREACH this.type AS type SEPARATOR ','»«this.type.get(0)»«ENDFOREACH»
+ 	Language = «this.language»
+ 	Group = BTC.CAB
+ 	//Maintainer = ""
+ 	Description = ""
+ 	«IF this.usedModules.size > 0-»
+ 	UsedModules =
+ 	«ENDIF-»
+ 	«FOREACH this.usedModules.sortBy(m|m.name) AS usedModule-»
+ 		«usedModule.name»
+ 	«ENDFOREACH-»
+)
+«ENDDEFINE»

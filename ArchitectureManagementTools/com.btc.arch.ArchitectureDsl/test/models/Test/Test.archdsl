@@ -1,0 +1,25 @@
+Module BTC.CAB.Commons.Core (
+  Type = Framework
+  Language = C++
+  Directory = "BTC/Commons/Core"
+  UsedModules = 
+  	BTC.CAB.Commons.TypeTraits
+)
+Module BTC.CAB.Commons.CoreYacl (
+  Type = Framework
+  Language = C++
+  Directory = "BTC/Commons/Core"
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+  	BTC.CAB.Commons.CoreExtras
+)
+Module BTC.CAB.Commons.CoreExtras (
+  Type = Implementation
+  Language = C++
+  UsedModules = 
+  	BTC.CAB.Commons.Core
+)
+Module BTC.CAB.Commons.TypeTraits (
+  Type = Framework
+  Language = C++
+)

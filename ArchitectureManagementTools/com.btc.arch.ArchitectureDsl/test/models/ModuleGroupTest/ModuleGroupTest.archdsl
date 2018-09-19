@@ -1,0 +1,73 @@
+Domain Zero ()
+Domain Crypto ()
+Domain TimeSeries ()
+
+ModuleGroup B (
+)
+ModuleGroup B.C (
+	Domain = Zero
+)
+ModuleGroup C (
+    Domain = Crypto
+    AllowedTargetDomains = Zero
+)
+ModuleGroup C.D (
+	AllowedTargetDomains = TimeSeries
+)
+ModuleGroup C.X.Y (
+)
+ModuleGroup D.E (
+    Domain = TimeSeries
+)
+ModuleGroup C.D.E (
+)
+
+ModuleGroup E (
+	Version = 1.0.0
+)
+
+ModuleGroup E.A (
+)
+
+
+Module B.C.Y (
+  Type = Framework
+  Language = C++
+)
+Module C.D.A (
+  Type = Framework
+  Language = C++
+  UsedModules = B.C.Y
+)
+Module C.D.E.X (
+  Type = Framework
+  Language = C++
+  UsedModules = B.C.Y
+)
+Module D.E.Good (
+  Type = Framework
+  Language = C++
+  UsedModules = B.C.Y
+)
+Module D.E.X.Y (
+  Type = Framework
+  Language = C++
+  UsedModules = B.C.Y C.D.A
+)
+
+Module E.A.A (
+  Type = Framework
+  Language = C++
+  UsedModules = 
+)
+
+Module NoDomain (
+  Type = Framework
+  Language = C++
+  UsedModules = B.D.A  
+)
+Module ExplicitModuleGroup (
+  Type = Framework
+  Language = C++
+  Group = B
+)

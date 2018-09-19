@@ -1,0 +1,79 @@
+«IMPORT com::btc::arch::architectureDsl»
+
+«EXTENSION templates::Extensions»
+
+«DEFINE main (String limitedTo) FOR Model-»
+	«EXPAND main(limitedTo) FOR this.modules»
+«ENDDEFINE»
+
+«DEFINE main (String limitedTo) FOR List[Module]-»
+«FILE "DependencyGraph_"+limitedTo+".dot"-»
+digraph {
+	rankdir=LR;
+	graph [fontname="Calibri", fontsize=30 ];
+	node [fontname="Calibri", fontsize=30, style=filled, width=3, height=3 ];
+	edge [fontname="Calibri", fontsize=20];
+«EXPAND modules (limitedTo) FOREACH this»
+«EXPAND moduleDependencies (limitedTo) FOREACH this»
+	}
+«ENDFILE-»
+«ENDDEFINE»
+
+«DEFINE modules (String limitedTo) FOR Module-»
+«IF this.name.contains(limitedTo)-»
+	«IF this.type.contains(ModuleType::INTERFACE)-»
+		node [ fillcolor = green3, shape=ellipse, rank=1 ];
+		"«this.name»" ;
+	«ENDIF-»
+	«IF this.type.contains(ModuleType::IMPLEMENTATION)-»
+		node [ fillcolor = white, shape=ellipse, rank=1 ];
+		"«this.name»" ;
+	«ENDIF-»
+	«IF this.type.contains(ModuleType::INTERFACE_UTILITY)-»
+		node [ fillcolor = green1, shape=ellipse, rank=2 ]; 
+		"«this.name»" ;
+	«ENDIF-»
+	«IF this.type.contains(ModuleType::INTERFACE_TEST) || this.type.contains(ModuleType::IMPLEMENTATION_TEST)-»
+		node [ fillcolor = salmon, shape=ellipse, rank=3 ];
+		"«this.name»" ;
+	«ENDIF-»
+«ENDIF-»
+«ENDDEFINE»
+
+
+«DEFINE moduleDependencies (String limitedTo) FOR Module-»
+	«FOREACH this.getAllDependencies() AS includedModule-»
+		«IF this.name.contains(limitedTo) && includedModule.name.contains(limitedTo)-»
+		"«this.name»" -> "«includedModule.name»"
+		«ENDIF-»
+	«ENDFOREACH-»
+«ENDDEFINE»
+
+
+
+«REM» Systems have been removed from the DSL
+ 
+«DEFINE system  FOR Model-»
+	«EXPAND system FOR this.systems»
+«ENDDEFINE»
+
+«DEFINE system FOR List[System]-»
+	«EXPAND system FOREACH this»
+«ENDDEFINE»
+
+«DEFINE system FOR System»
+«FILE this.name+".dot"-»
+digraph {
+
+	«FOREACH this.interfaceInstances AS interfaceInstance-»
+		"«interfaceInstance.sourceComponentInstance.name»" -> "«interfaceInstance.name»" [label=provides]
+		«FOREACH interfaceInstance.targetComponentInstances AS targetComponent -»
+			"«targetComponent.name»" -> "«interfaceInstance.name»" [label=requires]
+		«ENDFOREACH -»
+	«ENDFOREACH-»
+	
+}
+«ENDFILE-»
+	
+«ENDDEFINE»
+«ENDREM»

@@ -1,0 +1,305 @@
+Domain TestDomain (
+)
+
+ModuleGroup BTC.AMM.Test (
+	Domain = TestDomain 
+)
+
+	Module BTC.AMM.Test.Client.Administration (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.AppFrame.AppFrame
+	 	BTC.AMM.Client.Administration.Views
+	 	BTC.AMM.Client.Administration.Documents
+	 	BTC.AMM.AppFrame.SlEnvironment
+	 	BTC.AMM.AppFrame.SlUtilities
+	 	BTC.AMM.AppFrame.SlInternationalization
+	 	BTC.AMM.AppFrame.SlControls
+	)
+	Module BTC.AMM.Test.Common.NET (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common
+	 	BTC.AMM.Client.DeviceManagement.Documents.NET
+	 	BTC.CAB.Internationalization
+	 	BTC.AMM.AppFrame.SlEnvironment.NET
+	)
+	Module BTC.AMM.Test.Common.Pex (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common
+	 	BTC.AMM.Common.Moles
+	)
+	Module BTC.AMM.Test.Server.Administration.BLL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Administration.BO
+	 	BTC.AMM.Server.Configuration.BO
+	 	BTC.AMM.Server.Administration.BLL
+	 	BTC.AMM.Server.Administration.DAL
+	 	BTC.AMM.Server.Configuration.DAL
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.Administration.DAL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common.TestUtils
+	 	BTC.AMM.Server.Administration.BO
+	 	BTC.AMM.Server.Administration.DAL
+	 	BTC.AMM.Server.Configuration.BO
+	 	BTC.AMM.Server.Configuration.DAL
+	 	BTC.AMM.Common
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.Administration.WebS (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common.TestUtils
+	 	BTC.AMM.Server.Administration.WebS
+	 	BTC.AMM.Server.Administration.BO
+	 	BTC.AMM.Server.Administration.DTO
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.Analysis.BLL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Analysis.BLL
+	 	BTC.AMM.Server.Analysis.BO
+	)
+	Module BTC.AMM.Test.Server.Analysis.DAL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Analysis.BO
+	 	BTC.AMM.Server.Analysis.DAL
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.Analysis.WebS (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common.TestUtils
+	 	BTC.AMM.Server.Analysis.WebS
+	 	BTC.AMM.Server.Analysis.BO
+	 	BTC.AMM.Server.Analysis.DTO
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.Base (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.CAB.Utilities
+	)
+	Module BTC.AMM.Test.Server.Billing.MDUSOutputAdapter.BLL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Billing.MDUSOutputAdapter.BLL
+	 	BTC.AMM.Server.OutboxController.BO
+	 	BTC.AMM.Server.Billing.MDUSOutputAdapter.BO
+	 	BTC.AMM.Server.Billing.MDUSInputAdapter.BLL
+	)
+	Module BTC.AMM.Test.Server.ComServer.DAL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common.TestUtils
+	 	BTC.AMM.Server.ComServer.BO
+	 	BTC.AMM.Server.ComServer.DAL
+	 	BTC.AMM.Server.DeviceManagement.DAL
+	 	BTC.AMM.Server.DeviceManagement.BO
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.Configuration.BLL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Configuration.DAL
+	 	BTC.AMM.Server.Configuration.BO
+	 	BTC.AMM.Server.Configuration.BLL
+	 	BTC.AMM.Server.Administration.DAL
+	 	BTC.AMM.Server.Administration.BO
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Common.TestUtils
+	)
+	Module BTC.AMM.Test.Server.Configuration.DAL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common.TestUtils
+	 	BTC.AMM.Server.Configuration.BO
+	 	BTC.AMM.Server.Configuration.DAL
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.Configuration.WebS (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common.TestUtils
+	 	BTC.AMM.Server.Configuration.WebS
+	 	BTC.AMM.Server.Configuration.BO
+	 	BTC.AMM.Server.Configuration.DTO
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.DeviceManagement.BLL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.DeviceManagement.BO
+	 	BTC.AMM.Server.DeviceManagement.BLL
+	 	BTC.AMM.Server.DeviceManagement.DAL
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.DeviceManagement.DAL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common.TestUtils
+	 	BTC.AMM.Server.DeviceManagement.BO
+	 	BTC.AMM.Server.DeviceManagement.DAL
+	 	BTC.AMM.Server.TariffManagement.BO
+	 	BTC.AMM.Server.TariffManagement.DAL
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.DeviceManagement.WebS (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common.TestUtils
+	 	BTC.AMM.Server.DeviceManagement.WebS
+	 	BTC.AMM.Server.DeviceManagement.BO
+	 	BTC.AMM.Server.DeviceManagement.DTO
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.OutboxController.WebS (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.OutboxController.WebS
+	 	BTC.AMM.Server.OutboxController.BO
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.OutboxController.DTO
+	)
+	Module BTC.AMM.Test.Server.RuleEngine.BLL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.RuleEngine.BLL
+	 	BTC.AMM.Server.RuleEngine.DTO
+	 	BTC.AMM.Server.RuleEngine.BO
+	 	BTC.AMM.Server.RuleEngine.DAL
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.RuleEngine.DAL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common.TestUtils
+	 	BTC.AMM.Server.RuleEngine.BO
+	 	BTC.AMM.Server.RuleEngine.DAL
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.RuleEngine.WebS (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common.TestUtils
+	 	BTC.AMM.Server.RuleEngine.WebS
+	 	BTC.AMM.Server.RuleEngine.BO
+	 	BTC.AMM.Server.RuleEngine.DTO
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Common
+	)
+	Module BTC.AMM.Test.Server.TariffManagement.BLL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.TariffManagement.BO
+	 	BTC.AMM.Server.DeviceManagement.BO
+	 	BTC.AMM.Server.DeviceManagement.DAL
+	 	BTC.AMM.Server.TariffManagement.DAL
+	 	BTC.AMM.Server.TariffManagement.BLL
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.TariffManagement.DAL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common.TestUtils
+	 	BTC.AMM.Server.TariffManagement.BO
+	 	BTC.AMM.Server.TariffManagement.DAL
+	 	BTC.AMM.Server.DeviceManagement.BO
+	 	BTC.AMM.Server.DeviceManagement.DAL
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.TariffManagement.WebS (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common.TestUtils
+	 	BTC.AMM.Server.TariffManagement.WebS
+	 	BTC.AMM.Server.TariffManagement.BO
+	 	BTC.AMM.Server.TariffManagement.DTO
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.TaskController.BLL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.TaskController.BLL
+	)
+	Module BTC.AMM.Test.Server.Tasks.BLL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Tasks.BO
+	 	BTC.AMM.Server.Tasks.BLL
+	 	BTC.AMM.Server.Tasks.DAL
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.Tasks.DAL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Tasks.BO
+	 	BTC.AMM.Server.Tasks.DAL
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.Tasks.WebS (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Common.TestUtils
+	 	BTC.AMM.Server.Tasks.WebS
+	 	BTC.AMM.Server.Tasks.BO
+	 	BTC.AMM.Server.Tasks.DTO
+	)
+	Module BTC.AMM.Test.Server.WorkflowController.BLL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	)
+	Module BTC.AMM.Test.Server.WorkflowController.DAL (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.WorkflowController.DAL
+	 	BTC.AMM.Server.WorkflowController.BO
+	 	BTC.AMM.Server.Base
+	)
+	Module BTC.AMM.Test.Server.WorkflowController.WebS (
+	 	Type = ImplementationTest
+	 	Language = C#
+	 	UsedModules =
+	 	BTC.AMM.Server.Base
+	 	BTC.AMM.Server.WorkflowController.WebS
+	 	BTC.AMM.Server.WorkflowController.BO
+	 	BTC.AMM.Server.WorkflowController.DTO
+	)
