@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config transient="false" date="1409064166881" version="3.0">
+	<site enabled="true" updateable="true" policy="USER-EXCLUDE" url="platform:/base/">
+		<feature id="org.eclipse.xtext.sdk.source" url="features/org.eclipse.xtext.sdk.source_1.0.2.v201102150722/" version="1.0.2.v201102150722">
+		</feature>
+		<feature id="org.eclipse.rcp" url="features/org.eclipse.rcp_3.6.2.r362_v20101104-9SAxFMKFkSAqi8axkv1ZjegmiBLY/" version="3.6.2.r362_v20101104-9SAxFMKFkSAqi8axkv1ZjegmiBLY">
+		</feature>
+		<feature id="org.eclipse.xtend" url="features/org.eclipse.xtend_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.equinox.executable" url="features/org.eclipse.equinox.executable_3.4.2.R36x_v20110125-7N7K7bF8zk1BAKMh0iz0t94miBLY/" version="3.4.2.R36x_v20110125-7N7K7bF8zk1BAKMh0iz0t94miBLY">
+		</feature>
+		<feature id="org.eclipse.emf.mwe.ui" url="features/org.eclipse.emf.mwe.ui_1.0.2.v201102150556/" version="1.0.2.v201102150556">
+		</feature>
+		<feature id="org.eclipse.equinox.server.servletbridge" url="features/org.eclipse.equinox.server.servletbridge_1.0.0.v20100510-42A79oB5855K5E/" version="1.0.0.v20100510-42A79oB5855K5E">
+		</feature>
+		<feature id="org.eclipse.emf.mwe.ui.source" url="features/org.eclipse.emf.mwe.ui.source_1.0.2.v201102150556/" version="1.0.2.v201102150556">
+		</feature>
+		<feature id="org.eclipse.xpand.source" url="features/org.eclipse.xpand.source_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.help.source" url="features/org.eclipse.help.source_1.2.1.r362_v20101111-7e7jEVFDr6xg-LSlC_z0w1D/" version="1.2.1.r362_v20101111-7e7jEVFDr6xg-LSlC_z0w1D">
+		</feature>
+		<feature id="org.eclipse.jgit" url="features/org.eclipse.jgit_2.0.0.201206130900-r/" version="2.0.0.201206130900-r">
+		</feature>
+		<feature id="org.eclipse.xtend.typesystem.emf.source" url="features/org.eclipse.xtend.typesystem.emf.source_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.cvs" url="features/org.eclipse.cvs_1.2.1.r362_v20101111-7B77FKv99HL0GvIAF99I8H14B7E/" version="1.2.1.r362_v20101111-7B77FKv99HL0GvIAF99I8H14B7E">
+		</feature>
+		<feature id="org.eclipse.xtend.dependencies" url="features/org.eclipse.xtend.dependencies_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.xtend.ui.source" url="features/org.eclipse.xtend.ui.source_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.pde" url="features/org.eclipse.pde_3.6.2.r362_v20110203-7b7mFL2FET3dhHalh1iNZtL/" version="3.6.2.r362_v20110203-7b7mFL2FET3dhHalh1iNZtL">
+		</feature>
+		<feature id="org.eclipse.xtext.docs.source" url="features/org.eclipse.xtext.docs.source_1.0.2.v201102150722/" version="1.0.2.v201102150722">
+		</feature>
+		<feature id="org.eclipse.equinox.server.simple" url="features/org.eclipse.equinox.server.simple_1.0.0.v20100510-44DF8s734C48662444/" version="1.0.0.v20100510-44DF8s734C48662444">
+		</feature>
+		<feature id="org.eclipse.equinox.server.p2" url="features/org.eclipse.equinox.server.p2_1.0.1.R36x_v20101007-7x7IFI3FOf7yk63X6z0kz-Z2T158/" version="1.0.1.R36x_v20101007-7x7IFI3FOf7yk63X6z0kz-Z2T158">
+		</feature>
+		<feature id="org.eclipse.rcp.source" url="features/org.eclipse.rcp.source_3.6.2.r362_v20101104-9SAxFMKFkSAqi8axkv1ZjegmiBLY/" version="3.6.2.r362_v20101104-9SAxFMKFkSAqi8axkv1ZjegmiBLY">
+		</feature>
+		<feature id="org.eclipse.xtext.sdk" plugin-identifier="org.eclipse.xtext" url="features/org.eclipse.xtext.sdk_1.0.2.v201102150722/" version="1.0.2.v201102150722">
+		</feature>
+		<feature id="org.eclipse.xtend.typesystem.xsd.source" url="features/org.eclipse.xtend.typesystem.xsd.source_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.egit.psf" url="features/org.eclipse.egit.psf_2.0.0.201206130900-r/" version="2.0.0.201206130900-r">
+		</feature>
+		<feature id="org.eclipse.equinox.sdk" url="features/org.eclipse.equinox.sdk_3.6.2.r362_v20110210b-7H7R67v9rtOv_dTCawtb0WQnN92B/" version="3.6.2.r362_v20110210b-7H7R67v9rtOv_dTCawtb0WQnN92B">
+		</feature>
+		<feature id="org.eclipse.equinox.weaving.sdk" url="features/org.eclipse.equinox.weaving.sdk_1.0.0.v20100421-79--EVVFNFFsFc/" version="1.0.0.v20100421-79--EVVFNFFsFc">
+		</feature>
+		<feature id="org.eclipse.emf.mwe.core" url="features/org.eclipse.emf.mwe.core_1.0.2.v201102150556/" version="1.0.2.v201102150556">
+		</feature>
+		<feature id="org.eclipse.xtext.ui" url="features/org.eclipse.xtext.ui_1.0.2.v201102150722/" version="1.0.2.v201102150722">
+		</feature>
+		<feature id="org.eclipse.equinox.server.core" url="features/org.eclipse.equinox.server.core_1.0.1.R36x_v20101007-7K7QEtDVci4YrnH_88QAH/" version="1.0.1.R36x_v20101007-7K7QEtDVci4YrnH_88QAH">
+		</feature>
+		<feature id="org.eclipse.cvs.source" url="features/org.eclipse.cvs.source_1.2.1.r362_v20101111-7B77FKv99HL0GvIAF99I8H14B7E/" version="1.2.1.r362_v20101111-7B77FKv99HL0GvIAF99I8H14B7E">
+		</feature>
+		<feature id="org.eclipse.xpand.incremental" url="features/org.eclipse.xpand.incremental_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.xtend.typesystem.xsd" url="features/org.eclipse.xtend.typesystem.xsd_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.xtext.runtime" url="features/org.eclipse.xtext.runtime_1.0.2.v201102150722/" version="1.0.2.v201102150722">
+		</feature>
+		<feature id="org.eclipse.xpand.examples" url="features/org.eclipse.xpand.examples_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.egit" url="features/org.eclipse.egit_2.0.0.201206130900-r/" version="2.0.0.201206130900-r">
+		</feature>
+		<feature id="org.eclipse.xpand" url="features/org.eclipse.xpand_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.xtend.typesystem.emf" url="features/org.eclipse.xtend.typesystem.emf_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.emf.mwe.core.source" url="features/org.eclipse.emf.mwe.core.source_1.0.2.v201102150556/" version="1.0.2.v201102150556">
+		</feature>
+		<feature id="org.eclipse.xtext.xbase.source" url="features/org.eclipse.xtext.xbase.source_1.0.2.v201102150722/" version="1.0.2.v201102150722">
+		</feature>
+		<feature id="org.eclipse.xtend.source" url="features/org.eclipse.xtend.source_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.help" plugin-identifier="org.eclipse.help.base" url="features/org.eclipse.help_1.2.1.r362_v20101111-7e7jEVFDr6xg-LSlC_z0w1D/" version="1.2.1.r362_v20101111-7e7jEVFDr6xg-LSlC_z0w1D">
+		</feature>
+		<feature id="org.eclipse.xtext.xbase" url="features/org.eclipse.xtext.xbase_1.0.2.v201102150722/" version="1.0.2.v201102150722">
+		</feature>
+		<feature id="org.eclipse.xpand.doc" url="features/org.eclipse.xpand.doc_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.sdk" url="features/org.eclipse.sdk_3.6.2.r362_v20100929-7Q7m7HD5cWlFgdCBHllpZMd2M468sbnm2RJvUWIbiJnWC/" version="3.6.2.r362_v20100929-7Q7m7HD5cWlFgdCBHllpZMd2M468sbnm2RJvUWIbiJnWC">
+		</feature>
+		<feature id="org.eclipse.xtext.examples.source" url="features/org.eclipse.xtext.examples.source_1.0.2.v201102150722/" version="1.0.2.v201102150722">
+		</feature>
+		<feature id="org.eclipse.equinox.p2.discovery.feature" url="features/org.eclipse.equinox.p2.discovery.feature_1.0.1.R36x_v20110210-4-09oB5865H6L02434/" version="1.0.1.R36x_v20110210-4-09oB5865H6L02434">
+		</feature>
+		<feature id="org.eclipse.platform" url="features/org.eclipse.platform_3.6.2.r362_v20110210-9gF78Gs1FrIGnHDHWkEcopoN8AmxeZflGDGKQi/" version="3.6.2.r362_v20110210-9gF78Gs1FrIGnHDHWkEcopoN8AmxeZflGDGKQi">
+		</feature>
+		<feature id="org.eclipse.xtext.ui.source" url="features/org.eclipse.xtext.ui.source_1.0.2.v201102150722/" version="1.0.2.v201102150722">
+		</feature>
+		<feature id="org.eclipse.xtend.typesystem.uml2" url="features/org.eclipse.xtend.typesystem.uml2_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.xpand.ui" url="features/org.eclipse.xpand.ui_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.equinox.p2.sdk" url="features/org.eclipse.equinox.p2.sdk_3.6.2.R36x_v20110120-9I7VGEAG438GhnfSLuLz0FXP9NYJ/" version="3.6.2.R36x_v20110120-9I7VGEAG438GhnfSLuLz0FXP9NYJ">
+		</feature>
+		<feature id="org.eclipse.jdt.source" url="features/org.eclipse.jdt.source_3.6.2.r362_v20101117-0800-7z8XFW6FLFlmjJcvz03jyeFBLS_F/" version="3.6.2.r362_v20101117-0800-7z8XFW6FLFlmjJcvz03jyeFBLS_F">
+		</feature>
+		<feature id="org.eclipse.equinox.core.sdk" url="features/org.eclipse.equinox.core.sdk_3.6.1.r36x_v20110210-7sF99FsNFS-Ci4TSP4RDFHLIA5B3/" version="3.6.1.r36x_v20110210-7sF99FsNFS-Ci4TSP4RDFHLIA5B3">
+		</feature>
+		<feature id="org.eclipse.xtext.runtime.source" url="features/org.eclipse.xtext.runtime.source_1.0.2.v201102150722/" version="1.0.2.v201102150722">
+		</feature>
+		<feature id="org.eclipse.platform.source" url="features/org.eclipse.platform.source_3.6.2.r362_v20110210-9gF78Gs1FrIGnHDHWkEcopoN8AmxeZflGDGKQi/" version="3.6.2.r362_v20110210-9gF78Gs1FrIGnHDHWkEcopoN8AmxeZflGDGKQi">
+		</feature>
+		<feature id="org.eclipse.equinox.p2.user.ui.source" url="features/org.eclipse.equinox.p2.user.ui.source_2.0.1.r361_v20100903-897HFa-FX0z-z-ntoaavz0JPX628/" version="2.0.1.r361_v20100903-897HFa-FX0z-z-ntoaavz0JPX628">
+		</feature>
+		<feature id="org.eclipse.jdt" url="features/org.eclipse.jdt_3.6.2.r362_v20101117-0800-7z8XFW6FLFlmjJcvz03jyeFBLS_F/" version="3.6.2.r362_v20101117-0800-7z8XFW6FLFlmjJcvz03jyeFBLS_F">
+		</feature>
+		<feature id="org.eclipse.xpand.ui.source" url="features/org.eclipse.xpand.ui.source_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.emf.mwe.sdk" url="features/org.eclipse.emf.mwe.sdk_1.0.2.v201102150556/" version="1.0.2.v201102150556">
+		</feature>
+		<feature id="org.eclipse.equinox.p2.user.ui" url="features/org.eclipse.equinox.p2.user.ui_2.0.1.r361_v20100903-897HFa-FX0z-z-ntoaavz0JPX628/" version="2.0.1.r361_v20100903-897HFa-FX0z-z-ntoaavz0JPX628">
+		</feature>
+		<feature id="org.eclipse.xpand.examples.source" url="features/org.eclipse.xpand.examples.source_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.pde.source" url="features/org.eclipse.pde.source_3.6.2.r362_v20110203-7b7mFL2FET3dhHalh1iNZtL/" version="3.6.2.r362_v20110203-7b7mFL2FET3dhHalh1iNZtL">
+		</feature>
+		<feature id="org.eclipse.xtend.typesystem.uml2.source" url="features/org.eclipse.xtend.typesystem.uml2.source_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.equinox.compendium.sdk" url="features/org.eclipse.equinox.compendium.sdk_3.6.1.R36x_v20101014-7V7RFiwFLSgEt4Pctn77c7J/" version="3.6.1.R36x_v20101014-7V7RFiwFLSgEt4Pctn77c7J">
+		</feature>
+		<feature id="org.eclipse.equinox.serverside.sdk" url="features/org.eclipse.equinox.serverside.sdk_3.6.1.R36x_v20101014-7u7NFVmFL9O33b1CgDPjCI2jWYYn/" version="3.6.1.R36x_v20101014-7u7NFVmFL9O33b1CgDPjCI2jWYYn">
+		</feature>
+		<feature id="org.eclipse.xtext.docs" plugin-identifier="org.eclipse.xtext.doc" url="features/org.eclipse.xtext.docs_1.0.2.v201102150722/" version="1.0.2.v201102150722">
+		</feature>
+		<feature id="org.eclipse.emf.mwe.doc" url="features/org.eclipse.emf.mwe.doc_1.0.2.v201102150556/" version="1.0.2.v201102150556">
+		</feature>
+		<feature id="org.eclipse.xtext.examples" url="features/org.eclipse.xtext.examples_1.0.2.v201102150722/" version="1.0.2.v201102150722">
+		</feature>
+		<feature id="org.eclipse.xpand.sdk" url="features/org.eclipse.xpand.sdk_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.equinox.server.jetty" url="features/org.eclipse.equinox.server.jetty_1.0.0.v20100510-7I777iBgJ9DIARGH8IIQ/" version="1.0.0.v20100510-7I777iBgJ9DIARGH8IIQ">
+		</feature>
+		<feature id="org.eclipse.xtend.ui" url="features/org.eclipse.xtend.ui_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+		<feature id="org.eclipse.xpand.incremental.source" url="features/org.eclipse.xpand.incremental.source_1.0.1.v201008251147/" version="1.0.1.v201008251147">
+		</feature>
+	</site>
+</config>
