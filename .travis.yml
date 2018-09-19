@@ -1,19 +1,21 @@
-sudo: false  
+sudo: false
 language: java
-
 jdk:
-  - openjdk7
-
+- openjdk7
 cache:
-    directories:
-        - $HOME/.m2
-
-# TODO we start xvfb separately (instead of only using xvfb-run for mvn install, because during "deploy" the tests are currently executed again, which should be avoided
+  directories:
+  - "$HOME/.m2"
 before_script:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3 # give xvfb some time to start
-  
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- sleep 3
 install: true
-
-script: ./build-generator.sh
+script: "./build-generator.sh"
+deploy:
+  provider: releases
+  api_key:
+    secure: LPLQOtXCfoZGOHaE9dBLinrNKLYyPHWj2+dJGYjG1u7am9mzS5f+M8pvHvil5SbpEax3U3c7iD1KylLp0rjOo/y7rg/7E7ATb7/7HFmWJQGmlkFeXpDTwf6j80NBhyzKBewTgfAuwhHz3r6tpGwdqsBg7PyAYiLBJ95U6uWZuzlu5o6wj8gc3tVoEZcGUd8Kc6482AqMivuXGRO0yClYwmtJdQbaTYT9H9XaTWOQaI3BUie7yHxrpE8IRBo9GYjSKx2bNqv2Rz82uMwkyWhw2aYyMBjfWrwX3oCv/CgfGCEJNdsSODYl/ND1AdmZnAOn7L0mbOW5He+P5TE6BYDnr46AsVPJ5EEhjA8XgczAfv4IymdA1CXZxI28NVOj32rueq3UKOKKUx2UuEMoaod607/0IOkF7yL6M7XVWwHQcGZIJcdvpBMu76ijk2Pwzvk1qgfrsWjq+RpHeVELzPcqNoClENiD+EF2DH2rZUA0+vCUyWhqECbu737HqdN/UmqFHPrM0OtOfXABEdgj/Y+ogCpw9fWKUDaAFFxPI4I2dg/xhTnzfnk+NgrVfBYpfVbFVyHXzoJOAuI+3EuF5SY1CEfaJvEOBJAx8YV1JgNHdDkvTpXhtTq0TCoKor6foru5wfxNwSoy5ZPCnCOsiFJTFtUPkDbVobug3Ny6w9euBzE=
+  file: ArchitectureManagementTools/ArchitectureDslGenerator_build/I.ArchitectureDslGenerator/ArchitectureDslGenerator-win32.win32.x86.zip
+  on:
+    repo: btc-ag/architecture-dsl
+    branch: initial-import
