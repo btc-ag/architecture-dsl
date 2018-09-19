@@ -9,7 +9,7 @@ cd ArchitectureManagementTools
 WORKDIR=$(pwd)
 
 # rem Execute mwe worksflow to generate architecture dsl java sources.
-java -classpath ../eclipse_helios/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-launcher.jar;../eclipse_helios/plugins/* org.apache.tools.ant.launch.Launcher -f com.btc.arch.ArchitectureDsl/xtext_build.xml -Dmy.basepath="%WORKDIR%/../eclipse_helios" gen
+java -classpath ../eclipse_helios/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-launcher.jar:../eclipse_helios/plugins/* org.apache.tools.ant.launch.Launcher -f com.btc.arch.ArchitectureDsl/xtext_build.xml -Dmy.basepath="%WORKDIR%/../eclipse_helios" gen
 
 # rem The build.xml has to be copied to the build directory, because otherwise it will not correctly resolve all paths.
 cp ../eclipse_helios/plugins/org.eclipse.pde.build_3.6.2.R36x_20110203/scripts/build.xml .
